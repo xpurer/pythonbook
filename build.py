@@ -55,18 +55,31 @@ for root, dirs, files in walk(join(PREFIX,"book")):
         if chapter.isdigit():
             chapter = int(chapter)
             with open(path) as pathfile:
+                pathfile_read = pathfile.read()
                 if number == "init":
-                    title = pathfile.read().strip()
+                    title = pathfile_read.strip()
                     chapter_title_dict[chapter] = title
                 elif number.isdigit():
                     number = int(number)
-                    chapter_content_dict[chapter].append( (number , pathfile.read().lstrip()) )
+                    chapter_content_dict[chapter].append( (number , pathfile_read.lstrip()) )
 
 
 for k,v in list(chapter_content_dict.items()):
     chapter_content_dict[k]=[
         i for n,i in sorted(v,key=lambda x:x[0])
     ]
+    
+for chapter,pathfile_list in chapter_content_dict.iteritems():
+    for pos,pathfile_read in  enumerate(pathfile_list):
+        if pathfile_read.strip():
+            with open(join(PREFIX_OUTPUT,"%s_%s.html"%(chapter,pos)),"w") as index:
+                index.write(
+                    render(
+                        "page.html",
+                        title = pathfile_read.strip().split("\n")[0]
+                    ),
+                )
+
 
 chapter_list = chapter_title_dict.keys()
 chapter_list.sort()
