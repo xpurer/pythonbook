@@ -227,3 +227,5 @@ hr {
 .btw .oc .button_set { padding: 0px 25px 15px 15px; }
 .btw .oc .ptl, .btw .oc .price { font-size: 12px; }
 .btw .oc .discount { text-decoration: line-through; }
+.dirnav{text-align:center;padding-top:40px;}
+.dirnav a{margin:0 10px;}
