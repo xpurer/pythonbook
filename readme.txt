@@ -14,14 +14,14 @@ http://www.technicalbard.com/files/MySQL-python-1.2.2.win32-py2.6.exe
 http://peak.telecommunity.com/dist/ez_setup.py
 
 添加
-C:\Python26\Scripts
+C:\Python26\;C:\Python26\Scripts
 到环境变量 PATH
 
 
 进入命令行，复制粘贴以下命令（可以一次性复制进去）
 easy_install -U mako
 
-运行build.py，可以编译文本
+运行build.py，可以编译文本，生成的html在对于的html目录
 
 文本放在book下面
 
