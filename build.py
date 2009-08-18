@@ -3,6 +3,8 @@ import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
+from cStringIO import StringIO
+
 import re
 from cgi import escape
 BLOD_RE = re.compile(r"(\[\[)(.*?)(\]\])")
@@ -66,7 +68,7 @@ for root, dirs, files in walk(join(PREFIX,"book")):
                     chapter_title_dict[chapter] = title
                 elif number.isdigit():
                     number = int(number)
-                    chapter_content_dict[chapter].append( (number , pathfile_read.lstrip()) )
+                    chapter_content_dict[chapter].append( (number , pathfile_read.rstrip()) )
 
 
 for k,v in list(chapter_content_dict.items()):
@@ -78,10 +80,42 @@ for chapter,pathfile_list in chapter_content_dict.iteritems():
     for pos,pathfile_read in  enumerate(pathfile_list):
         if pathfile_read.strip():
             with open(join(PREFIX_OUTPUT,"%s_%s.html"%(chapter,pos)),"w") as index:
+                content = pathfile_read[pathfile_read.find("\n"):]
+                content = escape(content)
+                content = BLOD_RE.sub(r'<b>\2</b>', content)
+
+                buffer = []
+
+                s = StringIO()
+                s.write(content)
+                s.seek(0)
+                inpre = False
+                for line in s:
+                    line=line.rstrip()
+                    if line.startswith("===") and line.endswith("==="):
+                        buffer.append("<h3>%s</h3>"%line.strip(" ="))
+                    elif line.startswith("==") and line.endswith("=="):
+                        buffer.append("<h2>%s</h2>"%line.strip(" ="))
+                    elif line.strip() == "{{{":
+                        inpre=True
+                        buffer.append("""<div class="content"><pre>""")
+                    elif line.strip() == "}}}":
+                        inpre=False
+                        buffer.append("""</pre></div>""")
+                    elif line:
+                        if inpre:
+                            buffer.append(line)
+                        else:
+                            buffer.append("<p>%s</p>"%line)
+                    elif inpre:
+                        buffer.append("<br/>"%line)
+
+                content = "\n".join(buffer)
                 index.write(
                     render(
                         "page.html",
-                        title = pathfile_read.strip().split("\n")[0]
+                        title = pathfile_read.strip().split("\n")[0],
+                        content=content
                     ),
                 )
 
