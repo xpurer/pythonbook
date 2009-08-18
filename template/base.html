@@ -1,0 +1,31 @@
+<!doctype html><html>\
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="../file/c.css" media="all">\
+<title>${html_title_wrap()}</title>\
+${self.html_head()|trim}\
+</head><body>\
+${self.html_body()|trim}\
+<div id="footer">
+  <p class="copyright">
+    Copyright 2009,
+    <a href="http://jchris.mfdz.com/">张沈鹏</a>,
+    <a href="http://jan.prima.de/">陈寅</a>
+
+    <span class="amp">&amp;</span>
+    <a href="http://tumbolia.org/nslater">敬宓</a>
+  </p>
+</div>
+</body></html>
+<%def name="html_title_wrap()" filter="html_title_filter">${self.html_title()}</%def>
+<%def name="html_title_filter(txt)" filter="trim">
+<%txt=txt.strip()%>
+%if txt:
+${txt}
+%else:
+网站开发深入浅出
+%endif
+</%def>
+<%def name="html_head()"></%def>
+<%def name="html_title()"></%def>
+<%def name="html_body()"></%def>
