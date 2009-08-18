@@ -30,6 +30,7 @@ function add_comment_links() {
         var current_uri = uri + "&body=" + escape(body);
         var comment_a = document.createElement('a');
         comment_a.href = current_uri;
+        comment_a.target="_blank";
         comment_a.className = "comment";
         comment_a.appendChild(document.createTextNode("点评或提问"));
         // get current's parent
