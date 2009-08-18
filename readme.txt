@@ -1,4 +1,9 @@
-环境配置
+== 内容浏览 ==
+
+打开 html/index.html 就可以浏览内容
+
+
+== 环境配置 ==
 
 下载安装
 http://www.python.org/ftp/python/2.6/python-2.6.msi
@@ -20,7 +25,7 @@ easy_install -U mako
 
 文本放在book下面
 
-文本格式
+== 文本格式 ==
 
 小标题：
     == 这是h2 ==
