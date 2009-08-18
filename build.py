@@ -9,7 +9,6 @@ import re
 from cgi import escape
 BLOD_RE = re.compile(r"(\[\[)(.*?)(\]\])")
 #BLOD_RE.sub(r'<b>\2</b>', line)
-
 romanNumeralMap = (('M',  1000), 
                    ('CM', 900),
                    ('D',  500),
@@ -75,12 +74,32 @@ for k,v in list(chapter_content_dict.items()):
     chapter_content_dict[k]=[
         i for n,i in sorted(v,key=lambda x:x[0])
     ]
-    
-for chapter,pathfile_list in chapter_content_dict.iteritems():
+chapter_list = chapter_title_dict.keys()
+chapter_list.sort()
+
+
+pre_link = None
+next_link = None
+for chapter in chapter_list:
+    pathfile_list = chapter_content_dict.get(chapter,[])
     for pos,pathfile_read in  enumerate(pathfile_list):
         if pathfile_read.strip():
-            with open(join(PREFIX_OUTPUT,"%s_%s.html"%(chapter,pos)),"w") as index:
-                content = pathfile_read[pathfile_read.find("\n"):]
+            filename = "%s_%s.html"%(chapter,pos)
+
+            with open(join(PREFIX_OUTPUT,filename),"w") as index:
+                pos = pathfile_read.find("\n")
+                if pos==-1:
+                    continue
+                content = pathfile_read[pos:].strip()
+                if content:
+                    if pos<len(pathfile_list)-1:
+                        next_link = "%s_%s.html"%(chapter,1+pos)
+                    elif chapter!=chapter_list[-1]:
+                        next_link = "%s_%s.html"%(chapter_list[chapter_list.index(chapter)+1],0)
+                    else:
+                        next_link = None
+                else:
+                    continue
                 content = escape(content)
                 content = BLOD_RE.sub(r'<b>\2</b>', content)
 
@@ -90,6 +109,7 @@ for chapter,pathfile_list in chapter_content_dict.iteritems():
                 s.write(content)
                 s.seek(0)
                 inpre = False
+                
                 for line in s:
                     line=line.rstrip()
                     if line.startswith("===") and line.endswith("==="):
@@ -102,6 +122,19 @@ for chapter,pathfile_list in chapter_content_dict.iteritems():
                     elif line.strip() == "}}}":
                         inpre=False
                         buffer.append("""</pre></div>""")
+                    elif line[-4:] in (".jpg",".gif",".png"):
+                        alt = ""
+                        link = line.rsplit(" ",2)
+                        if len(link)==2:
+                            alt,link = link
+                        buffer.append("""<div class="imageblock">
+<div class="content">
+<img alt="%s" src="../img/%s"/>
+</div>
+"""%(alt,link))
+                        if alt:
+                            buffer.append("""<div class="image-title">图:%s</div>"""%alt)
+                        buffer.append("""</div>""")
                     elif line:
                         if inpre:
                             buffer.append(line)
@@ -115,13 +148,13 @@ for chapter,pathfile_list in chapter_content_dict.iteritems():
                     render(
                         "page.html",
                         title = pathfile_read.strip().split("\n")[0],
-                        content=content
+                        content=content,
+                        pre_link = pre_link,
+                        next_link = next_link
                     ),
                 )
+                pre_link = filename
 
-
-chapter_list = chapter_title_dict.keys()
-chapter_list.sort()
 
 with open(join(PREFIX_OUTPUT,"index.html"),"w") as index:
     index.write(

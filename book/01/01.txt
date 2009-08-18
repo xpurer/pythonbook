@@ -19,5 +19,6 @@ python是什么?
 
 文中引用如
 
-测试用图 xxx.png
  
+
+python python-logo.gif

@@ -108,6 +108,8 @@ dt {
 
 pre {
 margin: 0;
+border:1px dashed #ccc;
+padding:10px;
 }
 
 tt, code, kbd, samp {
@@ -168,10 +170,6 @@ padding: 15px;
 .imageblock .image-title {
 
 margin: 15px 0;
-}
-
-.imageblock img {
-width: 80%;
 }
 
 .listingblock .content {

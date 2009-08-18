@@ -9,11 +9,11 @@ function get_text(el) {
     }
 }
 
-uri = "http://groups.google.com/group/couchdb-relax/post"
+uri = "http://groups.google.com/group/pythonbook-comment/post"
 
 title = get_text(document.getElementsByTagName('h1')[0])
 
-uri += "?subject=" + escape("Comment on \"" + title + "\"")
+uri += "?hl=zh-CN&subject=" + escape("关于 \"" + title + "\"")
 
 // @@ add support for more types of element
 
@@ -26,7 +26,7 @@ function add_comment_links() {
         if (!current || current.className != "") {
             continue;
         }
-        var body = "From " + top.location.href + "\n\n> " + get_text(current)
+        var body = "网址: " + top.location.href + "\n\n> " + get_text(current)
         var current_uri = uri + "&body=" + escape(body);
         var comment_a = document.createElement('a');
         comment_a.href = current_uri;
