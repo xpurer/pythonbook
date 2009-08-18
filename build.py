@@ -3,6 +3,11 @@ import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
+import re
+from cgi import escape
+BLOD_RE = re.compile(r"(\[\[)(.*?)(\]\])")
+#BLOD_RE.sub(r'<b>\2</b>', line)
+
 romanNumeralMap = (('M',  1000), 
                    ('CM', 900),
                    ('D',  500),
