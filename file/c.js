@@ -31,7 +31,7 @@ function add_comment_links() {
         var comment_a = document.createElement('a');
         comment_a.href = current_uri;
         comment_a.className = "comment";
-        comment_a.appendChild(document.createTextNode("Comment on topic or style"));
+        comment_a.appendChild(document.createTextNode("点评或提问"));
         // get current's parent
         var text = current.firstChild;
         current.insertBefore(comment_a, text);
