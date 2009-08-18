@@ -61,7 +61,7 @@ for root, dirs, files in walk(join(PREFIX,"book")):
                 elif number.isdigit():
                     number = int(number)
                     chapter_content_dict[chapter].append( (number , pathfile.read().lstrip()) )
-                    print chapter,number
+
 
 for k,v in list(chapter_content_dict.items()):
     chapter_content_dict[k]=[
