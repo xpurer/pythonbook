@@ -163,3 +163,12 @@ spammer识别
 -----------------------
 
 （这本书就主要讲这么多）
+
+
+遗漏的
+带去除空格的
+htmlmako
+
+gzip压缩
+css,js merge
+trac,svn
