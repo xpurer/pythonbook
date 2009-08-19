@@ -112,16 +112,22 @@ for chapter in chapter_list:
                 
                 for line in s:
                     line=line.rstrip()
+                    line_strip = line.strip()
+
                     if line.startswith("===") and line.endswith("==="):
                         buffer.append("<h3>%s</h3>"%line.strip(" ="))
                     elif line.startswith("==") and line.endswith("=="):
                         buffer.append("<h2>%s</h2>"%line.strip(" ="))
-                    elif line.strip() == "{{{":
+                    elif line_strip == "{{{":
                         inpre=True
                         buffer.append("""<div class="content"><pre>""")
-                    elif line.strip() == "}}}":
+                    elif line_strip == "}}}":
                         inpre=False
                         buffer.append("""</pre></div>""")
+                    elif line_strip == "==&gt;":
+                        buffer.append("""<blockquote>""")
+                    elif line_strip == "&lt;==":
+                        buffer.append("""</blockquote>""")
                     elif line[-4:] in (".jpg",".gif",".png"):
                         alt = ""
                         link = line.rsplit(" ",2)

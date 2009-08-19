@@ -2,7 +2,9 @@ html {
 min-height: 100%;
 height: auto;
 }
-
+blockquote{
+margin:10px 20px;padding:2px 0 2px 20px;border-left:#ccc 5px solid;
+}
 body {
 width: 700px;
 margin: 0 auto;
