@@ -82,9 +82,10 @@ pre_link = None
 next_link = None
 for chapter in chapter_list:
     pathfile_list = chapter_content_dict.get(chapter,[])
-    for pos,pathfile_read in  enumerate(pathfile_list):
+    pathfile_list.sort()
+    for filepos,pathfile_read in  enumerate(pathfile_list):
         if pathfile_read.strip():
-            filename = "%s_%s.html"%(chapter,pos)
+            filename = "%s_%s.html"%(chapter,filepos)
 
             with open(join(PREFIX_OUTPUT,filename),"w") as index:
                 pos = pathfile_read.find("\n")
@@ -92,12 +93,13 @@ for chapter in chapter_list:
                     continue
                 content = pathfile_read[pos:].strip()
                 if content:
-                    if pos<len(pathfile_list)-1:
-                        next_link = "%s_%s.html"%(chapter,1+pos)
+                    if filepos<len(pathfile_list)-1 and pathfile_list[filepos+1].count("\n"):
+                        next_link = "%s_%s.html"%(chapter,1+filepos)
                     elif chapter!=chapter_list[-1]:
                         next_link = "%s_%s.html"%(chapter_list[chapter_list.index(chapter)+1],0)
                     else:
                         next_link = None
+                    
                 else:
                     continue
                 content = escape(content)
