@@ -85,7 +85,6 @@ nagios与短信邮件报警
 日志统计
 logrotate
 crontab
-crontab的MAILTO=name@domain.com
 
 附加场景
 cat sort ack 查询ip
@@ -167,8 +166,10 @@ spammer识别
 
 
 遗漏的
-带去除空格的htmlmako
+带去除空格的
+htmlmako
+
 gzip压缩
 css,js merge
 trac,svn
-长连接与聊天室
+超时的请求
