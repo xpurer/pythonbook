@@ -130,6 +130,8 @@ for chapter in chapter_list:
                         buffer.append("""<blockquote>""")
                     elif line_strip == "&lt;==":
                         buffer.append("""</blockquote>""")
+                    elif line_strip.startswith("----"):
+                        buffer.append("""<div style="border:0;border-bottom:1px #ccc dotted;margin:40px 0;"></div>""")
                     elif line[-4:] in (".jpg",".gif",".png"):
                         alt = ""
                         link = line.rsplit(" ",2)
