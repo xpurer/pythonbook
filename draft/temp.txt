@@ -1,0 +1,29 @@
+让人惊讶的 Erlang-Web
+August 20th, 2009 :: jackyz
+No comments
+
+Erlang-Web 并不是一个“新”项目，它的出现已经有一阵子了(第一次的公布是在 2008 年的 11 月)。一直以来，因为并没有太多的机会去实际使用 Erlang 来写“传统” MVC 的 Web 程序(了解我的人都知道，我一直在鼓吹采用激进的纯客户端的 JavaScript 的 MVC 来做 Web 开发)，所以并没有去真正了解它的特性。这种状况一直持续到最近，一个偶然的原因，需要做一点传统的 Web 开发，这才有机会回头再来审视众多的服务端 MVC Web 开发技术，并有机会认识 Erlang-Web 的强大。
+
+对于一个全新的传统 Web 项目而言(通常这意味着内容要对搜索引擎友好、URL Friendly、有节制的使用 Ajax 等等需求)，对于服务端开发框架的考察无非就是需要关注如下这么几个方面：
+
+首要考虑的是编码的“效率”，在这个坐标上，通常都是认为 Ruby On Rails 和 Python Django 之类的“Full Stack Web Framework”具有较高的得分。大量的默认习惯性配置，代码模版，等等，借助这些设施，通常较少的实际编码就能得到相当不错的成果。
+
+然而，这类 Full Stack 框架通常“水比较深”，也就是说，它什么都提供了，但是有点“过了头”。稍微有点“另类”的想法通常容易导致痛苦。在这个坐标上，反而会希望框架再“谦逊一点”，毕竟只是一个 MVC 设施，简洁明了和可裁减也很重要。越简单的越好改，对熟手而言，用起来更能随心所欲。
+
+再然后就是省时省力上的考量，和美工的流程配合、上传下载、URL Mapping、拦截设施、Email模块、与其他系统的接口，等等，该有的都要有，不该有的有了也好，不强买强卖就行。简而言之，能用较少的“脑力”来完成任务，就是上上大吉。
+
+于是，我惊讶的发现自己在越来越多的关注 PHP 之类的技术(其中的一些确实是很不错的选择)。但要知道，对我个人而言，使用这门语言大约是在 9 年以前。这时我才想起曾经听过 Erlang-Web 的大名。没准怎么样呢，大不了回去再用 PHP ，先看看再说。我们了解一下它的特性：
+
+    * Annotations —— 支持“区分主要任务和外围事务”的设施，帮助清晰和重用代码。
+    * Architecture of types —— 类型系统，并用这一类型系统来对应界面。
+    * Dispatching and Reverse dispatching —— 从 Friendly URL 映射到程序，及其反向功能——生成 Friendly URL。
+    * Validation —— 校验用户输入。
+    * Internationalization —— 传说中的 i18n 支持。
+    * Request dictionary —— 在其他 MVC 中被传来传去的，什么都往里扔的 Request Object 的对应物。
+    * DBMS —— 数据库支持，目前只支持 Mnesia 和 CouchDB (太 Erlang 了一点，要是能支持 MySQL ，就算是做做样子也好，胜在够有亲和力呀)。
+    * Project configuration file —— 组织配置文件的设施。
+    * Data flow —— 处理默认值，格式化参数等等的设施。
+    * Template engines —— 模版引擎，目前支持 wtpl 和 Django 的 dtl 模版语言。
+    * 其他 —— 一些有意思的组件，如 twitterl, wpart_rss, ew_backup, wpart_erlsyntax, e_auth, e_auth_dets 名字都很简约，可以直接望文生意。
+
+配上 Erlang 内置的分布式和高并发特性，再加上 Mnesia 的诸多优势，看起来还是有一些亮点吧。当然了，特性并不完美，而且学习曲线很可能还有一点“陡峭”。但对于一个处于活跃开发周期中的项目而言，这应该不是什么大问题。长久以来流行在 Erlang 社区的这个说法——“Erlang 并不适合开发 Web 项目”——现在是不是时候改变了呢？ ;) 
