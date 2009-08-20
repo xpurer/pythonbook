@@ -135,7 +135,7 @@ for chapter in chapter_list:
                             alt,link = link
                         buffer.append("""<div class="imageblock">
 <div class="content">
-<img alt="%s" src="../img/%s"/>
+<img alt="%s" src="img/%s"/>
 </div>
 """%(alt,link))
                         if alt:
