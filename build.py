@@ -67,13 +67,18 @@ for root, dirs, files in walk(join(PREFIX,"book")):
                     chapter_title_dict[chapter] = title
                 elif number.isdigit():
                     number = int(number)
+                    
                     chapter_content_dict[chapter].append( (number , pathfile_read.rstrip()) )
 
 
 for k,v in list(chapter_content_dict.items()):
-    chapter_content_dict[k]=[
-        i for n,i in sorted(v,key=lambda x:x[0])
+    v = sorted(v,key=lambda x:int(x[0]))
+    v = [
+        i for n,i in v
     ]
+    chapter_content_dict[k]=v
+
+
 chapter_list = chapter_title_dict.keys()
 chapter_list.sort()
 
@@ -82,7 +87,7 @@ pre_link = None
 next_link = None
 for chapter in chapter_list:
     pathfile_list = chapter_content_dict.get(chapter,[])
-    pathfile_list.sort()
+
     for filepos,pathfile_read in  enumerate(pathfile_list):
         if pathfile_read.strip():
             filename = "%s_%s.html"%(chapter,filepos)
