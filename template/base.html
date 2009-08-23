@@ -1,4 +1,4 @@
-<!doctype html><html>\
+<!doctype html>\
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" type="text/css" href="file/c.css" media="all">\
@@ -15,7 +15,16 @@ ${self.html_body()|trim}\
     敬宓
   </p>
 </div>
-</body></html>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-10347470-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
 <%def name="html_title_wrap()" filter="html_title_filter">${self.html_title()}</%def>
 <%def name="html_title_filter(txt)" filter="trim">
 <%txt=txt.strip()%>
