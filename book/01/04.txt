@@ -1,6 +1,6 @@
 CSS排版
 
-麻油四，接着往下看教程。
+麻油四接着往下看教程。
 
 ----------
 
@@ -15,7 +15,7 @@ reset css也有很多种版本，这里选取来自Eric Meyer的版本（ http:/
 {{{
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td { margin:0; padding:0; border:0; outline:0; font-weight:inherit; font-style:inherit; font-size:100%; font-family:inherit; vertical-align:baseline; }
 :focus { outline:0; }
-body { line-height:1; color:black; background:white; }
+body { line-height:1;}
 ol, ul { list-style:none; }
 table { border-collapse:separate; border-spacing:0; }
 caption, th, td { text-align:left; font-weight:normal; }
@@ -23,18 +23,20 @@ blockquote:before, blockquote:after, q:before, q:after { content: ""; }
 blockquote, q { quotes: "" ""; }
 }}}
 
-通常将各个页面共用的css写在一个独立的.css文件中，然后在页面head区用类似以下代码调用。 
+可将各个页面共用的css写在一个独立的.css文件中，然后在页面head区用类似以下代码调用。 
 {{{
 <link rel="stylesheet" rev="stylesheet" href="css/style.css" type="text/css" />
 }}}
+这种方式的引用可以利用浏览器缓存，节省带宽。
 
-文件方式的引用可以利用浏览器缓存，节省带宽。
 
 以这一行为例
 
-body { line-height:1; color:black; background:white; }
+body { line-height:1; }
 
-其中"body"称为"选择器"；css选择器分3大类
+其中"body"称为"选择器"；line-height是修改是css属性名称，1对其设定的值。
+
+css选择器分3大类
 
 1. 选择标签，直接用标签名
 
@@ -66,6 +68,32 @@ body { line-height:1; color:black; background:white; }
 .black {} /*选中B*/
 .big {} /*选中A和B*/
 }}}
+
+选中元素之后，就能对其设定样式的了。
+
+为了对样式建立一个基本概念，先看这幅图
+
+css盒模型 cssbox3d.gif
+
+一个html元素，从内到外依次是
+
+内容 -> padding（内边距） -> border（边框）-> margin（外边距）
+
+而背景(background)是在边框类，也是内容+内边距的背后。
+
+对于内容也可以设置排版具体的样式，如
+
+{{{
+text-align:center;
+}}}
+文本居中
+
+{{{
+color:#ccc;
+}}}
+设置文字颜色,颜色是十六进制的格式，可以使用一些屏幕取色软件来获取。
+
+ColorMania汉化版就是一款不错的工具（下载地址 http://www.hanzify.org/index.php?Go=Show::List&ID=12188 ）
 
 
 

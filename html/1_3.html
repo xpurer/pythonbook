@@ -7,7 +7,7 @@
 </div>
 
 <div id="preamble">
-<p>麻油四，接着往下看教程。</p>
+<p>麻油四接着往下看教程。</p>
 <div style="border:0;border-bottom:1px #ccc dotted;margin:40px 0;"></div>
 <p>css，又称样式表，是用来控制显示的模样，比如文字的大小，颜色；网页排版；鼠标的样式等等。</p>
 <p>css可以直接写到网页中的&lt;style&gt;内,通常放在head区。</p>
@@ -16,21 +16,22 @@
 <div class="content"><pre>
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td { margin:0; padding:0; border:0; outline:0; font-weight:inherit; font-style:inherit; font-size:100%; font-family:inherit; vertical-align:baseline; }
 :focus { outline:0; }
-body { line-height:1; color:black; background:white; }
+body { line-height:1;}
 ol, ul { list-style:none; }
 table { border-collapse:separate; border-spacing:0; }
 caption, th, td { text-align:left; font-weight:normal; }
 blockquote:before, blockquote:after, q:before, q:after { content: ""; }
 blockquote, q { quotes: "" ""; }
 </pre></div>
-<p>通常将各个页面共用的css写在一个独立的.css文件中，然后在页面head区用类似以下代码调用。</p>
+<p>可将各个页面共用的css写在一个独立的.css文件中，然后在页面head区用类似以下代码调用。</p>
 <div class="content"><pre>
 &lt;link rel="stylesheet" rev="stylesheet" href="css/style.css" type="text/css" /&gt;
 </pre></div>
-<p>文件方式的引用可以利用浏览器缓存，节省带宽。</p>
+<p>这种方式的引用可以利用浏览器缓存，节省带宽。</p>
 <p>以这一行为例</p>
-<p>body { line-height:1; color:black; background:white; }</p>
-<p>其中"body"称为"选择器"；css选择器分3大类</p>
+<p>body { line-height:1; }</p>
+<p>其中"body"称为"选择器"；line-height是修改是css属性名称，1对其设定的值。</p>
+<p>css选择器分3大类</p>
 <p>1. 选择标签，直接用标签名</p>
 <p>2. 通过id选择单个元素，id不能重复，一个id对应一个元素</p>
 <p>比如</p>
@@ -53,6 +54,15 @@ blockquote, q { quotes: "" ""; }
 .black {} /*选中B*/
 .big {} /*选中A和B*/
 </pre></div>
+<p>选中元素之后，就能对其设定样式的了。</p>
+<p>为了对样式建立一个基本概念，先看这幅图</p>
+<div class="imageblock">
+<div class="content">
+<img alt="css盒模型" src="img/cssbox3d.gif"/>
+</div>
+
+<div class="image-title">图:css盒模型</div>
+</div>
 
 <div class="dirnav">
 <a href="1_2.html">上一节</a>
