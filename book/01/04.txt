@@ -83,16 +83,18 @@ css盒模型 cssbox3d.gif
 
 对于内容也可以设置排版具体的样式，如
 
-{{{
-text-align:center;
-}}}
 文本居中
 
 {{{
+text-align:center;
+}}}
+
+设置文字颜色
+{{{
 color:#ccc;
 }}}
-设置文字颜色,颜色是十六进制的格式，可以使用一些屏幕取色软件来获取。
 
+颜色是十六进制的格式，可以使用一些屏幕取色软件来获取。
 ColorMania汉化版就是一款不错的工具（下载地址 http://www.hanzify.org/index.php?Go=Show::List&ID=12188 ）
 
 
