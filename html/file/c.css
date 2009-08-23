@@ -164,14 +164,15 @@ display: block;
 }
 
 .imageblock .content {
-border: 1px solid #999;
 text-align: center;
 padding: 15px;
 }
 
 .imageblock .image-title {
-
-margin: 15px 0;
+text-align:center;
+font-size:12px;
+font-family:宋体;
+margin: 0 0 15px;
 }
 
 .listingblock .content {
