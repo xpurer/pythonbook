@@ -32,7 +32,7 @@
 &lt;/body&gt;
 </pre></div>
 <p>这种写法源自Google的搜索结果页面，既精简，兼容性也好。</p>
-<p>在W3C（万维网联盟）的爪牙们看来这种写法很不规范。</p>
+<p>在W3C（万维网联盟）的卫道士们看来这种写法很不规范。</p>
 <p>不必在意那些满口仁义道德的家伙，在网络界，事实就是标准。</p>
 <p>把文件内容修改如上，点击保存，注意选择文件编码为UTF-8。</p>
 <p>然后，在Editplus中，用快捷键Ctrl+B就可以浏览当前页面的显示效果。</p>
@@ -48,8 +48,37 @@
 </div>
 <p>这样可以让保存文件时，默认编码是 UTF-8。</p>
 <p>head常常会放一些css样式，javascript脚本，body区域就是网页正文。</p>
-<p>css，又称样式表，是用来控制显示的模样，比如文字的大小，颜色；网页排版；鼠标的样式等等。</p>
-<p>javascript，简称js，是用来控制页面的行为，比如页面动态加载文本，或是点击后隐藏某个图片。</p>
+<p>body中是网页的正文，正文也由一系列标签组成。常用的基本标签如下：</p>
+<p>    &lt;div&gt;内容&lt;/div&gt;</p>
+<p>        表示一个块，并无实际的意义，常用于配合css，定制显示效果。</p>
+<p>    &lt;span&gt;内容&lt;/span&gt;</p>
+<p>        和div类似，区别在于，div默认的新启一行，span默认不换行。</p>
+<p>    &lt;p&gt;内容&lt;/p&gt;</p>
+<p>        表示段落</p>
+<p>    &lt;b&gt;内容&lt;/b&gt;</p>
+<p>        加粗字体</p>
+<p>    &lt;img src="图片地址" /&gt;</p>
+<p>        显示图片，常见的格式有jpg，gif，png，这里src称之为img标签的属性</p>
+<div style="border:0;border-bottom:1px #ccc dotted;margin:40px 0;"></div>
+<p>看到这里麻油四写出了一个很简陋的页面 <a href="page/m1.html" target="_blank">预览</a></p>
+<div class="content"><pre>
+&lt;!doctype html&gt;
+&lt;head&gt;
+&lt;meta http-equiv="content-type" content="text/html; charset=UTF-8"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;p&gt;麻油四&lt;/p&gt;
+    &lt;p&gt;&lt;img src="m4.jpg" /&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;b&gt;基本资料&lt;/b&gt;&lt;/p&gt;
+    &lt;p&gt;学历: 本科&lt;/p&gt;
+    &lt;p&gt;专业: XX工程&lt;/p&gt;
+    &lt;p&gt;英语水平: CET4  &lt;/p&gt;
+    &lt;p&gt;联系方式: 138xxxxxx  &lt;/p&gt;
+    &lt;p&gt;&lt;b&gt;自我介绍&lt;/b&gt;&lt;/p&gt;
+    &lt;p&gt;本人勤劳肯干，任劳任怨...(略去废话5000字)&lt;/p&gt;
+&lt;/body&gt;
+</pre></div>
+<p>内容是有了，不过页面实在是太简陋了。</p>
 
 <div class="dirnav">
 <a href="1_1.html">上一节</a>

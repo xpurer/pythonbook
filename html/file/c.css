@@ -108,9 +108,14 @@ dt {
 
 }
 
+
 pre {
 margin: 0;
 border:1px dashed #ccc;
+word-wrap:break-word;
+white-space:pre-wrap;
+word-break:break-all;
+white-space:-moz-pre-wrap;
 padding:10px;
 }
 

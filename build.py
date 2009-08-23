@@ -7,6 +7,7 @@ from cStringIO import StringIO
 
 import re
 from cgi import escape
+PAGE_RE = re.compile(r"(page:)(.*?)([\s|\n])")
 BLOD_RE = re.compile(r"(\[\[)(.*?)(\]\])")
 #BLOD_RE.sub(r'<b>\2</b>', line)
 romanNumeralMap = (('M',  1000), 
@@ -109,7 +110,7 @@ for chapter in chapter_list:
                     continue
                 content = escape(content)
                 content = BLOD_RE.sub(r'<b>\2</b>', content)
-
+                content = PAGE_RE.sub(r'<a href="page/\2.html" target="_blank">预览</a>',content)
                 buffer = []
 
                 s = StringIO()
@@ -156,7 +157,7 @@ for chapter in chapter_list:
                         else:
                             buffer.append("<p>%s</p>"%line)
                     elif inpre:
-                        buffer.append("<br/>"%line)
+                        buffer.append("<br/>")
 
                 content = "\n".join(buffer)
                 index.write(
