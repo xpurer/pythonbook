@@ -1,4 +1,4 @@
-上传到GAE
+用GAE发布网站
 
 http://www.python.org/ftp/python/2.6.2/python-2.6.2.msi
 下载安装
