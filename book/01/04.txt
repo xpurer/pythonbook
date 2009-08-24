@@ -220,7 +220,6 @@ content: '\20';
 display: block;
 clear: both; 
 }
-
 body{background:#222;}
 #main{
 	padding:1px;
