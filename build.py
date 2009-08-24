@@ -110,7 +110,7 @@ for chapter in chapter_list:
                     continue
                 content = escape(content)
                 content = BLOD_RE.sub(r'<b>\2</b>', content)
-                content = PAGE_RE.sub(r'<a href="page/\2.html" target="_blank">预览</a>',content)
+                content = PAGE_RE.sub(r'<a href="page/\2" target="_blank">链接</a>',content)
                 buffer = []
 
                 s = StringIO()

@@ -6,7 +6,7 @@ CSS排版
 
 css，又称样式表，是用来控制显示的模样，比如文字的大小，颜色；网页排版；鼠标的样式等等。
 
-css可以直接写到网页中的<style>内,通常放在head区。
+css可以直接写到网页中的<style>内,通常放在head区；也可以通过元素的style属性，指定css样式。
 
 为了解决浏览器显示不一致的问题，通常会有一段固定写法css放在最前面来重置样式，称之为reset css。
 
@@ -109,13 +109,191 @@ width:600px;
 }}}
 
 设定边框样式
+{{{
+border:1px solid #ccc;
+}}}
 
+更多的css可以参看 CSS手册 page:other/css.chm
 
+下面来谈谈css的布局。
+
+布局无非是将网页元素左左右右的摆放，可以通过 float(浮动) 来实现这一效果。
+
+比如，下面的样式可以让元素向右浮动。
+
+{{{
+float:right;
+}}}
+
+习惯上用div作为页面布局的元素，内容包含在div中。
+
+使用浮动时，有一个常见问题。
+
+下面的层被浮动的层所覆盖，或者层里嵌套的子层超出了外层的范围。
+
+通常的解决方案是在其父层（如果没有，就新加一个div作为父层）的class上加上clearfix。
+
+clearfix的样式定义如下
+{{{
+.clearfix {zoom:1} 
+.clearfix:after { 
+content: '\20'; 
+display: block;
+clear: both; 
+}
+}}}
+
+float只能左右定位，如果你想要居中的效果，除了用上提到的text-align:center，还可以试试
+
+{{{
+margin:auto;
+}}}
+
+对margin的这种用法，也算是一种奇技淫巧吧。
+
+css的世界总是充满这样或者那样的奇技淫巧。
+
+这其中，最最重要的大概要算作 css hack 了。
+
+css hack ，就是专门为特定的某种浏览器而写的样式。
+
+有人的地方就有江湖，有江湖的地方就有纷争。
+
+浏览器无疑的硝烟弥漫的战场。
+
+IE6,IE7,IE8,Firefox,Chorme,Safrai,Opera...
+
+这其中，日日被人们所诅咒的，是那过时却迟迟不肯退下舞台的IE6。
+
+很多其他浏览器看起来很美的样式，在IE6下惨不忍睹。
+
+这时候，不堪忍受的人们往往就会祭起css hack的屠刀，
+
+大部分时候，只需要对IE做hack就可以了。因为出现样式兼容性问题，80%的时候，是因为IE的bug。
+
+以color为演示
+
+标准写法
+{{{
+color:#0f0;
+}}}
+
+仅IE6识别
+{{{
+_color:#0f0;
+}}}
+
+仅IE7识别
+{{
+#color:#0f0;
+
+}}}
+
+IE6+IE7识别
+{{{
+*color:#0f0;
+}}}
+
+仅IE6不识别
+{{{
+color/**/:#0f0;
+}}}
+
+不过奇技淫巧终究不是正途，还是越少用越好。
 
 ----------
 
-麻油四 page:m2
+麻油四呕心沥血，终于看完基础教程的css部分。
 
-。。。
+他只觉得两眼发黑，但还是坚持一般看着教程，一般对自己的简历修修改改。
 
+终于，万事大吉，给简历加上了样式。 page:m2.html 
 
+{{{
+<!doctype html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" rev="stylesheet" href="reset.css" type="text/css" />
+<style>
+.clearfix {zoom:1} 
+.clearfix:after { 
+content: '\20'; 
+display: block;
+clear: both; 
+}
+
+body{background:#222;}
+#main{
+	padding:1px;
+	width:700px;
+	margin:15px auto;
+	background:#fff;
+}
+#header{
+	background:url(sprites.gif) 0 100%;
+	padding:20px 0 30px 30px;
+	color:#fff;
+	font-size:26px;
+    border-bottom:#CC0000 5px solid;
+}
+#content{
+margin-top:1px;
+border-top:#C00 1px dotted;
+}
+.bk1{
+margin:10px;
+}
+.bk1 p{
+padding:6px;
+line-height:1.6;
+}
+#footer{
+	text-align:right;
+	margin:20px 10px;
+	font-size:12px;
+	color:#666;
+}
+</style>
+</head>
+<body>
+<div id="main" >
+    <p id="header">麻油四</p>
+    <div class="clearfix" id="content">
+        <p style="text-align:center;margin:20px;float:right;">
+            <img src="m4.jpg" />
+        </p>
+        <div class="bk1">
+
+            <p><b>基本资料</b></p>
+            <p>学历: 本科</p>
+            <p>专业: XX工程</p>
+            <p>英语水平: CET4  </p>
+            <p>联系方式: 138xxxxxx  </p>
+        </div>
+
+        <div class="bk1">
+            <p><b>自我介绍</b></p>
+            <p>本人勤劳肯干，任劳任怨，...(略去废话5000字)</p>
+        </div>
+        <div class="bk1">
+            <p><b>实习经历</b></p>
+            <p>2006年暑期在物价局实习，负责计算机维护和文字处理</p>
+
+            <p>2007年暑期在毅诚商贸有限公司实习，负责网络维护</p>
+            <p>2009年暑假在宽网吧屋网吧打工，负责网络建设、维护及网络安全</p>
+        </div>
+        <div class="bk1">
+                <p><b>个人特长</b></p>
+                <p>吃饭，睡觉</p>
+
+        </div>
+    </div>
+	<div id="footer" >
+		Copyright 2009 麻油四  
+	</div>
+</body>
+}}}
+
+当敲完最后一个字母，麻油四终于不堪重负，晕死过去。
+
+他做了一个梦，梦见了他开着凯迪拉克，拿着大束美丽的花儿，微笑着走向心爱的MM……
