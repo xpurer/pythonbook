@@ -1,34 +1,46 @@
 <!doctype html><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" type="text/css" href="file/c.css" media="all"><title>用GAE发布网站</title></head><body>
+<link rel="stylesheet" type="text/css" href="file/c.css" media="all"><title>GAE上发布网站</title></head><body>
 <a id="bar" href="index.html">返回目录</a>
 <div id="header">
-<h1>用GAE发布网站</h1>
+<h1>GAE上发布网站</h1>
 </div>
 
 <div id="preamble">
 <p>数钱数到自然醒，睡觉睡到手抽筋。</p>
 <p>梦醒时分，麻油四不得不再一次直面惨淡的人生。</p>
-<p>寻寻觅觅，终于从街边的破网吧中挖掘出阿牛。</p>
 <p>页面是写完了，但怎么才能挂到网上呢。</p>
-<p>1、打开Google App Engine主页，</p>
+<p>寻寻觅觅，终于从街边的破网吧中挖掘出阿牛。</p>
+<p>阿牛正潜伏在网吧阴暗的一角，猥琐的趴在电脑前看YY小说。</p>
+<p>在暴风骤雨般的拳打脚踢后，阿牛的魂魄终于从某个剑与魔法的星球穿越回来。</p>
+<p>麻油四道，“你太堕落了，居然看这么没品的小说”</p>
+<p>阿牛道，“哥看的不是YY，是寂寞”</p>
+<div style="border:0;border-bottom:1px #ccc dotted;margin:40px 0;"></div>
+<p>一番前戏后，阿牛用手拨弄了几下凌乱的头发，开始边演示边讲解怎么挂页面。</p>
+<p>打开Google App Engine主页，</p>
 <p><a target="_blank" href="http://code.google.com/intl/zh-CN/appengine/">http://code.google.com/intl/zh-CN/appengine/</a></p>
 <p>点击页面右侧的注册，登录google</p>
-<p>2、然后回提示你登陆你的Google帐户，没有帐户的可以去申请一个：</p>
-<p>3、登陆Google账户后，页面跳转到注册页面：</p>
-<p>4、点击“Create an Application”按钮，开始申请：</p>
-<p>这是就要你输入你的手机号码，手机号码需要填写国际区号，中国的区号是86</p>
-<p>如果你的手机号是13888888888，那么就填写 “8613888888888” 的形式</p>
 <div class="imageblock">
 <div class="content">
-<img alt="GAE注册" src="img/gae_regphone.jpg"/>
+<img alt="GAE注册" src="img/gae_reg.jpg"/>
 </div>
 
 <div class="image-title">图:GAE注册</div>
 </div>
-<p>填写好后点击“Send”按钮，你的手机就会收到一条短信，短信的内容如下：</p>
+<p>登陆后，页面跳转到GAE注册页面：</p>
+<p>点击“Create an Application”按钮，开始申请：</p>
+<p>这是就要你输入你的手机号码，手机号码需要填写国际区号，中国的区号是86</p>
+<p>如果你的手机号是13888888888，那么就填写 “8613888888888” 的形式</p>
+<div class="imageblock">
+<div class="content">
+<img alt="手机认证" src="img/gae_regphone.jpg"/>
+</div>
+
+<div class="image-title">图:手机认证</div>
+</div>
+<p>填写好后点击“Send”按钮，你的手机就会收到一条免费的短信，短信的内容如下：</p>
 <p>    Google App Engine Code：4946140</p>
-<p>这个短信验证是免费的，不要担心。</p>
+<p>一个手机号码只能申请一次Google App Engine服务，不能重复申请。</p>
 <div class="imageblock">
 <div class="content">
 <img alt="填写验证码" src="img/gae_ck.jpg"/>
@@ -36,8 +48,6 @@
 
 <div class="image-title">图:填写验证码</div>
 </div>
-<p>一个手机号码只能申请一个Google App Engine服务，重复申请多次也是无效的。</p>
-<p>如果没有收到短信，没办法，借个朋友的号码去申请吧，最好是中国联通的号码。</p>
 <p>填完验证码后就是填写一些基本的信息，比如说是域名、站点的名称等等。然后确定，就申请成功了。</p>
 <div class="imageblock">
 <div class="content">
@@ -46,12 +56,39 @@
 
 <div class="image-title">图:填写信息</div>
 </div>
-<p><a target="_blank" href="http://www.python.org/ftp/python/2.6.2/python-2.6.2.msi">http://www.python.org/ftp/python/2.6.2/python-2.6.2.msi</a></p>
-<p>下载安装</p>
-<p><a target="_blank" href="http://code.google.com/intl/zh-CN/appengine/downloads.html">http://code.google.com/intl/zh-CN/appengine/downloads.html</a></p>
-<p>下载 Google App Engine SDK for Python</p>
-<p><a target="_blank" href="http://code.google.com/intl/zh-CN/appengine/docs/python/gettingstarted/">http://code.google.com/intl/zh-CN/appengine/docs/python/gettingstarted/</a></p>
-<p>Google App Engine Python教程</p>
+<p>有了帐号以后，再在自己电脑上配置一下环境，就可以上传网站了。</p>
+<p>首先要装python，python有两种版本，2代和3代。python3刚刚出世，GAE还不支持，所以选择python2。</p>
+<p>从 <a target="_blank" href="http://www.python.org/ftp/python/2.6.2/python-2.6.2.msi">http://www.python.org/ftp/python/2.6.2/python-2.6.2.msi</a> 下载安装python。</p>
+<p>在从 <a target="_blank" href="http://code.google.com/intl/zh-CN/appengine/downloads.html">http://code.google.com/intl/zh-CN/appengine/downloads.html</a> 下载 Google App Engine SDK for Python。</p>
+<p>安装SDK时会提示要安装python2.5,因为我们已经安装python2.6，不用理会这个提示。</p>
+<p>新建一个目录，首先在此目录中新建一个名字为 file 的文件夹。</p>
+<p>将静态页面和相关的css，图片，都复制到这个文件夹下面。同时修改静态页面的文件名为 index.html 。</p>
+<p>再新建一个 server.py ，内容如下</p>
+<div class="content"><pre>
+print 'Content-Type: text/html; charset=UTF-8'
+print ''
+print '&lt;html&gt;&lt;meta http-equiv="refresh" content="0;url=/file/index.html"&gt;&lt;/html&gt;'
+</pre></div>
+<p>最后新建名为 app.yaml 的文件，修改文件内容为</p>
+<div class="content"><pre>
+application: mayoufour
+version: 1
+runtime: python
+api_version: 1
+<br/>
+handlers:
+- url: /file/
+  static_dir: file
+<br/>
+- url: /.*
+  script: serve.py
+</pre></div>
+<p>其中 mayoufour 为你申请时取的项目名称，请自行修改。</p>
+<p>然后点击 开始 -&gt; 运行，输入 cmd 进入命令行，切换到这个目录，运行</p>
+<div class="content"><pre>
+appcfg.py update .
+</pre></div>
+<p>按照提示输入Google的账号和密码，就可以完成上传，如图所示。</p>
 <div class="imageblock">
 <div class="content">
 <img alt="上传" src="img/gae_upload.jpg"/>
@@ -59,7 +96,10 @@
 
 <div class="image-title">图:上传</div>
 </div>
-<p><a target="_blank" href="http://mayoufour.appspot.com/">http://mayoufour.appspot.com/</a></p>
+<p>这时候访问 <a target="_blank" href="http://mayoufour.appspot.com">http://mayoufour.appspot.com</a> （mayoufour就是申请时的项目名） 可以看到页面了。</p>
+<p>当然这只是GAE最简单的应用，感兴趣可以去看看Google App Engine Python的教程。</p>
+<p><a target="_blank" href="http://code.google.com/intl/zh-CN/appengine/docs/python/gettingstarted/">http://code.google.com/intl/zh-CN/appengine/docs/python/gettingstarted/</a></p>
+<div style="border:0;border-bottom:1px #ccc dotted;margin:40px 0;"></div>
 
 <div class="dirnav">
 <a href="1_3.html">上一节</a>
