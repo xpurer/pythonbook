@@ -51,3 +51,5 @@ http://code.google.com/intl/zh-CN/appengine/downloads.html
 
 http://code.google.com/intl/zh-CN/appengine/docs/python/gettingstarted/
 Google App Engine Python教程
+
+http://mayoufour.appspot.com/
