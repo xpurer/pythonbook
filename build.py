@@ -41,7 +41,7 @@ def escape_link(s):
                 href = tok
             else:
                 href = 'http://' + tok
-            rs.append("""<a href="%s">%s</a>""" % (href,linktext))
+            rs.append("""<a target="_blank" href="%s">%s</a>""" % (href,linktext))
         else:
             rs.append(tok)
     return ''.join(rs)
