@@ -23,6 +23,28 @@ romanNumeralMap = (('M',  1000),
                    ('V',  5),
                    ('IV', 4),
                    ('I',  1))
+from urllib2 import unquote
+import re
+linkre = re.compile(r'((?:https?://)'
+                    r'[\w\-.%/=+#:~!,\'\*\^]+'
+                    r'(?:\?[\w\-.%/=;+@#:~!,\'\*&$]*)?)')
+
+
+
+def escape_link(s):
+    s = str(s).decode('utf8', 'ignore').encode('utf8')
+    rs=[]
+    for tok in linkre.split(s):
+        if linkre.match(tok) and tok not in '"<>':
+            linktext = tok
+            if tok.startswith('http://') or tok.startswith('https://'):
+                href = tok
+            else:
+                href = 'http://' + tok
+            rs.append("""<a href="%s">%s</a>""" % (href,linktext))
+        else:
+            rs.append(tok)
+    return ''.join(rs)
 
 def toRoman(n):
     """convert integer to Roman numeral"""
@@ -152,6 +174,7 @@ for chapter in chapter_list:
                             buffer.append("""<div class="image-title">图:%s</div>"""%alt)
                         buffer.append("""</div>""")
                     elif line:
+                        line = escape_link(line)
                         if inpre:
                             buffer.append(line)
                         else:
