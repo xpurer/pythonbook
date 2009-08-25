@@ -111,6 +111,6 @@ http://code.google.com/intl/zh-CN/appengine/docs/python/gettingstarted/
 
 麻油四孤芳自赏的凝视着页面上那张照片。
 
-银河的历史,又翻过了一页...
+银河的历史，又翻过了一页...
 
 
