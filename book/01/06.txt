@@ -21,3 +21,15 @@ easy_install -U mako
 easy_install -U yaro
 easy_install -U static
 easy_install -U Mercurial
+
+
+
+CSS调试小工具
+
+Firebug调试css
+
+Web Developer禁用缓存
+
+Live Http Header
+
+ScrapBook保存网页
