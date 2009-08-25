@@ -43,3 +43,11 @@ GAE注册 gae_regphone.jpg
 
 填写信息 gae_ck.jpg
 
+http://www.python.org/ftp/python/2.6.2/python-2.6.2.msi
+下载安装
+
+http://code.google.com/intl/zh-CN/appengine/downloads.html
+下载 Google App Engine SDK for Python
+
+http://code.google.com/intl/zh-CN/appengine/docs/python/gettingstarted/
+Google App Engine Python教程
