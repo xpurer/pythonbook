@@ -26,11 +26,11 @@ http://code.google.com/intl/zh-CN/appengine/
 
 GAE注册 gae_regphone.jpg
 
-填写好后点击“Send”按钮，你的手机就会收到一条短信，发件人号码是“106575580286”，短信的内容如下：
+填写好后点击“Send”按钮，你的手机就会收到一条短信，短信的内容如下：
 
-    Google App Engine Code：1234567 [腾讯科技]
+    Google App Engine Code：4946140
 
-验证码一共有7位，这个短信验证是免费的，不要担心。
+这个短信验证是免费的，不要担心。
 
 填写验证码 gae_ck.jpg
 
