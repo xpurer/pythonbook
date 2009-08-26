@@ -1,0 +1,67 @@
+<!doctype html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="file/c.css" media="all"><title>版本管理</title></head><body>
+<a id="bar" href="index.html">返回目录</a>
+<div id="header">
+<h1>版本管理</h1>
+</div>
+
+<div id="preamble">
+<p>麻油四在学院中名气渐起，偶尔也有低年级的小弟前来投靠，拜师学艺。</p>
+<p>本着抓苦力来打杂，不用白不用的心态，麻油四来者不拒。</p>
+<p>麻油四给每人开了个linux账号，让他们用ftp软件Filezilla连到服务器，然后又手把手的教会他们怎么上传下载代码。</p>
+<p>在麻油四勤勤恳恳的调教下，小弟们虽然依然很笨拙，不过慢慢也能干点体力活了。</p>
+<p>但是，今天，发生了一起让麻油四很恼火的事情。</p>
+<p>一个新来的小弟居然在上传代码时不小心选择了覆盖模式。</p>
+<p>结果麻油四和他的马仔们辛苦两天的成果就这样灰飞烟灭。</p>
+<p>“麻叔很生气，后果很严重”</p>
+<p>结果那个倒霉的小弟就被活生生的吊在宿舍楼下的老槐树上示众。</p>
+<p>午夜子时，阿牛迈着疲惫的脚步，从网吧走回寝室。</p>
+<p>隐隐约约，他看到树上有一个人影。</p>
+<p>阿牛不由得想起恐怖故事《女生寝室》中那个树吃人的典故，不由得惊出一身冷汗。</p>
+<p>不过，转念一想，难道是有MM失恋了自寻短见？</p>
+<p>活了20多年都没碰过女孩手的阿牛，脑海里浮现出人工呼吸，英雄救美，一见倾情的美好画面。</p>
+<p>顿时阿牛变得豪气干云，三步并做两步冲上前去。</p>
+<div style="border:0;border-bottom:1px #ccc dotted;margin:40px 0;"></div>
+<p>版本管理是管理在电脑上的文档，程序和其它信息的一种机制。它把每次改动作一个编号，叫做版本号。每次提交一个新的改动的时候，版本管理系统会新建一个版本号，记录下每次的改动的内容和对应的修改时间，修改人等信息。除此之外，版本管理通常会支持比较，恢复，合并等操作。专业的软件开发都需要使用版本管理工具来管理开发的源码和文档，这样的好处有很多，最主要的是可以放心大胆地修改代码，万一误入歧途，可以随时回到之前的时间点，另外，对于多人协同工作，可以方便做代码比较和合并。</p>
+<p>版本管理通常可以分为传统的版本管理（又称集中式版本管理）和分布式版本管理。传统的版本管理所有的版本控制功能都集中在服务器上。为了避免两个开发者同时对服务器上的同一文件进行修改，必须采取一种机制来保证该文件不被复写，通常有两种方案：文件锁和版本合并。</p>
+<p>文件锁是指一次只有一个开发者能够对中央仓库的代码进行写操作，第一个开发者将一个文件从中央仓库里面check out出来，其他开发者在该开发者check in之前都不能修改这个文件，显然这种方式是不利于团队协作的。</p>
+<p>版本合并可以允许多个开发者同时修改同一文件，如果两个开发者同时修改了同一文件，第一个check in的开发者总是能成功，而第二个check in的开发者需要把他改变的代码合并到第一个开发者的改动之上，然后check in。版本管理工具一般会提供合并命令来方便合并的过程。</p>
+<p>分布式的版本管理采用一种端到端的方案，就像p2p之于客户服务端模型，没有一个中央的仓库，没个分布的端都可以有一个仓库，端和端之间通过补丁来完成同步。</p>
+<p>当前常见的版本管理系统有svn，mercurial，bazaar，git，darcs等等。其中svn属于基于版本合并的传统版本管理，其它都属于分布式的版本管理。svn是当前使用最广泛的版本管理系统。</p>
+<p>可以在自己的机器上面安装版本管理服务，但是自己的机器也有不靠谱的时候。还好万能的谷歌提供了非常方便的项目托管工具（<a target="_blank" href="http://code.google.com/">http://code.google.com/</a>），其中包括版本管理，代码审核，bug追踪等工具，因此完全可以利用google code来管理自己的代码。</p>
+<p>申请一个google code托管非常简单，访问<a target="_blank" href="http://code.google.com/hosting/createProject">http://code.google.com/hosting/createProject</a>，进入项目申请页面，输入项目名，项目摘要，项目描述，选择版本管理系统为svn，版本授权为Apache License 2.0，可选加入相关的标签，然后点击创建项目。这样就新建好了一个项目。点击新建项目的源码标签，可以看到有浏览和改变两个链接，其中点击浏览可以看到svn的目录结构，点击每个相应的文件会在右边展示文件内容，点击改变会显示每次提交的版本号和看到每次所做的详细修改。</p>
+
+<div class="dirnav">
+<a href="2_1.html">上一节</a>
+<a href="index.html">返回目录</a>
+</div>
+
+</div>
+
+<script type="text/javascript" src="file/c.js"></script>
+<div id="footer">
+  <p class="copyright">
+    Copyright 2009,
+    张沈鹏,
+    陈寅,
+    敬宓
+	<span class="amp">&amp;</span>
+    董诣
+  </p>
+</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-10347470-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+
+
+
+
+
