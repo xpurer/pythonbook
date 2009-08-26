@@ -1,3 +1,39 @@
 Linux 初接触
 
-xxx
+Xshell
+
+Filezilla
+
+基本命令
+
+快捷键 
+    Ctrl + A
+    Ctrl + R
+cd
+ls
+ls -al
+ls -alR
+pwd
+
+tail 
+tail -f
+xtail
+cat
+head
+
+vi
+    配置
+    操作
+
+    vi网址 比如 vi http://www.163.com
+
+
+wget 
+
+curl
+
+tar
+
+7za
+
+screen
