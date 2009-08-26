@@ -85,15 +85,36 @@ SVN和CVS属于中央集权式，都有一个至高无上的存在 -- 服务器�
 至于是集权好，还是平等好，这则是一个仁者见仁，智者见智的问题了。
 ”。
 
-下面应该写的有
-Google Code的申请步骤(参考GAE的申请步骤 http://kanrs.com/1_4.html )
+麻油觉得SVN是一个好东西。他觉得应该用最流行的SVN来武装他那帮马仔，他决定去找一个服务器先。
 
-Tortoisesvn 的安装
+继续google，他马上又找到了一段文字：“
+google code可以免费托管项目，闪电般创建项目，1g容量svn代码托管，2g容量的下载托管。
 
-基本用法
-配合 Tortoisesvn 讲解
-commit , up , rollback , diff
+集成源码浏览，代码审核，代码追踪，适应任何软件开发流程。
 
+”
+
+麻油心想，我要找的就是它了，还没来得及弄清这些词语的含义，他就赶快找了一篇申请指南，开始申请google code项目托管。
+
+申请的时候需要登录goole帐号，麻油四用他之前注册的mayoufour@gmail.com登录了。申请的链接在http://code.google.com/hosting/createProject，打开网页，需要填写一些项目信息，麻油四在项目名称中填上mayoufour，项目摘要中写上“这是麻油四简历中心”，项目描述中填上“这里是麻油四的简历中心，做属于你自己的简历网页，就是这么简单。”，版本管理系统当然选择svn，源码授权里选上了Apache授权2.0，因为他隐约觉得这是一个熟悉的名字，标签中填上了“麻油四”和“简历”。
+
+gcode注册 gcode_reg.jpg
+
+果然，点击创建之后，就完成了。他马上点击Source->Browser，看到服务器上有三个目录：branches，tags，trunk。google之后，他知道了trunk是主干分支，最新的代码应该应该待在这儿，branches是分支，阶段性或试验性的代码应该在这儿，等到稳定以后再合并到trunk中，tags一般用来发布项目的某个正式版本。麻油知道他现在所有的代码应该都放在trunk中。
+
+gcode初始目录 gcode_dir.jpg
+
+搞定google code的申请，麻油觉得他需要一个客户端了，他发现最好用的客户端是Tortoisesvn，于是他去http://dl.pconline.com.cn/download/53122.html下载了一个，一路下一步安装起来。
+
+又是一阵google，他发现了一篇靠谱的教材：“
+1.进入准备存放项目代码的目录，点击右键，选择svn checkout，在地址栏输入https://[项目名称].googlecode.com/svn/trunk，点击确定后会提示输入用户名和密码，用户名就是google帐号的用户名，密码可以在http://code.google.com/hosting/settings页面中找到。输入密码的时候可以选择保存授权，这样下次操作的时候不用重新输入密码。
+
+2.提交代码需要将要提交的文件放入代码存放目录，点击右键，选择svn update，在窗口上面的消息输入框输入这次改动的内容描述，在窗口下面的改变文件列表中选择要提交的文件，点击确定。文件就被提交了。
+
+3.查看当前改动，有两种方法，一种是在上面提到的update窗口，在改变的文件列表中双击文件可以看到文件的变动，另外一种方法是，点击右键，进入Tortoisesvn目录，点击check for modificatoin，可以看到所有的改动。
+”
+
+麻油四想着，先把他的简历传上去试试。
 -------------
 
 另外，同时介绍linux下的用法，以及用途（发布网站）
