@@ -97,7 +97,9 @@ http://ah.anwang.cn/yinyong521/SnagIt%20V8.02%BA%BA%BB%AF%C2%CC%C9%AB%CC%D8%B1%F
     
     可以精简为，
 
-    右键选择，点击 SVN提交，可以上传改动。如图：
+    点击右键，选择 SVN提交，勾选需要的文件，即可上传改动。如图：
+
+
 
     5.英文名拼写的问题，统一采用这种格式
     Google Code
