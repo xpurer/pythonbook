@@ -91,9 +91,7 @@ SVN和CVS属于中央集权式，都有一个至高无上的存在 -- 服务器�
 
 他接着往下看：“
 
-Google Code可以免费托管开源项目。
-
-集成Wiki，Code Review，Bug Trace,是。
+Google Code可以免费托管开源项目，集成wiki，code review，bug trace。
 
 ”
 
@@ -111,18 +109,29 @@ http://code.google.com/hosting/createProject
 
 Google Code注册 gcode_reg.jpg
 
-果然，点击创建之后，就完成了。他马上点击Source->Browser，看到服务器上有三个目录：branches，tags，trunk。google之后，他知道了trunk是主干分支，最新的代码应该应该待在这儿，branches是分支，阶段性或试验性的代码应该在这儿，等到稳定以后再合并到trunk中，tags一般用来发布项目的某个正式版本。麻油知道他现在所有的代码应该都放在trunk中。
-
 Google Code初始目录 gcode_dir.jpg
 
 搞定Google Code的申请，还缺一个客户端。
 
-他听说最好用的客户端Tortoise Svn ,摸索到 http://tortoisesvn.net/downloads ，下载了软件和汉化包，一路Next便安装成功。
+他听说最好用的客户端Tortoise Svn ,摸索到 http://tortoisesvn.net/downloads ，下载了软件和汉化包。
 
 下载Tortoise Svn svn_down.jpg
 
-又是一阵google，他发现了一篇靠谱的教材：“
-1.进入准备存放项目代码的目录，点击右键，选择svn checkout，在地址栏输入https://[项目名称].googlecode.com/svn/trunk，点击确定后会提示输入用户名和密码，用户名就是google帐号的用户名，密码可以在http://code.google.com/hosting/settings页面中找到。输入密码的时候可以选择保存授权，这样下次操作的时候不用重新输入密码。
+先安装软件，一路Next，安装完成后会提示你重启电脑，先选择No。
+
+然后按照汉化包，装好后再在点击右键，进入Tortoise Svn的setting页面。
+
+点击右键 svn_setting.jpg
+
+选择语言为中文，然后重新启动。
+
+选择语言 svn_cn.jpg
+
+在点击右键，选择导出，在输入项目的svn地址
+
+svn导出 svn_co.jpg
+
+点击确定后会提示输入用户名和密码，用户名是Google帐号，密码可以在http://code.google.com/hosting/settings页面中找到。输入密码的时候可以选择保存授权，这样下次操作的时候不用重新输入密码。
 
 2.提交代码需要将要提交的文件放入代码存放目录，点击右键，选择svn update，在窗口上面的消息输入框输入这次改动的内容描述，在窗口下面的改变文件列表中选择要提交的文件，点击确定。文件就被提交了。
 
@@ -140,3 +149,6 @@ switch merge
 -------------
 
 最后讲讲怎么用google code看每天谁改了什么
+
+再讲讲 
+果然，点击创建之后，就完成了。他马上点击Source->Browser，看到服务器上有三个目录：branches，tags，trunk。google之后，他知道了trunk是主干分支，最新的代码应该应该待在这儿，branches是分支，阶段性或试验性的代码应该在这儿，等到稳定以后再合并到trunk中，tags一般用来发布项目的某个正式版本。麻油知道他现在所有的代码应该都放在trunk中。

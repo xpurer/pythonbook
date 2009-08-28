@@ -53,31 +53,30 @@
 <p>读到这里，麻油四觉得版本控制是一个好东西。</p>
 <p>他觉得应该用这现代化的装备来武装他那帮马仔，不过，怎么用版本控制呢？</p>
 <p>他接着往下看：“</p>
-<p>Google Code可以免费托管开源项目。</p>
-<p>集成Wiki，Code Review，Bug Trace,是。</p>
+<p>Google Code可以免费托管开源项目，集成wiki，code review，bug trace。</p>
 <p>”</p>
 <p>麻油四心想，就是它了，反正那些代码也没什么可保密的。</p>
 <p>也没顾得及弄清这些词语的含义，就开始摸索去申请一个项目了。</p>
 <p>三下五除二，登录Google。</p>
-<p>搜索“ Google Code ”，找到了</p>
-<p>申请的链接在<a target="_blank" href="http://code.google.com/hosting/createProject">http://code.google.com/hosting/createProject</a>，打开网页，需要填写一些项目信息，麻油四在项目名称中填上mayoufour，项目摘要中写上“这是麻油四简历中心”，项目描述中填上“这里是麻油四的简历中心，做属于你自己的简历网页，就是这么简单。”，版本管理系统当然选择svn，源码授权里选上了Apache授权2.0，因为他隐约觉得这是一个熟悉的名字，标签中填上了“麻油四”和“简历”。</p>
+<p>搜索“ Google Code ”，找到了申请的链接</p>
+<p><a target="_blank" href="http://code.google.com/hosting/createProject">http://code.google.com/hosting/createProject</a></p>
+<p>打开网页，需要填写一些项目信息，版本管理系统选择svn。</p>
 <div class="imageblock">
 <div class="content">
-<img alt="gcode注册" src="img/gcode_reg.jpg"/>
+<img alt="Google Code注册" src="img/gcode_reg.jpg"/>
 </div>
 
-<div class="image-title">图:gcode注册</div>
+<div class="image-title">图:Google Code注册</div>
 </div>
-<p>果然，点击创建之后，就完成了。他马上点击Source-&gt;Browser，看到服务器上有三个目录：branches，tags，trunk。google之后，他知道了trunk是主干分支，最新的代码应该应该待在这儿，branches是分支，阶段性或试验性的代码应该在这儿，等到稳定以后再合并到trunk中，tags一般用来发布项目的某个正式版本。麻油知道他现在所有的代码应该都放在trunk中。</p>
 <div class="imageblock">
 <div class="content">
-<img alt="gcode初始目录" src="img/gcode_dir.jpg"/>
+<img alt="Google Code初始目录" src="img/gcode_dir.jpg"/>
 </div>
 
-<div class="image-title">图:gcode初始目录</div>
+<div class="image-title">图:Google Code初始目录</div>
 </div>
 <p>搞定Google Code的申请，还缺一个客户端。</p>
-<p>他听说最好用的客户端Tortoise Svn ,摸索到 <a target="_blank" href="http://tortoisesvn.net/downloads">http://tortoisesvn.net/downloads</a> ，下载了软件和汉化包，一路Next便安装成功。</p>
+<p>他听说最好用的客户端Tortoise Svn ,摸索到 <a target="_blank" href="http://tortoisesvn.net/downloads">http://tortoisesvn.net/downloads</a> ，下载了软件和汉化包。</p>
 <div class="imageblock">
 <div class="content">
 <img alt="下载Tortoise Svn" src="img/svn_down.jpg"/>
@@ -85,8 +84,32 @@
 
 <div class="image-title">图:下载Tortoise Svn</div>
 </div>
-<p>又是一阵google，他发现了一篇靠谱的教材：“</p>
-<p>1.进入准备存放项目代码的目录，点击右键，选择svn checkout，在地址栏输入https://[项目名称].googlecode.com/svn/trunk，点击确定后会提示输入用户名和密码，用户名就是google帐号的用户名，密码可以在<a target="_blank" href="http://code.google.com/hosting/settings">http://code.google.com/hosting/settings</a>页面中找到。输入密码的时候可以选择保存授权，这样下次操作的时候不用重新输入密码。</p>
+<p>先安装软件，一路Next，安装完成后会提示你重启电脑，先选择No。</p>
+<p>然后按照汉化包，装好后再在点击右键，进入Tortoise Svn的setting页面。</p>
+<div class="imageblock">
+<div class="content">
+<img alt="点击右键" src="img/svn_setting.jpg"/>
+</div>
+
+<div class="image-title">图:点击右键</div>
+</div>
+<p>选择语言为中文，然后重新启动。</p>
+<div class="imageblock">
+<div class="content">
+<img alt="选择语言" src="img/svn_cn.jpg"/>
+</div>
+
+<div class="image-title">图:选择语言</div>
+</div>
+<p>在点击右键，选择导出，在输入项目的svn地址</p>
+<div class="imageblock">
+<div class="content">
+<img alt="svn导出" src="img/svn_co.jpg"/>
+</div>
+
+<div class="image-title">图:svn导出</div>
+</div>
+<p>点击确定后会提示输入用户名和密码，用户名就是google帐号的用户名，密码可以在<a target="_blank" href="http://code.google.com/hosting/settings">http://code.google.com/hosting/settings</a>页面中找到。输入密码的时候可以选择保存授权，这样下次操作的时候不用重新输入密码。</p>
 <p>2.提交代码需要将要提交的文件放入代码存放目录，点击右键，选择svn update，在窗口上面的消息输入框输入这次改动的内容描述，在窗口下面的改变文件列表中选择要提交的文件，点击确定。文件就被提交了。</p>
 <p>3.查看当前改动，有两种方法，一种是在上面提到的update窗口，在改变的文件列表中双击文件可以看到文件的变动，另外一种方法是，点击右键，进入Tortoisesvn目录，点击check for modificatoin，可以看到所有的改动。</p>
 <p>”</p>
@@ -97,6 +120,8 @@
 <p>这个需要构造一个场景，以便于理解</p>
 <div style="border:0;border-bottom:1px #ccc dotted;margin:40px 0;"></div>
 <p>最后讲讲怎么用google code看每天谁改了什么</p>
+<p>再讲讲</p>
+<p>果然，点击创建之后，就完成了。他马上点击Source-&gt;Browser，看到服务器上有三个目录：branches，tags，trunk。google之后，他知道了trunk是主干分支，最新的代码应该应该待在这儿，branches是分支，阶段性或试验性的代码应该在这儿，等到稳定以后再合并到trunk中，tags一般用来发布项目的某个正式版本。麻油知道他现在所有的代码应该都放在trunk中。</p>
 
 <div class="dirnav">
 <a href="2_1.html">上一节</a>
