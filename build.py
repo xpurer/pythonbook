@@ -59,9 +59,10 @@ from os.path import dirname,join
 PREFIX = dirname(__file__)
 PREFIX_OUTPUT = join(PREFIX,"html")
 
-from mako.lookup import TemplateLookup
 from os import walk
 from collections import defaultdict
+from mako.lookup import TemplateLookup
+
 lookup = TemplateLookup(
     directories=join(PREFIX,'template'),
     disable_unicode=True,
