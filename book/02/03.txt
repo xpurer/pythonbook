@@ -131,7 +131,17 @@ Google Code初始目录 gcode_dir.jpg
 
 svn导出 svn_co.jpg
 
-点击确定后会提示输入用户名和密码，用户名是Google帐号，密码可以在http://code.google.com/hosting/settings页面中找到。输入密码的时候可以选择保存授权，这样下次操作的时候不用重新输入密码。
+点击确定后会提示输入用户名和密码，用户名是Google帐号，密码可以在 http://code.google.com/hosting/settings 找到。
+
+Google Code的密码 svn_passwd.jpg
+
+
+--------------------
+下面讲
+1.添加
+2.提交
+
+
 
 2.提交代码需要将要提交的文件放入代码存放目录，点击右键，选择svn update，在窗口上面的消息输入框输入这次改动的内容描述，在窗口下面的改变文件列表中选择要提交的文件，点击确定。文件就被提交了。
 
