@@ -162,7 +162,7 @@ for chapter in chapter_list:
                         buffer.append("""<div style="border:0;border-bottom:1px #ccc dotted;margin:40px 0;"></div>""")
                     elif line[-4:] in (".jpg",".gif",".png"):
                         alt = ""
-                        link = line.rsplit(" ",2)
+                        link = line.rsplit(" ",1)
                         if len(link)==2:
                             alt,link = link
                         buffer.append("""<div class="imageblock">

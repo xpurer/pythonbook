@@ -103,19 +103,23 @@ Google Code可以免费托管开源项目。
 
 三下五除二，登录Google。
 
-搜索“ Google Code ”，找到了
+搜索“ Google Code ”，找到了申请的链接
 
+http://code.google.com/hosting/createProject
 
+打开网页，需要填写一些项目信息，版本管理系统选择svn。
 
-申请的链接在http://code.google.com/hosting/createProject，打开网页，需要填写一些项目信息，麻油四在项目名称中填上mayoufour，项目摘要中写上“这是麻油四简历中心”，项目描述中填上“这里是麻油四的简历中心，做属于你自己的简历网页，就是这么简单。”，版本管理系统当然选择svn，源码授权里选上了Apache授权2.0，因为他隐约觉得这是一个熟悉的名字，标签中填上了“麻油四”和“简历”。
-
-gcode注册 gcode_reg.jpg
+Google Code注册 gcode_reg.jpg
 
 果然，点击创建之后，就完成了。他马上点击Source->Browser，看到服务器上有三个目录：branches，tags，trunk。google之后，他知道了trunk是主干分支，最新的代码应该应该待在这儿，branches是分支，阶段性或试验性的代码应该在这儿，等到稳定以后再合并到trunk中，tags一般用来发布项目的某个正式版本。麻油知道他现在所有的代码应该都放在trunk中。
 
-gcode初始目录 gcode_dir.jpg
+Google Code初始目录 gcode_dir.jpg
 
-搞定google code的申请，麻油觉得他需要一个客户端了，他发现最好用的客户端是Tortoisesvn，于是他去http://dl.pconline.com.cn/download/53122.html下载了一个，一路下一步安装起来。
+搞定Google Code的申请，还缺一个客户端。
+
+他听说最好用的客户端Tortoise Svn ,摸索到 http://tortoisesvn.net/downloads ，下载了软件和汉化包，一路Next便安装成功。
+
+下载Tortoise Svn svn_down.jpg
 
 又是一阵google，他发现了一篇靠谱的教材：“
 1.进入准备存放项目代码的目录，点击右键，选择svn checkout，在地址栏输入https://[项目名称].googlecode.com/svn/trunk，点击确定后会提示输入用户名和密码，用户名就是google帐号的用户名，密码可以在http://code.google.com/hosting/settings页面中找到。输入密码的时候可以选择保存授权，这样下次操作的时候不用重新输入密码。
