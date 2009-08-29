@@ -97,7 +97,7 @@ Google Code可以免费托管开源项目，集成wiki，code review，bug trace
 
 麻油四心想，就是它了，反正那些代码也没什么可保密的。
 
-也没顾得及弄清这些词语的含义，就开始摸索去申请一个项目了。
+也没顾得及弄清这些词语的含义，就对照着文档，开始摸索去申请一个项目了。
 
 三下五除二，登录Google。
 
@@ -109,9 +109,13 @@ http://code.google.com/hosting/createProject
 
 Google Code注册 gcode_reg.jpg
 
-Google Code初始目录 gcode_dir.jpg
+就这样，Google Code 注册成功。
 
-搞定Google Code的申请，还缺一个客户端。
+他让小弟们又都去注册了一个Google的账号，然后在后台提拔他们为开发者。这样，小弟们也可以像Google Code提交代码了。
+
+Google Code添加管理员 gcode_admin.jpg
+
+搞定Google Code，还缺一个客户端。
 
 他听说最好用的客户端Tortoise Svn ,摸索到 http://tortoisesvn.net/downloads ，下载了软件和汉化包。
 
@@ -135,20 +139,29 @@ svn导出 svn_co.jpg
 
 Google Code的密码 svn_passwd.jpg
 
+把以前代码的复制到当前目录，右键选择提交，勾中需要的文件,不需要的可以右键选择忽略。写上一点注释，即可提交。
 
---------------------
-下面讲
-1.添加
+麻油四，又让手下依样画葫芦，提交了一个文件。然后他再次在右键更新，很快就完成了同步。
 
+在右键的Tortoise Svn选项中，有一项功能是显示日志。
 
-2.提交
+从文件夹上点进去可以看到文件夹最近的改动历史。从文件上点进去可以看到文件的改动历史，同时可以比较差异。
 
-
+比较差异 svn_diff.jpg
 
 2.提交代码需要将要提交的文件放入代码存放目录，点击右键，选择svn update，在窗口上面的消息输入框输入这次改动的内容描述，在窗口下面的改变文件列表中选择要提交的文件，点击确定。文件就被提交了。
 
 3.查看当前改动，有两种方法，一种是在上面提到的update窗口，在改变的文件列表中双击文件可以看到文件的变动，另外一种方法是，点击右键，进入Tortoisesvn目录，点击check for modificatoin，可以看到所有的改动。
 ”
+
+
+
+
+
+
+
+
+
 
 麻油四想着，先把他的简历传上去试试。
 -------------
@@ -159,6 +172,7 @@ switch merge
 这个需要构造一个场景，以便于理解
 
 -------------
+Google Code初始目录 gcode_dir.jpg
 
 最后讲讲怎么用google code看每天谁改了什么
 

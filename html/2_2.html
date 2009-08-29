@@ -56,7 +56,7 @@
 <p>Google Code可以免费托管开源项目，集成wiki，code review，bug trace。</p>
 <p>”</p>
 <p>麻油四心想，就是它了，反正那些代码也没什么可保密的。</p>
-<p>也没顾得及弄清这些词语的含义，就开始摸索去申请一个项目了。</p>
+<p>也没顾得及弄清这些词语的含义，就对照着文档，开始摸索去申请一个项目了。</p>
 <p>三下五除二，登录Google。</p>
 <p>搜索“ Google Code ”，找到了申请的链接</p>
 <p><a target="_blank" href="http://code.google.com/hosting/createProject">http://code.google.com/hosting/createProject</a></p>
@@ -68,14 +68,16 @@
 
 <div class="image-title">图:Google Code注册</div>
 </div>
+<p>就这样，Google Code 注册成功。</p>
+<p>他让小弟们又都去注册了一个Google的账号，然后在后台提拔他们为开发者。这样，小弟们也可以像Google Code提交代码了。</p>
 <div class="imageblock">
 <div class="content">
-<img alt="Google Code初始目录" src="img/gcode_dir.jpg"/>
+<img alt="Google Code添加管理员" src="img/gcode_admin.jpg"/>
 </div>
 
-<div class="image-title">图:Google Code初始目录</div>
+<div class="image-title">图:Google Code添加管理员</div>
 </div>
-<p>搞定Google Code的申请，还缺一个客户端。</p>
+<p>搞定Google Code，还缺一个客户端。</p>
 <p>他听说最好用的客户端Tortoise Svn ,摸索到 <a target="_blank" href="http://tortoisesvn.net/downloads">http://tortoisesvn.net/downloads</a> ，下载了软件和汉化包。</p>
 <div class="imageblock">
 <div class="content">
@@ -117,10 +119,8 @@
 
 <div class="image-title">图:Google Code的密码</div>
 </div>
-<div style="border:0;border-bottom:1px #ccc dotted;margin:40px 0;"></div>
-<p>下面讲</p>
-<p>1.添加</p>
-<p>2.提交</p>
+<p>把以前代码的复制到当前目录，右键选择提交，勾中需要的文件,不需要的可以右键选择忽略。写上一点注释，即可提交。</p>
+<p>麻油四，又让手下依样画葫芦，提交了一个文件。然后他再次在右键更新，很快就完成了同步。</p>
 <p>2.提交代码需要将要提交的文件放入代码存放目录，点击右键，选择svn update，在窗口上面的消息输入框输入这次改动的内容描述，在窗口下面的改变文件列表中选择要提交的文件，点击确定。文件就被提交了。</p>
 <p>3.查看当前改动，有两种方法，一种是在上面提到的update窗口，在改变的文件列表中双击文件可以看到文件的变动，另外一种方法是，点击右键，进入Tortoisesvn目录，点击check for modificatoin，可以看到所有的改动。</p>
 <p>”</p>
@@ -130,6 +130,13 @@
 <p>switch merge</p>
 <p>这个需要构造一个场景，以便于理解</p>
 <div style="border:0;border-bottom:1px #ccc dotted;margin:40px 0;"></div>
+<div class="imageblock">
+<div class="content">
+<img alt="Google Code初始目录" src="img/gcode_dir.jpg"/>
+</div>
+
+<div class="image-title">图:Google Code初始目录</div>
+</div>
 <p>最后讲讲怎么用google code看每天谁改了什么</p>
 <p>再讲讲</p>
 <p>果然，点击创建之后，就完成了。他马上点击Source-&gt;Browser，看到服务器上有三个目录：branches，tags，trunk。google之后，他知道了trunk是主干分支，最新的代码应该应该待在这儿，branches是分支，阶段性或试验性的代码应该在这儿，等到稳定以后再合并到trunk中，tags一般用来发布项目的某个正式版本。麻油知道他现在所有的代码应该都放在trunk中。</p>
@@ -146,10 +153,10 @@
   <p class="copyright">
     Copyright 2009,
     张沈鹏,
+	董诣,
     陈寅,
-    敬宓
 	<span class="amp">&amp;</span>
-    董诣
+    敬宓    
   </p>
 </div>
 <script type="text/javascript">
