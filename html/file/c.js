@@ -9,7 +9,7 @@ function get_text(el) {
     }
 }
 
-uri = "http://groups.google.com/group/pythonbook-comment/post"
+uri = "https://groups.google.com/group/pythonbook-comment/post"
 
 title = get_text(document.getElementsByTagName('h1')[0])
 
