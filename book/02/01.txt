@@ -42,13 +42,13 @@
 
 -----------------------------
 
+最好用的还是几个Firefox插件。Firefox插件在 上搜索名字就可以找到链接，装起来很方便。
 
+Firebug，可谓是CSS调试的神器。
 
-CSS调试小工具
+Web Developer，有几个非常实用的功能。
 
-Firebug调试css
-
-Web Developer禁用缓存
+禁用缓存
 
 Live Http Header
 
