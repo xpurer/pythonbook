@@ -1,1 +1,21 @@
 WSGI 架网站
+
+
+http://www.python.org/ftp/python/2.6.2/python-2.6.2.msi
+下载安装
+
+http://peak.telecommunity.com/dist/ez_setup.py
+下载，双击运行
+
+我的电脑 -- 右键点击 
+--> 属性 
+--> 高级 
+--> 环境变量 -- 系统变量 -- Path -- 双击出现编辑框 
+--> 在已经内容的结尾加上 ;C:\Python26\Scripts;  --> 点击确定
+--> 点击环境变量页面的确定
+
+开始 --> 运行 --> 输入 cmd --> 输入 
+easy_install -U mako
+easy_install -U yaro
+easy_install -U static
+easy_install -U Mercurial
