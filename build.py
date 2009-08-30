@@ -166,6 +166,8 @@ for chapter in chapter_list:
                         link = line.rsplit(" ",1)
                         if len(link)==2:
                             alt,link = link
+                        elif len(link)==1:
+                            link=link[0]
                         buffer.append("""<div class="imageblock">
 <div class="content">
 <img alt="%s" src="img/%s"/>
