@@ -127,7 +127,17 @@ $("#content p")
 这就涉及到了事件的概念。
 
 常用的事件有
-
+click
+blur
+change
+focus
+keypress
+keyup
+mouseover
+mouseout
+mousedown
+mouseup
+submit
 
 1.event 
     onclick
