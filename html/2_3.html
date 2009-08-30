@@ -13,16 +13,64 @@
 <p>他心想，该研究研究新东西了 --- 页面已经会做了，那就学Javascript吧。</p>
 <div style="border:0;border-bottom:1px #ccc dotted;margin:40px 0;"></div>
 <p>自从有了网络，学知识的门槛就很低了。</p>
-<p>点点鼠标，不多时，麻油四就对 Javascript 有了个大概的印象。</p>
+<p>点点鼠标，不多时，麻油四就对 Javascript 有了些认识。</p>
 <p>对于页面来说，Javascript就像木偶戏中那些提木偶的线。</p>
 <p>通过线，可以让木偶动起来。</p>
 <p>通过Javascript，可以让HTML动起来。</p>
 <p>很久很久以前，人们直接用DOM接口手写Javascript。</p>
 <p>那时的Javascript往往庞杂混乱，需要漫长的学习过程。</p>
-<p>更加严重的是，不同浏览器间的提供给Javascript的接口并不完全兼容。</p>
-<p>这些不大不小的问题，总是顾此失彼，让人疲于奔命。</p>
+<p>更要命的是，不同浏览器间的提供给Javascript的接口并不完全兼容。</p>
+<p>这不大不小的兼容性问题，常让人顾此失彼，疲于奔命。</p>
 <p>自从Gmail引发Ajax风潮后，一些先行者们站了出来，于是便有了许多Javascript库。</p>
-<p>Javascript库，</p>
+<p>第一个流行起来的Javascript库是Prototype，但由于设计理念的问题，渐渐有些没落了。</p>
+<p>现在网上流行当属：jQuery, Mootools, Dojo, Ext JS。</p>
+<p>jQuery风头最盛，麻油四打算不学最对，只学最红。</p>
+<p>他找到一本全中文的jQuery手册 <a href="page/other/jquery.chm" target="_blank">链接</a>，看了起来。</p>
+<p>Javascript，写在网页的script的标签中，一般习惯于将script标签放在网页head区。</p>
+<p>使用jQuery需要先引入jQuery脚本。</p>
+<p>Google提供了AJAX 库 API , 可以直接在页面中这样写。</p>
+<div class="content"><pre>
+&lt;script src="<a target="_blank" href="http://ajax.googleapis.com/ajax/libs/jquery/1.3.1/jquery.min.js">http://ajax.googleapis.com/ajax/libs/jquery/1.3.1/jquery.min.js</a>"&gt;&lt;/script&gt;
+</pre></div>
+<p>网页加载完后,再执行代码</p>
+<div class="content"><pre>
+$(function(){
+    alert(1)
+})
+</pre></div>
+<p>想操纵网页中的元素，往往要等页面加载完毕才能操纵。</p>
+<p>在jQuery中选取元素和CSS很类似，可以用CSS选择器。</p>
+<p>麻油四边学边写了一个网页，来测试Jquery的各种效果。 <a href="page/jquery.html#css_select" target="_blank">链接</a>。</p>
+<p>CSS选择器</p>
+<p>id选择器</p>
+<p>HTML:</p>
+<p>    &lt;div id="css_select_1"&gt;</p>
+<p>        唉,人生...</p>
+<p>    &lt;/div&gt;</p>
+<p>JS:</p>
+<p>加边框</p>
+<p>    $('#css_select_1').css({border:'3px dotted #f00'})</p>
+<p>去边框</p>
+<p>    $('#css_select_1').css({border:''})</p>
+<p>唉,人生...</p>
+<p>加边框 去边框</p>
+<p>class选择器</p>
+<p>HTML:</p>
+<p>    &lt;div class="who_are_you"&gt;</p>
+<p>        唉,人生...</p>
+<p>    &lt;/div&gt;</p>
+<p>JS:</p>
+<p>报时间,同时变色</p>
+<p>    $('.who_are_you').text(Date()).css({background:'#369',color:'#fff'})</p>
+<p>插入html</p>
+<p>    $('.who_are_you').html('&lt;input/&gt;').css({background:'',color:''})</p>
+<p>唉,人生...</p>
+<p>报时间,同时变色 插入html</p>
+<p>tag选择器</p>
+<p>所有 &lt;pre&gt;都淡出</p>
+<p>    $('pre').fadeOut()</p>
+<p>所有 &lt;pre&gt;都淡入</p>
+<p>    $('pre').fadeIn()</p>
 
 <div class="dirnav">
 <a href="2_2.html">上一节</a>
