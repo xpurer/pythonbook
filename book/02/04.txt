@@ -61,40 +61,56 @@ $(function(){
 
 在jQuery中选取元素和CSS很类似，可以用CSS选择器。
 
-麻油四边学边写了一个网页，来测试Jquery的各种效果。 page:jquery.html#css_select 。
+麻油四边学边写了一个网页，来测试jQuery的各种效果。 page:jquery.html#css_select 。
 
-CSS选择器
-id选择器
+最常用的CSS选取器当属id选择器了，比如这样一段HTML:
 
-HTML:
+{{{
+<div id="css_select_1">唉,人生...</div>
+}}}
 
-    <div id="css_select_1">
-        唉,人生...
-    </div>
+在jQuery中可以这样选择它 $('#css_select_1')
 
-JS:
+选中元素是为了操纵元素，这里就修改它的CSS样式。
 
-加边框
+{{{
+<script>
     $('#css_select_1').css({border:'3px dotted #f00'})
-去边框
-    $('#css_select_1').css({border:''})
+</script>
+}}}
 
-唉,人生...
-加边框 去边框
-class选择器
-
-HTML:
-
-    <div class="who_are_you">
-        唉,人生...
-    </div>
-
-JS:
-
-报时间,同时变色
+id选取器用来选取单个元素，而class选择器用来选取一批元素。
+{{{
+<div class="who_are_you">谁是伊人</div>
+<div class="who_are_you">伊人是谁</div>
+<script>
     $('.who_are_you').text(Date()).css({background:'#369',color:'#fff'})
-插入html
-    $('.who_are_you').html('<input/>').css({background:'',color:''})
+</script>
+}}}
+
+text函数是用来设置div中显示的文本，Date()的是返回日期。
+
+这里演示了jQuery的招牌卖点 --- 链式代码。
+
+这里可以看到 text 函数调用后，可以直接再用 .css 来调用 css 函数。
+
+jQuery中很多函数都可以这样做，你可以尽情的点点点下去。
+
+很多时候，你可能会在链式代码中做很多操作，你可以采用这样的排版。
+
+{{{
+$('.who_are_you')
+    .text(Date())
+    .css({
+        background:'#369',
+        color:'#fff'
+    })
+    .fadeOut('slow',function(){
+        $(this).fadeIn('slow')
+    })
+}}}
+
+这里
 
 唉,人生...
 报时间,同时变色 插入html
@@ -105,3 +121,13 @@ tag选择器
 
 所有 <pre>都淡入
     $('pre').fadeIn()
+
+麻油四磕磕绊绊，也会用jQuery一些很炫的效果了,不过感觉对Javascript还有很多困惑。
+
+阿牛给他推荐了一本名为《Javascript权威指南》的书。
+
+麻油四到图书馆一找，发现它厚如砖头，心中暗道，这么大一本我看要练个把月啊。
+
+“还是算了，青春是献给花花草草的。”
+
+仰天大笑出门去，我辈岂是蓬蒿人。

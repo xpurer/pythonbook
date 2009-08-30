@@ -40,30 +40,43 @@ $(function(){
 </pre></div>
 <p>想操纵网页中的元素，往往要等页面加载完毕才能操纵。</p>
 <p>在jQuery中选取元素和CSS很类似，可以用CSS选择器。</p>
-<p>麻油四边学边写了一个网页，来测试Jquery的各种效果。 <a href="page/jquery.html#css_select" target="_blank">链接</a>。</p>
-<p>CSS选择器</p>
-<p>id选择器</p>
-<p>HTML:</p>
-<p>    &lt;div id="css_select_1"&gt;</p>
-<p>        唉,人生...</p>
-<p>    &lt;/div&gt;</p>
-<p>JS:</p>
-<p>加边框</p>
-<p>    $('#css_select_1').css({border:'3px dotted #f00'})</p>
-<p>去边框</p>
-<p>    $('#css_select_1').css({border:''})</p>
-<p>唉,人生...</p>
-<p>加边框 去边框</p>
-<p>class选择器</p>
-<p>HTML:</p>
-<p>    &lt;div class="who_are_you"&gt;</p>
-<p>        唉,人生...</p>
-<p>    &lt;/div&gt;</p>
-<p>JS:</p>
-<p>报时间,同时变色</p>
-<p>    $('.who_are_you').text(Date()).css({background:'#369',color:'#fff'})</p>
-<p>插入html</p>
-<p>    $('.who_are_you').html('&lt;input/&gt;').css({background:'',color:''})</p>
+<p>麻油四边学边写了一个网页，来测试jQuery的各种效果。 <a href="page/jquery.html#css_select" target="_blank">链接</a>。</p>
+<p>最常用的CSS选取器当属id选择器了，比如这样一段HTML:</p>
+<div class="content"><pre>
+&lt;div id="css_select_1"&gt;唉,人生...&lt;/div&gt;
+</pre></div>
+<p>在jQuery中可以这样选择它 $('#css_select_1')</p>
+<p>选中元素是为了操纵元素，这里就修改它的CSS样式。</p>
+<div class="content"><pre>
+&lt;script&gt;
+    $('#css_select_1').css({border:'3px dotted #f00'})
+&lt;/script&gt;
+</pre></div>
+<p>id选取器用来选取单个元素，而class选择器用来选取一批元素。</p>
+<div class="content"><pre>
+&lt;div class="who_are_you"&gt;谁是伊人&lt;/div&gt;
+&lt;div class="who_are_you"&gt;伊人是谁&lt;/div&gt;
+&lt;script&gt;
+    $('.who_are_you').text(Date()).css({background:'#369',color:'#fff'})
+&lt;/script&gt;
+</pre></div>
+<p>text函数是用来设置div中显示的文本，Date()的是返回日期。</p>
+<p>这里演示了jQuery的招牌卖点 --- 链式代码。</p>
+<p>这里可以看到 text 函数调用后，可以直接再用 .css 来调用 css 函数。</p>
+<p>jQuery中很多函数都可以这样做，你可以尽情的点点点下去。</p>
+<p>很多时候，你可能会在链式代码中做很多操作，你可以采用这样的排版。</p>
+<div class="content"><pre>
+$('.who_are_you')
+    .text(Date())
+    .css({
+        background:'#369',
+        color:'#fff'
+    })
+    .fadeOut('slow',function(){
+        $(this).fadeIn('slow')
+    })
+</pre></div>
+<p>这里</p>
 <p>唉,人生...</p>
 <p>报时间,同时变色 插入html</p>
 <p>tag选择器</p>
@@ -71,6 +84,11 @@ $(function(){
 <p>    $('pre').fadeOut()</p>
 <p>所有 &lt;pre&gt;都淡入</p>
 <p>    $('pre').fadeIn()</p>
+<p>麻油四磕磕绊绊，也会用jQuery一些很炫的效果了,不过感觉对Javascript还有很多困惑。</p>
+<p>阿牛给他推荐了一本名为《Javascript权威指南》的书。</p>
+<p>麻油四到图书馆一找，发现它厚如砖头，心中暗道，这么大一本我看要练个把月啊。</p>
+<p>“还是算了，青春是献给花花草草的。”</p>
+<p>仰天大笑出门去，我辈岂是蓬蒿人。</p>
 
 <div class="dirnav">
 <a href="2_2.html">上一节</a>
