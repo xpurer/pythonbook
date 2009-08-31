@@ -61,7 +61,7 @@ $(function(){
 
 在jQuery中选取元素和CSS很类似，可以用CSS选择器。
 
-麻油四边学边写了一个网页，来测试jQuery的各种效果。 page:jquery.html#css_select 。
+麻油四边学边写了一个网页，来测试jQuery的各种效果 page:jquery.html#css_select 。
 
 最常用的CSS选取器当属id选择器了，比如这样一段HTML:
 
@@ -188,11 +188,12 @@ Ajax是无需刷新页面，便能从加载新数据的方法。
 
 因为Javascript的安全限制，通常的加载方式只能访问当前域名的url，同时，本地文件不能用Ajax方式访问其他的本地文件。
 
-为了方便调试，可以先下载一个微型的web服务器 page: 。
+为了方便调试，可以先下载一个微型的web服务器 page:other/shttpd.exe 。
 
 
 
-$("#links").load("");
+运行服务器，访问 http://127.0.0.1 。
+
 
 2.ajax
 
