@@ -122,22 +122,46 @@ $("#content p")
 
 页面要根据用户的行为作出相应。
 
-比如鼠标移动时，点击时，按下键盘方向键时。
-
-这就涉及到了事件的概念。
+比如鼠标移动时，点击时，按下键盘方向键时，在Javascript中称之为事件。
 
 常用的事件有
-click
-blur
-change
-focus
-keypress
-keyup
-mouseover
-mouseout
-mousedown
-mouseup
-submit
+{{{
+    click       鼠标点击
+    blur        失去焦点
+    focus       获得焦点
+    change      输入框内容改变
+    keypress    按下键
+    keyup       松开键
+    mouseover   鼠标悬停
+    mouseout    鼠标移出
+    mousedown   按下鼠标右键
+    mouseup     松开鼠标右键
+    submit      表单提交
+}}}
+
+有两种方式关联页面元素与事件。
+
+第一种是直接在元素上绑定，比如
+{{{
+<input onchange="alert(this.value)" type="text"></input>
+}}}
+
+这里this代表当前元素，在元素上绑定事件。
+
+这一行的意思是当输入框元素内容改变时，弹出框提示改变的内容。
+
+在事件调用的代码中，返回false可以阻止默认行为，比如：
+
+{{{
+<form onsubmit="alert(1);return false;">
+<input type="submit" value="提交"></input>
+</form>
+}}}
+
+这里的return false可以阻止表单提交。
+
+除了这种方式之外，还有配合jQuery选择器，批量选择元素并绑定事件。
+
 
 1.event 
     onclick

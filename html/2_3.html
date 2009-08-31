@@ -83,9 +83,36 @@ $("#content p")
 </pre></div>
 <p>手册中还有CSS选择器的诸多用法，比如可以用 p:first 选取第一个p元素，等等，麻油四依次尝试了一遍。</p>
 <p>页面要根据用户的行为作出相应。</p>
-<p>比如鼠标移动时，点击时，按下键盘方向键时。</p>
-<p>这就涉及到了事件的概念。</p>
+<p>比如鼠标移动时，点击时，按下键盘方向键时，在Javascript中称之为事件。</p>
 <p>常用的事件有</p>
+<div class="content"><pre>
+    click       鼠标点击
+    blur        失去焦点
+    focus       获得焦点
+    change      输入框内容改变
+    keypress    按下键
+    keyup       松开键
+    mouseover   鼠标悬停
+    mouseout    鼠标移出
+    mousedown   按下鼠标右键
+    mouseup     松开鼠标右键
+    submit      表单提交
+</pre></div>
+<p>有两种方式关联页面元素与事件。</p>
+<p>第一种是直接在元素上绑定，比如</p>
+<div class="content"><pre>
+&lt;input onchange="alert(this.value)" type="text"&gt;&lt;/input&gt;
+</pre></div>
+<p>这里this代表当前元素，在元素上绑定事件。</p>
+<p>这一行的意思是当输入框元素内容改变时，弹出框提示改变的内容。</p>
+<p>在事件调用的代码中，返回false可以阻止默认行为，比如：</p>
+<div class="content"><pre>
+&lt;form onsubmit="alert(1);return false;"&gt;
+&lt;input type="submit" value="提交"&gt;&lt;/input&gt;
+&lt;/form&gt;
+</pre></div>
+<p>这里的return false可以阻止表单提交。</p>
+<p>除了这种方式之外，还有配合jQuery选择器，批量选择元素并绑定事件。</p>
 <p>1.event</p>
 <p>    onclick</p>
 <p>    $.click</p>
