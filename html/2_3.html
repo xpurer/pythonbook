@@ -103,7 +103,7 @@ $("#content p")
 <div class="content"><pre>
 &lt;input onchange="alert(this.value)" type="text"&gt;&lt;/input&gt;
 </pre></div>
-<p>这里this代表当前元素，在元素上绑定事件。</p>
+<p>在元素上自己绑定事件是通过修改"on"+事件名的方式完成的,这里this代表当前元素。</p>
 <p>这一行的意思是当输入框元素内容改变时，弹出框提示改变的内容。</p>
 <p>在事件调用的代码中，返回false可以阻止默认行为，比如：</p>
 <div class="content"><pre>
@@ -112,10 +112,26 @@ $("#content p")
 &lt;/form&gt;
 </pre></div>
 <p>这里的return false可以阻止表单提交。</p>
-<p>除了这种方式之外，还有配合jQuery选择器，批量选择元素并绑定事件。</p>
-<p>1.event</p>
-<p>    onclick</p>
-<p>    $.click</p>
+<p>另一种方式是配合jQuery选择器，批量选择元素并绑定事件。比如：</p>
+<div class="content"><pre>
+&lt;button class="test"&gt;1&lt;/button&gt;
+&lt;a href="<a target="_blank" href="http://g.cn">http://g.cn</a>" class="test"&gt;2&lt;/button&gt;
+&lt;script&gt;
+$(".test").click(function(){
+    alert(this.innerHTML)
+    return false
+})
+&lt;/script&gt;
+</pre></div>
+<p>这里的this同样是代表当前元素，而innerHTML的元素的属性。</p>
+<p>结合Firebug，有一个简单的方法可以查看这些属性，如图。</p>
+<div class="imageblock">
+<div class="content">
+<img alt="Firebug查看元素属性" src="img/ff_dom.jpg"/>
+</div>
+
+<div class="image-title">图:Firebug查看元素属性</div>
+</div>
 <p>2.ajax</p>
 <p>3.效果</p>
 <p>4.jQuery UI</p>

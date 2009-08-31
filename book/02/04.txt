@@ -118,7 +118,11 @@ $('.who_are_you')
 $("#content p")
 }}}
 
-手册中还有CSS选择器的诸多用法，比如可以用 p:first 选取第一个p元素，等等，麻油四依次尝试了一遍。
+手册中还有CSS选择器的诸多用法，比如可以用 p:first 选取第一个p元素，等等。
+
+ff_firedebug.jpg
+
+麻油四利用Firebug，把这些选择器都尝试了一遍。
 
 页面要根据用户的行为作出相应。
 
@@ -163,13 +167,20 @@ $("#content p")
 另一种方式是配合jQuery选择器，批量选择元素并绑定事件。比如：
 {{{
 <button class="test">1</button>
-<button class="test">2</button>
+<a href="http://g.cn" class="test">2</button>
 <script>
 $(".test").click(function(){
     alert(this.innerHTML)
+    return false
 })
 </script>
 }}}
+
+这里的this同样是代表当前元素，而innerHTML的元素的属性。
+
+结合Firebug，有一个简单的方法可以查看这些属性，如图。
+
+Firebug查看元素属性 ff_dom.jpg
 
 
 2.ajax
