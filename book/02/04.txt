@@ -249,6 +249,9 @@ $.ajax({
 
 4.jQuery UI
 
+5.Firebug 调试 断点 单步
+
+6.
 {{{
 console.log("The", animal, "jumped over", count, "tall buildings");
 console.log("I am %s and I have:", myName, thing1, thing2, thing3);
