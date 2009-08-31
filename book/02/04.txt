@@ -146,7 +146,7 @@ $("#content p")
 <input onchange="alert(this.value)" type="text"></input>
 }}}
 
-这里this代表当前元素，在元素上绑定事件。
+在元素上自己绑定事件是通过修改"on"+事件名的方式完成的,这里this代表当前元素。
 
 这一行的意思是当输入框元素内容改变时，弹出框提示改变的内容。
 
@@ -160,13 +160,18 @@ $("#content p")
 
 这里的return false可以阻止表单提交。
 
-除了这种方式之外，还有配合jQuery选择器，批量选择元素并绑定事件。
+另一种方式是配合jQuery选择器，批量选择元素并绑定事件。比如：
+{{{
+<button class="test">1</button>
+<button class="test">2</button>
+<script>
+$(".test").click(function(){
+    alert(this.innerHTML)
+})
+</script>
+}}}
 
 
-1.event 
-    onclick
-    $.click
-    
 2.ajax
 
 3.效果
