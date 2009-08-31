@@ -183,9 +183,9 @@ $(".test").click(function(){
 
 Firebug查看元素属性 ff_dom.jpg
 
-在jQuery中用Ajax也很方便。
+接着看jQuery中用Ajax。
 
-Ajax是无需刷新页面，便能从加载新数据的方法。
+Ajax是无需刷新页面，便能从外部加载新数据的方法。
 
 因为Javascript的安全限制，通常的加载方式只能访问当前域名的url。
 
@@ -252,6 +252,7 @@ $.ajax({
 5.Firebug 调试 断点 单步
 
 6.
+
 {{{
 console.log("The", animal, "jumped over", count, "tall buildings");
 console.log("I am %s and I have:", myName, thing1, thing2, thing3);
