@@ -120,9 +120,9 @@ $("#content p")
 
 手册中还有CSS选择器的诸多用法，比如可以用 p:first 选取第一个p元素，等等。
 
-ff_firedebug.jpg
+在引用了jQuery的页面，可以直接利用Firebug运行调试这些Javascript，无需编辑网页源代码。
 
-麻油四利用Firebug，把这些选择器都尝试了一遍。
+Firebug调试 ff_firedebug.jpg
 
 页面要根据用户的行为作出相应。
 
@@ -188,6 +188,18 @@ Firebug查看元素属性 ff_dom.jpg
 3.效果
 
 4.jQuery UI
+
+{{{
+console.log("The", animal, "jumped over", count, "tall buildings");
+console.log("I am %s and I have:", myName, thing1, thing2, thing3);
+}}}
+
+{{{
+console.info(object[, object, ...])
+}}}
+
+
+更多console的用法可以参考 http://getfirebug.com/console.html
 
 麻油四磕磕绊绊，也会用jQuery一些很炫的效果了,不过感觉对Javascript还有不少困惑。
 
