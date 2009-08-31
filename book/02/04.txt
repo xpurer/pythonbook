@@ -182,6 +182,17 @@ $(".test").click(function(){
 
 Firebug查看元素属性 ff_dom.jpg
 
+在jQuery中用Ajax也很方便。
+
+Ajax是无需刷新页面，便能从加载新数据的方法。
+
+因为Javascript的安全限制，通常的加载方式只能访问当前域名的url，同时，本地文件不能用Ajax方式访问其他的本地文件。
+
+为了方便调试，可以先下载一个微型的web服务器 page: 。
+
+
+
+$("#links").load("");
 
 2.ajax
 
