@@ -1,0 +1,316 @@
+<!doctype html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="file/c.css" media="all"><title>自学Javascript</title></head><body>
+<a id="bar" href="index.html">返回目录</a>
+<div id="header">
+<h1>自学Javascript</h1>
+</div>
+
+<div id="preamble">
+<p>自从有了小弟，麻油四便有些享受做老大的优越感。</p>
+<p>不过，眼看小弟们不几日也学会了写页面，麻油四开始有些危机感。</p>
+<p>做老大要有做老大的觉悟。</p>
+<p>他心想，该研究研究新东西了 --- 页面已经会做了，那就学Javascript吧。</p>
+<div style="border:0;border-bottom:1px #ccc dotted;margin:40px 0;"></div>
+<p>网络时代，知识距你仅有几个链接。</p>
+<p>点点鼠标，不多时，麻油四就对 Javascript 有了些认识。</p>
+<p>对于页面来说，Javascript就像木偶戏中那些提木偶的线。</p>
+<p>通过线，可以让木偶动起来。</p>
+<p>通过Javascript，可以让HTML动起来。</p>
+<p>很久很久以前，人们直接用DOM接口手写Javascript。</p>
+<p>那时的Javascript往往庞杂混乱，需要漫长的学习过程。</p>
+<p>更要命的是，不同浏览器间的提供给Javascript的接口并不完全兼容。</p>
+<p>这不大不小的兼容性问题，常让人顾此失彼，疲于奔命。</p>
+<p>自从Gmail引发Ajax风潮后，一些先行者们站了出来，于是便有了许多Javascript库。</p>
+<p>第一个流行起来的Javascript库是Prototype，但由于设计理念的问题，渐渐有些没落了。</p>
+<p>现在网上流行当属：jQuery, Mootools, Dojo, Ext JS。</p>
+<p>jQuery风头最盛，其口号是“写的少，干的多”（Write Less, Do More）。</p>
+<p>麻油四只学最红，不学最对。</p>
+<p>他找到一本全中文的jQuery手册 <a href="page/other/jquery.chm" target="_blank">链接</a>，看了起来。</p>
+<p>Javascript，写在网页的script的标签中，一般习惯于将script标签放在网页head区。</p>
+<p>使用jQuery需要先引入jQuery脚本。</p>
+<p>Google提供了AJAX 库 API , 可以直接在页面中这样写。</p>
+<div class="content"><pre>
+&lt;script src="<a target="_blank" href="http://ajax.googleapis.com/ajax/libs/jquery/1.3.1/jquery.min.js">http://ajax.googleapis.com/ajax/libs/jquery/1.3.1/jquery.min.js</a>"&gt;&lt;/script&gt;
+</pre></div>
+<p>网页加载完后,再执行代码</p>
+<div class="content"><pre>
+$(function(){
+    alert(1)
+})
+</pre></div>
+<p>想操纵网页中的元素，往往要等页面加载完毕才能操纵。</p>
+<p>在jQuery中选取元素和CSS很类似，可以用CSS选择器。</p>
+<p>麻油四边学边写了一个网页，来测试jQuery的各种效果 <a href="page/jquery.html#css_select" target="_blank">链接</a>。</p>
+<p>最常用的CSS选取器当属id选择器了，比如这样一段HTML:</p>
+<div class="content"><pre>
+&lt;div id="css_select_1"&gt;唉,人生...&lt;/div&gt;
+</pre></div>
+<p>在jQuery中可以这样选择它 $('#css_select_1')</p>
+<p>选中元素是为了操纵元素，这里就修改它的CSS样式。</p>
+<div class="content"><pre>
+&lt;script&gt;
+    $('#css_select_1').css({border:'3px dotted #f00'})
+&lt;/script&gt;
+</pre></div>
+<p>id选取器用来选取单个元素，而class选择器用来选取一批元素。</p>
+<div class="content"><pre>
+&lt;div class="who_are_you"&gt;谁是伊人&lt;/div&gt;
+&lt;div class="who_are_you"&gt;伊人是谁&lt;/div&gt;
+&lt;script&gt;
+    $('.who_are_you').text(Date()).css({background:'#369',color:'#fff'})
+&lt;/script&gt;
+</pre></div>
+<p>text函数是用来设置div中显示的文本，Date()的是返回日期。</p>
+<p>这里演示了jQuery的招牌卖点 --- 链式操作。</p>
+<p>这里可以看到 text 函数调用后，可以直接再用 .css 来调用 css 函数。</p>
+<p>jQuery中很多函数都可以这样做，你可以尽情的点点点下去。</p>
+<p>当操作比较多的时候，你可以采用如下的排版，让代码看起来更清晰。</p>
+<div class="content"><pre>
+$('.who_are_you')
+    .text(Date())
+    .css({
+        background:'#369',
+        color:'#fff'
+    })
+    .fadeOut('slow',function(){
+        $(this).fadeIn('slow')
+    })
+</pre></div>
+<p>和CSS一样，jQuery也可以按照元素名称进行选择，比如</p>
+<p>按照元素名称进行选择常与其他选择器配合使用，比如选择id为content元素下的p标签。</p>
+<div class="content"><pre>
+$("#content p")
+</pre></div>
+<p>手册中还有CSS选择器的诸多用法，比如可以用 p:first 选取第一个p元素，等等。</p>
+<p>在引用了jQuery的页面，可以直接利用Firebug运行调试这些Javascript，无需编辑网页源代码。</p>
+<div class="imageblock">
+<div class="content">
+<img alt="Firebug调试" src="img/ff_firedebug.jpg"/>
+</div>
+
+<div class="image-title">图:Firebug调试</div>
+</div>
+<p>页面要根据用户的行为作出相应。</p>
+<p>比如鼠标移动时，点击时，按下键盘方向键时，在Javascript中称之为事件。</p>
+<p>常用的事件有</p>
+<div class="content"><pre>
+    click       鼠标点击
+    blur        失去焦点
+    focus       获得焦点
+    change      输入框内容改变
+    keypress    按下键
+    keyup       松开键
+    mouseover   鼠标悬停
+    mouseout    鼠标移出
+    mousedown   按下鼠标右键
+    mouseup     松开鼠标右键
+    submit      表单提交
+</pre></div>
+<p>有两种方式关联页面元素与事件。</p>
+<p>第一种是直接在元素上绑定，比如</p>
+<div class="content"><pre>
+&lt;input onchange="alert(this.value)" type="text"&gt;&lt;/input&gt;
+</pre></div>
+<p>在元素上自己绑定事件是通过修改"on"+事件名的方式完成的,这里this代表当前元素。</p>
+<p>这一行的意思是当输入框元素内容改变时，弹出框提示改变的内容。</p>
+<p>在事件调用的代码中，返回false可以阻止默认行为，比如：</p>
+<div class="content"><pre>
+&lt;form onsubmit="alert(1);return false;"&gt;
+&lt;input type="submit" value="提交"&gt;&lt;/input&gt;
+&lt;/form&gt;
+</pre></div>
+<p>这里的return false可以阻止表单提交。</p>
+<p>另一种方式是配合jQuery选择器，批量选择元素并绑定事件。比如：</p>
+<div class="content"><pre>
+&lt;button class="test"&gt;1&lt;/button&gt;
+&lt;a href="<a target="_blank" href="http://g.cn">http://g.cn</a>" class="test"&gt;2&lt;/button&gt;
+&lt;script&gt;
+$(".test").click(function(){
+    alert(this.innerHTML)
+    return false
+})
+&lt;/script&gt;
+</pre></div>
+<p>这里的this同样是代表当前元素，而innerHTML的元素的属性。</p>
+<p>结合Firebug，有一个简单的方法可以查看这些属性，如图。</p>
+<div class="imageblock">
+<div class="content">
+<img alt="Firebug查看元素属性" src="img/ff_dom.jpg"/>
+</div>
+
+<div class="image-title">图:Firebug查看元素属性</div>
+</div>
+<p>接着看jQuery中用Ajax。</p>
+<p>Ajax是无需刷新页面，便能从外部加载新数据的方法。</p>
+<p>因为Javascript的安全限制，通常的加载方式只能访问当前域名的url。</p>
+<p>有时，本地文件不能用Ajax方式访问其他的本地文件。为了方便调试，可以先下载一个微型的web服务器 <a href="page/other/shttpd.exe" target="_blank">链接</a>。</p>
+<p>新建一个目录，将服务器复制到该目录。在此目录下新建2个文件，文件编码都是UTF-8。</p>
+<p>文件 index.html 内容如下：</p>
+<div class="content"><pre>
+&lt;!doctype html&gt;
+&lt;head&gt;
+&lt;meta http-equiv="content-type" content="text/html; charset=UTF-8"&gt;
+&lt;script src="<a target="_blank" href="http://ajax.googleapis.com/ajax/libs/jquery/1.3.1/jquery.min.js">http://ajax.googleapis.com/ajax/libs/jquery/1.3.1/jquery.min.js</a>"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div id="main"&gt;&lt;/div&gt;&lt;button onclick="$('#main').load('body.txt')"&gt;加载&lt;/button&gt;
+&lt;/body&gt;
+</pre></div>
+<p>文件 body.txt 内容如下：</p>
+<div class="content"><pre>
+世人大多宁可看重满口谎话的伪君子，也不肯看重直言无忌的真小人。
+</pre></div>
+<p>运行服务器，访问 <a target="_blank" href="http://127.0.0.1">http://127.0.0.1</a> 。</p>
+<p>点击加载，可以看到main层中填充了从body.txt中读取的内容。</p>
+<p>这就是Ajax，效果可在此预览 <a href="page/ajax/index.html" target="_blank">链接</a>。</p>
+<p>load函数是最简单给让选中元素填充外部内容的方法。</p>
+<p>除此之外，还有两个常用的Ajax函数封装 -- $.get 和 $.post 。</p>
+<p>get和post的函数接口几乎一样，他的四个参数依次是</p>
+<div class="content"><pre>
+url         请求的url
+data        需要获取的数据
+callback    回调函数
+type        类型，可以为"xml", "html", "script", "json", "jsonp", 或 "text"
+</pre></div>
+<p>其中data，callback, type 都可以省略，或部分给出，只要顺序正确即可。</p>
+<p>一般而言，读操作用get，写操作用post。</p>
+<p>值得注意的是，除"script"和"jsonp"类型外，get操作在读取时会使用缓存。</p>
+<p>想要强制刷新get，可以用ajax函数，比如：</p>
+<div class="content"><pre>
+$.ajax({
+  type: "GET",
+  url: "body.txt",
+  cache:false,
+  success:function(t){alert(1)}
+});
+</pre></div>
+<p>事实上，get和post都只是对ajax进行的封装。</p>
+<p>jQuery如此风行，它的显示效果函数功不可没。</p>
+<p>其中最著名的当属 Sliding （滑入滑出） 和 Fading （淡入淡出）。</p>
+<p>用法也一如既往的简洁</p>
+<div class="content"><pre>
+$("#thing").fadeOut();     //淡出
+$("#thing").fadeIn();       //淡入
+<br/>
+$("#thing").slideUp();       //滑出
+$("#thing").slideDown();     //滑入
+</pre></div>
+<p>滑动效果还有一个额外的函数 slideToggle ，它类似一个开关，让元素在显示与隐藏之间用滑动的方式切换。</p>
+<p>若是不需要花哨的效果，你可以用 hide（隐藏），show（显示），toggle（显示-隐藏切换）这3个函数。</p>
+<p>若是需要更复杂的变形，可以试试animate，用法如下</p>
+<div class="content"><pre>
+ $("#block").animate({
+    width: "70%",
+    opacity: 0.4,
+    marginLeft: "0.6in",
+    fontSize: "3em",
+    borderWidth: "10px"
+}, 1500 );
+</pre></div>
+<p>第一个参数是变形后的最终显示的样式，第二个参数是变形的时间。</p>
+<p>写Javascript，往往需要调试。</p>
+<p>是最原始也最常用的调试方法是 alert 。</p>
+<div class="content"><pre>
+var test = "hello";
+alert(test);
+</pre></div>
+<p>用alert，可以中断Javascript的运行, 并显示参数中的变量。</p>
+<p>但是对于很Javascript中的字典对象来说，alert很不方便 -- 它只会显示 “[object Object]”。</p>
+<p>再一次召唤 Firebug 大神。信Firebug，原地满状态复活 。</p>
+<p>用上了Firebug，在会脚本中便多出一个名为console的对象，用法如：</p>
+<div class="content"><pre>
+var a={1:2},b={"test":a};
+console.info(a, b)
+</pre></div>
+<div class="imageblock">
+<div class="content">
+<img alt="Firebug的console.info" src="img/ff_cinfo.jpg"/>
+</div>
+
+<div class="image-title">图:Firebug的console.info</div>
+</div>
+<p>可以看到，在控制台中出现了可以点击的两个对象。点击后，就可以仔细观察对象的内容了。</p>
+<p>如果只是输出日志的话，可以试试 console.log ，他支持字符串的格式化。</p>
+<div class="content"><pre>
+console.log("今天是", new Date().toLocaleDateString()); //输出 今天是 2009年9月1日
+console.log("1+2=%s,2+3=%s",1+2,2+3);  //输出 1+2=3,2+3=5
+</pre></div>
+<p>如果想在IE等其他浏览器下用console，可以试试 Firebug Lite。</p>
+<p>在其他脚本之前，引入以下脚本，即可出现Firebug Lite。</p>
+<div class="content"><pre>
+&lt;script src="<a target="_blank" href="http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js">http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js</a>"&gt;&lt;/script&gt;
+</pre></div>
+<p>更简单的做法是，到 <a target="_blank" href="http://getfirebug.com/lite.html">http://getfirebug.com/lite.html</a>  ，找到 “Firebug Lite as bookmarklet”下的 Firebug Lite 链接，将其添加到收藏夹。</p>
+<p>以后，只要从收藏夹中点击它，便能在当前页面出现 Firebug Lite 。</p>
+<p>Firebug还提供了更强大的断点功能，可惜一般人找不到它。</p>
+<div class="imageblock">
+<div class="content">
+<img alt="" src="img/ff_break.jpg"/>
+</div>
+
+</div>
+<p>设置断点后刷新页面，即可让断点生效。</p>
+<div class="imageblock">
+<div class="content">
+<img alt="" src="img/ff_break2.jpg"/>
+</div>
+
+</div>
+<p>Firebug就介绍到这里。</p>
+<p>再来看看IE浏览器。</p>
+<p>IE6，7的调试工具不多，也不好用，常用的是 Internet Explorer Developer Toolbar，Companion.JS。</p>
+<p>幸而，IE8自带了一个好用的调试工具，如图所示。</p>
+<div class="imageblock">
+<div class="content">
+<img alt="" src="img/ie_tool.jpg"/>
+</div>
+
+</div>
+<p>这个调试工具同样可以设置断点，观察变量。</p>
+<div class="imageblock">
+<div class="content">
+<img alt="" src="img/ie_debug.jpg"/>
+</div>
+
+</div>
+<p>有了这些强大的工具后，调试程序会简单很多。</p>
+<p>麻油四磕磕绊绊，自学了很多有趣的东西，但对Javascript还有不少困惑。</p>
+<p>便问阿牛有没有好一点教程，阿牛推荐了一本名为《Javascript权威指南》的书。</p>
+<p>麻油四到图书馆一找，发现其厚如砖头，心中暗道，这么大一本我看要练个把月啊。</p>
+<p>“还是算了，青春是献给花花草草的。”</p>
+
+<div class="dirnav">
+<a href="2_3.html">上一节</a>
+<a href="index.html">返回目录</a>
+<a href="3_0.html">下一节</a>
+</div>
+
+</div>
+
+<script type="text/javascript" src="file/c.js"></script>
+<div id="footer">
+  <p class="copyright">
+    Copyright 2009,
+    张沈鹏,
+	董诣,
+    陈寅,
+	<span class="amp">&amp;</span>
+    敬宓    
+  </p>
+</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-10347470-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+
+
+
+
+

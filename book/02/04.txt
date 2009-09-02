@@ -1,356 +1,165 @@
-自学Javascript
+版本管理
 
-自从有了小弟，麻油四便有些享受做老大的优越感。
+双选会网站做的不错，麻油四在学院中名气渐起。
 
-不过，眼看小弟们不几日也学会了写页面，麻油四开始有些危机感。
+偶尔也有低年级的小弟前来投靠，拜师学艺。
 
-做老大要有做老大的觉悟。
+考虑到网站时不时有些资料要增增减减，本着抓苦力来打杂，不用白不用的心态，麻油四来者不拒。
 
-他心想，该研究研究新东西了 --- 页面已经会做了，那就学Javascript吧。
+麻油四给每人开了个Linux账号，让他们用Ftp软件Filezilla连到服务器，然后又手把手的教会他们怎么上传下载代码。
 
+在麻油四勤勤恳恳的调教下，小弟们虽然依旧很笨拙，不过慢慢也能干点体力活了。
 
----------------------
+但是，刚刚，发生了一起让麻油四很恼火的事情。
 
-网络时代，知识距你仅有几个链接。
+前两天老师拿了一堆材料让麻油四添到网站上。
 
-点点鼠标，不多时，麻油四就对 Javascript 有了些认识。
+吭哧吭哧，麻油四就领着大家开始干活了。
 
-对于页面来说，Javascript就像木偶戏中那些提木偶的线。
+谁知今日，一个新来的小弟居然在上传代码时不小心选择了覆盖模式。
 
-通过线，可以让木偶动起来。
+结果麻油四和他的马仔们辛苦两天的成果就这样灰飞烟灭。
 
-通过Javascript，可以让HTML动起来。
+“麻叔很生气，后果很严重”。
 
-很久很久以前，人们直接用DOM接口手写Javascript。
+结果那个倒霉的小弟就被活生生的吊在宿舍楼下的老槐树上示众。
 
-那时的Javascript往往庞杂混乱，需要漫长的学习过程。
+午夜子时，阿牛迈着疲惫的脚步，从网吧走回寝室。
 
-更要命的是，不同浏览器间的提供给Javascript的接口并不完全兼容。
+隐隐约约，他看到树上有一个人影。
 
-这不大不小的兼容性问题，常让人顾此失彼，疲于奔命。
+阿牛不由得想起恐怖故事《女生寝室》中那个树吃人的典故，不由得惊出一身冷汗。
 
-自从Gmail引发Ajax风潮后，一些先行者们站了出来，于是便有了许多Javascript库。
+不过，转念一想，难道是有MM失恋了自寻短见？
 
-第一个流行起来的Javascript库是Prototype，但由于设计理念的问题，渐渐有些没落了。
+活了20多年都没碰过女孩手的阿牛，脑海里浮现出人工呼吸，英雄救美，一见倾情的美好画面。
 
-现在网上流行当属：jQuery, Mootools, Dojo, Ext JS。
+顿时阿牛变得豪气干云，三步并做两步冲上前去。
 
-jQuery风头最盛，其口号是“写的少，干的多”（Write Less, Do More）。
+... ... ...
 
-麻油四只学最红，不学最对。
+-----------------
 
-他找到一本全中文的jQuery手册 page:other/jquery.chm ，看了起来。
+第二日，阳光明媚。
 
-Javascript，写在网页的script的标签中，一般习惯于将script标签放在网页head区。
+麻油四，心情却很沉重。
 
-使用jQuery需要先引入jQuery脚本。
+那个新来的小弟不知怎么结识了阿牛。
 
-Google提供了AJAX 库 API , 可以直接在页面中这样写。 
+自己在小弟面前苦心精英的高手形象被阿牛贬的一文不值。
 
-{{{
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.1/jquery.min.js"></script>
-}}}
+不过，倒是听说了一个满新奇的新名词 -- “版本管理”。
 
-网页加载完后,再执行代码
+万事不决问Google。
 
-{{{
-$(function(){
-    alert(1)
-})
-}}}
+麻油很快搜索到一段文字：“
 
-想操纵网页中的元素，往往要等页面加载完毕才能操纵。
+1.版本管理是什么，有什么用？
 
-在jQuery中选取元素和CSS很类似，可以用CSS选择器。
+照相，能帮我们记录下那些美好的旧时光。
 
-麻油四边学边写了一个网页，来测试jQuery的各种效果 page:jquery.html#css_select 。
+版本管理，就是好像对文件照相。
 
-最常用的CSS选取器当属id选择器了，比如这样一段HTML:
+有了版本管理，我们就可以轻而易举的“Yesterday , Once More”（注：昨日重现，一首经典英文歌曲）
 
-{{{
-<div id="css_select_1">唉,人生...</div>
-}}}
+另外，写代码，很多时候并不是一个人在战斗。
 
-在jQuery中可以这样选择它 $('#css_select_1')
+这时候，就需要常常同步各自的改动。
 
-选中元素是为了操纵元素，这里就修改它的CSS样式。
+复制来复制去，麻烦不说，还经常一不小心，就把已有的改动覆盖掉。
 
-{{{
-<script>
-    $('#css_select_1').css({border:'3px dotted #f00'})
-</script>
-}}}
+而有了版本管理，无痛同步，是那么的写意自然。
 
-id选取器用来选取单个元素，而class选择器用来选取一批元素。
-{{{
-<div class="who_are_you">谁是伊人</div>
-<div class="who_are_you">伊人是谁</div>
-<script>
-    $('.who_are_you').text(Date()).css({background:'#369',color:'#fff'})
-</script>
-}}}
+2.有哪些版本管理工具，各有什么特点。
 
-text函数是用来设置div中显示的文本，Date()的是返回日期。
+现在最流行的当属SVN了，古老一点的还有CVS。
 
-这里演示了jQuery的招牌卖点 --- 链式操作。
+SVN和CVS属于中央集权式，都有一个至高无上的存在 -- 服务器。
 
-这里可以看到 text 函数调用后，可以直接再用 .css 来调用 css 函数。
+用他们管理每一份代码，都需要从服务器复制出来（又称 check out）。
 
-jQuery中很多函数都可以这样做，你可以尽情的点点点下去。
+同样每一行改动也必须提交到服务器（又称check in）。
 
-当操作比较多的时候，你可以采用如下的排版，让代码看起来更清晰。
+与此相对，还存在另外一套版本管理方式，俗称分布式版本管理。
 
-{{{
-$('.who_are_you')
-    .text(Date())
-    .css({
-        background:'#369',
-        color:'#fff'
-    })
-    .fadeOut('slow',function(){
-        $(this).fadeIn('slow')
-    })
-}}}
+每个拷贝，都既可以做服务器，也可以当客户端。
 
-和CSS一样，jQuery也可以按照元素名称进行选择，比如
+彼此之间，人人平等。
 
-按照元素名称进行选择常与其他选择器配合使用，比如选择id为content元素下的p标签。
+它们的代表有Git，Hg。
 
-{{{
-$("#content p")
-}}}
+至于是集权好，还是平等好，这则是一个仁者见仁，智者见智的问题了。
+”。
 
-手册中还有CSS选择器的诸多用法，比如可以用 p:first 选取第一个p元素，等等。
+读到这里，麻油四觉得版本控制是一个好东西。
 
-在引用了jQuery的页面，可以直接利用Firebug运行调试这些Javascript，无需编辑网页源代码。
+他觉得应该用这现代化的装备来武装他那帮马仔，不过，怎么用版本控制呢？
 
-Firebug调试 ff_firedebug.jpg
+他接着往下看：“
 
-页面要根据用户的行为作出相应。
+Google Code可以免费托管开源项目，集成wiki，code review，bug trace。
 
+”
 
-比如鼠标移动时，点击时，按下键盘方向键时，在Javascript中称之为事件。
+麻油四心想，就是它了，反正那些代码也没什么可保密的。
 
-常用的事件有
-{{{
-    click       鼠标点击
-    blur        失去焦点
-    focus       获得焦点
-    change      输入框内容改变
-    keypress    按下键
-    keyup       松开键
-    mouseover   鼠标悬停
-    mouseout    鼠标移出
-    mousedown   按下鼠标右键
-    mouseup     松开鼠标右键
-    submit      表单提交
-}}}
+也没顾得及弄清这些词语的含义，就对照着文档，开始摸索去申请一个项目了。
 
-有两种方式关联页面元素与事件。
+三下五除二，登录Google。
 
-第一种是直接在元素上绑定，比如
-{{{
-<input onchange="alert(this.value)" type="text"></input>
-}}}
+搜索“ Google Code ”，找到了申请的链接
 
-在元素上自己绑定事件是通过修改"on"+事件名的方式完成的,这里this代表当前元素。
+http://code.google.com/hosting/createProject
 
-这一行的意思是当输入框元素内容改变时，弹出框提示改变的内容。
+打开网页，需要填写一些项目信息，版本管理系统选择 Subversion ( svn的全称 )。
 
-在事件调用的代码中，返回false可以阻止默认行为，比如：
+Google Code注册 gcode_reg.jpg
 
-{{{
-<form onsubmit="alert(1);return false;">
-<input type="submit" value="提交"></input>
-</form>
-}}}
+就这样，Google Code 注册成功。
 
-这里的return false可以阻止表单提交。
+他让小弟们又都去注册了一个Google的账号，然后在后台提拔他们为开发者。这样，小弟们也可以像Google Code提交代码了。
 
-另一种方式是配合jQuery选择器，批量选择元素并绑定事件。比如：
-{{{
-<button class="test">1</button>
-<a href="http://g.cn" class="test">2</button>
-<script>
-$(".test").click(function(){
-    alert(this.innerHTML)
-    return false
-})
-</script>
-}}}
+Google Code添加管理员 gcode_admin.jpg
 
-这里的this同样是代表当前元素，而innerHTML的元素的属性。
+搞定Google Code，还缺一个客户端。
 
-结合Firebug，有一个简单的方法可以查看这些属性，如图。
+他听说最好用的客户端Tortoise Svn ,摸索到 http://tortoisesvn.net/downloads ，下载了软件和汉化包。
 
-Firebug查看元素属性 ff_dom.jpg
+下载Tortoise Svn svn_down.jpg
 
-接着看jQuery中用Ajax。
+先安装软件，一路Next，安装完成后会提示你重启电脑，先选择No。
 
-Ajax是无需刷新页面，便能从外部加载新数据的方法。
+然后按照汉化包，装好后再在点击右键，进入Tortoise Svn的setting页面。
 
-因为Javascript的安全限制，通常的加载方式只能访问当前域名的url。
+点击右键 svn_setting.jpg
 
-有时，本地文件不能用Ajax方式访问其他的本地文件。为了方便调试，可以先下载一个微型的web服务器 page:other/shttpd.exe 。
+选择语言为中文，然后重新启动。
 
-新建一个目录，将服务器复制到该目录。在此目录下新建2个文件，文件编码都是UTF-8。
+选择语言 svn_cn.jpg
 
-文件 index.html 内容如下：
-{{{
-<!doctype html>
-<head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.1/jquery.min.js"></script>
-</head>
-<body>
-<div id="main"></div><button onclick="$('#main').load('body.txt')">加载</button>
-</body>
-}}}
+在点击右键，选择导出，在输入项目的svn地址
 
-文件 body.txt 内容如下：
-{{{
-世人大多宁可看重满口谎话的伪君子，也不肯看重直言无忌的真小人。  
-}}}
+svn导出 svn_co.jpg
 
-运行服务器，访问 http://127.0.0.1 。
+点击确定后会提示输入用户名和密码，用户名是Google帐号，密码可以在 http://code.google.com/hosting/settings 找到。
 
-点击加载，可以看到main层中填充了从body.txt中读取的内容。
+Google Code的密码 svn_passwd.jpg
 
-这就是Ajax，效果可在此预览 page:ajax/index.html 。
+把以前代码的复制到当前目录，右键选择提交，勾中需要的文件,不需要的可以右键选择忽略。写上一点注释，即可提交。
 
-load函数是最简单给让选中元素填充外部内容的方法。
+麻油四，又让手下依样画葫芦，提交了一个文件。然后他再次在右键更新，很快就完成了同步。
 
-除此之外，还有两个常用的Ajax函数封装 -- $.get 和 $.post 。
+在右键的Tortoise Svn选项中，有一项功能是显示日志。
 
-get和post的函数接口几乎一样，他的四个参数依次是 
-{{{
-url         请求的url
-data        需要获取的数据
-callback    回调函数
-type        类型，可以为"xml", "html", "script", "json", "jsonp", 或 "text"
-}}}
-其中data，callback, type 都可以省略，或部分给出，只要顺序正确即可。
+从文件夹上点进去可以看到文件夹的改动历史,从文件上点进去可以看到文件的改动历史。
 
-一般而言，读操作用get，写操作用post。
+在日志信息里面，还可以比较差异，浏览具体的改动。
 
-值得注意的是，除"script"和"jsonp"类型外，get操作在读取时会使用缓存。
+比较差异 svn_diff.jpg
 
-想要强制刷新get，可以用ajax函数，比如：
+“很好很强大”，麻油四感觉这些功能已经够用了。
 
-{{{
-$.ajax({
-  type: "GET",
-  url: "body.txt",
-  cache:false,
-  success:function(t){alert(1)}
-});
-}}}
+凡事够用就好。
 
-事实上，get和post都只是对ajax进行的封装。
+麻油四本着一贯的懒人理论，关了那个还没看完网页。
 
-jQuery如此风行，它的显示效果函数功不可没。
-
-其中最著名的当属 Sliding （滑入滑出） 和 Fading （淡入淡出）。
-
-用法也一如既往的简洁
-
-{{{
-$("#thing").fadeOut();     //淡出
-$("#thing").fadeIn();       //淡入
-
-$("#thing").slideUp();       //滑出
-$("#thing").slideDown();     //滑入
-}}}
-
-滑动效果还有一个额外的函数 slideToggle ，它类似一个开关，让元素在显示与隐藏之间用滑动的方式切换。
-
-若是不需要花哨的效果，你可以用 hide（隐藏），show（显示），toggle（显示-隐藏切换）这3个函数。
-
-若是需要更复杂的变形，可以试试animate，用法如下
-
-{{{
- $("#block").animate({ 
-    width: "70%",
-    opacity: 0.4,
-    marginLeft: "0.6in",
-    fontSize: "3em", 
-    borderWidth: "10px"
-}, 1500 );
-}}}
-
-第一个参数是变形后的最终显示的样式，第二个参数是变形的时间。
-
-写Javascript，往往需要调试。
-
-是最原始也最常用的调试方法是 alert 。
-
-{{{
-var test = "hello";
-alert(test);
-}}}
-
-用alert，可以中断Javascript的运行, 并显示参数中的变量。
-
-但是对于很Javascript中的字典对象来说，alert很不方便 -- 它只会显示 “[object Object]”。
-
-再一次召唤 Firebug 大神。信Firebug，原地满状态复活 。
-
-用上了Firebug，在会脚本中便多出一个名为console的对象，用法如：
-
-{{{
-var a={1:2},b={"test":a};
-console.info(a, b)
-}}}
-
-Firebug的console.info ff_cinfo.jpg
-
-可以看到，在控制台中出现了可以点击的两个对象。点击后，就可以仔细观察对象的内容了。
-
-如果只是输出日志的话，可以试试 console.log ，他支持字符串的格式化。
-{{{
-console.log("今天是", new Date().toLocaleDateString()); //输出 今天是 2009年9月1日
-console.log("1+2=%s,2+3=%s",1+2,2+3);  //输出 1+2=3,2+3=5
-}}}
-
-如果想在IE等其他浏览器下用console，可以试试 Firebug Lite。
-
-在其他脚本之前，引入以下脚本，即可出现Firebug Lite。
-{{{
-<script src="http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js"></script>
-}}}
-
-更简单的做法是，到 http://getfirebug.com/lite.html  ，找到 “Firebug Lite as bookmarklet”下的 Firebug Lite 链接，将其添加到收藏夹。
-
-以后，只要从收藏夹中点击它，便能在当前页面出现 Firebug Lite 。
-
-Firebug还提供了更强大的断点功能，可惜一般人找不到它。
-
-ff_break.jpg
-
-设置断点后刷新页面，即可让断点生效。
-
-ff_break2.jpg
-
-Firebug就介绍到这里。
-
-再来看看IE浏览器。
-
-IE6，7的调试工具不多，也不好用，常用的是 Internet Explorer Developer Toolbar，Companion.JS。
-
-幸而，IE8自带了一个好用的调试工具，如图所示。
-
-ie_tool.jpg
-
-这个调试工具同样可以设置断点，观察变量。
-
-ie_debug.jpg
-
-有了这些强大的工具后，调试程序会简单很多。
-
-麻油四磕磕绊绊，自学了很多有趣的东西，但对Javascript还有不少困惑。
-
-便问阿牛有没有好一点教程，阿牛推荐了一本名为《Javascript权威指南》的书。
-
-麻油四到图书馆一找，发现其厚如砖头，心中暗道，这么大一本我看要练个把月啊。
-
-“还是算了，青春是献给花花草草的。”
