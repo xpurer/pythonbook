@@ -1,3 +1,102 @@
+
+960 Grid System 基本使用实例
+css   2009-08-13 08:43   阅读8   评论0  
+字号： 大大  中中  小小
+
+首先，你需要学习关于”如何让框架工作”。你可以通过自己的尝试来学习，不过我仍然会在这里为大家进行讲解，那就开始吧。
+
+不要编辑960.css
+
+先说一点需要注意的:不要编辑960.css文件，如果你修改了它，那么你今后将无法更新这个框架。
+
+读取网格
+
+在我们使用外部文件中的CSS代码之前，首先要在我们的HTML文件中调用它们。像这样调用:
+
+    <link rel=”stylesheet” type=”text/css” media=”all” href=”path/to/960/reset.css” />
+    <link rel=”stylesheet” type=”text/css” media=”all” href=”path/to/960/960.css” />
+    <link rel=”stylesheet” type=”text/css” media=”all” href=”path/to/960/text.css” />
+
+当我们调用好它们以后，我们要调用自己的CSS文件了。例如，你也许会将你的CSS文件命名为style.css或site.css或者其它什么的。这样调用它:
+
+    <link rel=”stylesheet” type=”text/css” media=”all” href=”path/to/style.css” />
+
+Containers(容器)
+
+在960框架中，你可以选择两种类名为.container_12 和 .container_16的容器。这两种容器都是960px的宽度(这就是为什么叫做960 grid),但他们的不同之处是它们包含不同数量的列。顾名思义，.container_12的容器被分为12列，而 .container_16被分为16列。这两种960px宽的容器都是水平居中的。
+Grids (网格)/ Columns(列)
+
+你可以选择很多种不同的列宽组合，不过在这两种容器中是有所不同的。你可以通过打开960.css来了解这些宽度，但这对于设计一个网站并没有什么必要。在这里暴风彬彬将一个很有用的技巧让你使用框架更加容易。
+
+例如:如果你想在你的容器中仅使用两列(分别是主内容区/侧边栏)，你可以这样做:
+
+    <div class=”container_12″>
+    <div class=”grid_4″>sidebar</div>
+    <div class=”grid_8″>main content</div>
+    </div>
+
+看到上面的代码你也许已经明白，不过我还是要讲一下。也就是说你在container_12这个容器中使用了grid_4和grid_8两列，4+8恰好等于12！明白了吗？使用网格系统的好处之一就是你不用去计算没列的宽度到底是多少，省去了很多运算。
+
+下面让我们看看如何编写四列布局:
+
+    <div class=”container_12″>
+    <div class=”grid_2″>sidebar</div>
+    <div class=”grid_6″>main content</div>
+    <div class=”grid_2″>photo’s</div>
+    <div class=”grid_2″>advertisement</div>
+    </div>
+
+正如你看到的，这个系统工作得很好。如果你尝试使用你的浏览器读取他的话，你会发现有一些不对劲的地方。不过不要紧，那正是我们下一个话题要讨论的。
+Margins
+
+默认情况下，每列之间都会存在一些margin。每个grid_(这里插入数值)类都有10px的左margin和右margin。也就是说两列之间的margin值是20px。
+
+20px的margin能让布局保持应有的留白并看上去更平滑，这也是我喜欢960 grid System的原因之一。
+
+在上面的例子中，我们将它使用浏览器读取时出现了一些问题，现在我们来修复它。
+
+问题在于每个列都包含左margin和右margin，但是最左面的列不应该有左margin，最右面的列不应该有右margin。(够罗嗦！)下面是解决方法:
+
+    <div class=”container_12″>
+    <div class=”grid_2 alpha”>sidebar</div>
+    <div class=”grid_6″>main content</div>
+    <div class=”grid_2″>photo’s</div>
+    <div class=”grid_2 omega”>advertisement</div>
+    </div>
+
+你仅需添加alpha类来去除左margin，添加omega类去除右margin。好了，现在我们的布局已经可以完美在浏览器中对齐了。(是的，包括IE6)
+Styling(添加样式)
+
+事实上，你已经掌握了如何使用960框架创建基本的网格布局了。不过你也许还想为自己的布局添加一些样式。
+
+    <div class=”container_12″>
+    <div id=”sidebar” class=”grid_2 alpha”>sidebar</div>
+    <div id=”content” class=”grid_6″>main content</div>
+    <div id=”photos” class=”grid_2″>photo’s</div>
+    <div id=”advertisements” class=”grid_2 omega”>advertisement</div>
+    </div>
+
+由于CSS使用优先级的形式来觉得如何解释样式，而id要比class的优先级高。这样我们就可以在我们的独立CSS文件中以id选择符创建个性化的样式了。如果凑巧有的样式属性与960相同但值又不同，浏览器会优先选择你的CSS文件中的样式。当然，如果您感兴趣，也可以看看上面的实例添加样式后的实际效果。
+我们做到了
+
+这是这样！你已经掌握的如何使用960网格系统来创建兼容所有浏览器的布局。当你完全掌握熟练960系统之后，你会发现它为你节省了很多很多编写CSS的时间。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 https://www.google.com/analytics/settings/?et=reset&hl=zh-cn
 
 Douban_陈寅(C/编译器): 热炕头主义者
