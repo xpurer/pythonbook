@@ -1,4 +1,4 @@
-CSS框架
+CSS模板
 
 麻油四辛辛苦苦写完了个人网页，又海投了不少简历。
 
@@ -32,18 +32,63 @@ CSS框架
 
 不过,面对老师给出的几个页面版式的草图，麻油四初学CSS，不由有些犯愁。
 
-“用CSS框架”，阿牛不多一句废话。
+“用CSS模板”，阿牛不多一句废话。
 
-CSS框架，是一组CSS样式的集合，包括了多种常用的布局。
+CSS模板，是一组CSS样式的集合，包括了多种布局。
 
-用CSS框架，可以加速和简化网页的设计和开发。
+用CSS模板，可以加速和简化网页的设计和开发。
 
-网上有很多成熟的CSS框架，比如YUI Grids，Blue Print Css，YAML，Gird 960等等。
+网上有很多成熟的CSS模板，比如YUI Grids，Blue Print Css，YAML，Gird 960等等。
 
-当然，很多CSS高手倾向于自己打造一套用着顺手的CSS框架。
+当然，很多CSS高手倾向于自己打造一套用着顺手的CSS模板。
 
-同样的HTML,实现40种布局 page:css_frame_work/index.html 。
+在此介绍两套比较好用的CSS模板。
 
+首先来自Alessandro Fulciniti的一套CSS模板，此框架在同样的HTML结构上,用CSS实现了40种布局 page:css_frame_work/index.html 。
+
+这40种布局囊括了两栏，三栏，定宽，自适应，等常见布局。
+
+其基本的页面结构如下。
+{{{
+<div id="container">
+    <div id="header">头</div>
+    <div id="wrapper">
+        <div id="content">内容</div>
+    </div>
+    <div id="navigation">侧栏</div>
+    <div id="extra">额外</div>
+    <div id="footer">页脚</div>
+</div> 
+}}}
+
+再来看看对应的几个最常用布局的CSS
+
+01.三个百分比栏目:
+{{{
+div#wrapper{float:left;width:100%}
+div#content{margin: 0 25%}
+div#navigation{float:left;width:25%;margin-left:-100%}
+div#extra{float:left;width:25%;margin-left:-25%}
+div#footer{clear:left;width:100%}
+}}}
+
+24.两栏自适应，一边固定
+{{{
+div#wrapper{float:right;width:100%;margin-left:-200px}
+div#content{margin-left:200px}
+div#navigation{float:left;width:200px}
+div#extra{float:left;clear:left;width:200px}
+div#footer{clear:both;width:100%}
+}}}
+
+39.固定品字形
+{{{
+div#container{width:700px;margin:0 auto}
+div#navigation{float:left;width:350px}
+div#extra{float:right;width:350px}
+div#footer{clear:both;width:100%}
+}}}
+可以根据需要，选择适合的CSS。
 Grid 960
 
 -----------------------------
