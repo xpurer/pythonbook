@@ -89,6 +89,9 @@ div#extra{float:right;width:350px}
 div#footer{clear:both;width:100%}
 }}}
 可以根据需要，选择适合的CSS。
+
+展示类网站，更常用的是定宽布局。QQ，163，新浪，搜狐等各大门户的首页都是定宽布局。
+
 Grid 960
 
 -----------------------------
