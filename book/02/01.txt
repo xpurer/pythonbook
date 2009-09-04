@@ -38,7 +38,7 @@ CSS模板，是一组CSS样式的集合，包括了多种布局。
 
 用CSS模板，可以加速和简化网页的设计和开发。
 
-网上有很多成熟的CSS模板，比如YUI Grids，Blue Print Css，YAML，Gird 960等等。
+网上有很多成熟的CSS模板，比如YUI Grids，Blue Print Css，YAML，960 Gird等等。
 
 当然，很多CSS高手倾向于自己打造一套用着顺手的CSS模板。
 
