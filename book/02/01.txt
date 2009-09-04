@@ -72,6 +72,9 @@ div#extra{float:left;width:25%;margin-left:-25%}
 div#footer{clear:left;width:100%}
 }}}
 
+三个百分比栏目 l24_1.png
+
+
 24.两栏自适应，一边固定
 {{{
 div#wrapper{float:right;width:100%;margin-left:-200px}
@@ -81,6 +84,8 @@ div#extra{float:left;clear:left;width:200px}
 div#footer{clear:both;width:100%}
 }}}
 
+两栏自适应，一边固定 l24_24.png
+
 39.固定品字形
 {{{
 div#container{width:700px;margin:0 auto}
@@ -88,13 +93,39 @@ div#navigation{float:left;width:350px}
 div#extra{float:right;width:350px}
 div#footer{clear:both;width:100%}
 }}}
+
+固定品字形 l24_39.png
+
 可以根据需要，选择适合的CSS。
 
-展示类网站，更常用的是定宽布局。QQ，163，新浪，搜狐等各大门户的首页都是定宽布局。
+展示类网站，更常用的是定宽布局。各大门户的首页都是定宽布局,
+{{{
+网站          首页页面宽度
+Yahoo!        950px
+淘宝          950px
+MySpace       960px
+新浪 9        50px
+网易          960px
+Live Search   958px
+搜狐          950px
+优酷          960px
+AOL           960px
+}}}
+因此，郑重的向大家介绍著名的 960 Grid （ http://960.gs/ ） 框架。
 
-因此，郑重的向大家介绍著名的 Grid 960 （ http://960.gs/ ） 框架。
+根据网络砖家们的研究发现，950px-960px是网页的最适合宽度。
 
-根据砖家们的研究发现，960px左右是网页的最适合宽度。
+而Grid的含义是栅格化，是一种布局思想，它将网页分割固定大小的列。
+
+分割图 grid_960.png
+
+通过这些列，规范页面中元素的尺寸，以实现规范化和快速开发。
+
+常见的列数有12列，16列，24列。960 Grid
+
+
+http://www.spry-soft.com/grids/
+
 
 演示
 page:css_frame_work/960/index.html
