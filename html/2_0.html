@@ -89,7 +89,7 @@ div#footer{clear:both;width:100%}
 <div class="image-title">图:固定宽度品字形</div>
 </div>
 <p>可以根据需要，选择适合的CSS。</p>
-<p>展示类网站，更常用的是定宽布局。各大门户的首页都是定宽布局,</p>
+<p>展示类网站，更常用的是定宽布局,各大门户的首页都是定宽布局。</p>
 <div class="content"><pre>
 网站          首页页面宽度
 Yahoo!        950px
@@ -112,11 +112,36 @@ AOL           960px
 
 <div class="image-title">图:分割图</div>
 </div>
-<p>通过这些列，规范页面中元素的尺寸，以实现规范化和快速开发。</p>
-<p>常见的列数有12列，16列，24列。960 Grid</p>
-<p><a target="_blank" href="http://www.spry-soft.com/grids/">http://www.spry-soft.com/grids/</a></p>
-<p>演示</p>
-<p><a href="page/css_frame_work/960/index.html" target="_blank">链接</a></p>
+<p>通过这些列统一页面中元素的尺寸，以实现规范化和快速开发。</p>
+<p>常见的列数有12列，16列，24列。</p>
+<p>960 Grid 提供了12列和16列的样式 <a href="page/css_frame_work/960/index.html" target="_blank">链接</a>。</p>
+<div class="imageblock">
+<div class="content">
+<img alt="12列效果图" src="img/grid_960_12.png"/>
+</div>
+
+<div class="image-title">图:12列效果图</div>
+</div>
+<p>也可以在 <a target="_blank" href="http://www.spry-soft.com/grids/">http://www.spry-soft.com/grids/</a> 自定义列数和宽度，来按需生成CSS。</p>
+<p>960 Grid 的基本页面结构如下。</p>
+<div class="content"><pre>
+&lt;div class="container_12"&gt;
+    &lt;div class="grid_7 prefix_1"&gt;
+        &lt;div class="grid_2 alpha"&gt;
+            ...
+        &lt;/div&gt;
+        &lt;div class="grid_3"&gt;
+            ...
+        &lt;/div&gt;
+        &lt;div class="grid_2 omega"&gt;
+            ...
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="grid_3 suffix_1"&gt;
+        ...
+    &lt;/div&gt;
+&lt;/div&gt;
+</pre></div>
 <div style="border:0;border-bottom:1px #ccc dotted;margin:40px 0;"></div>
 <p>上帝为你关上一扇门，一定会为你打开一扇窗。</p>
 <p>爬窗而入，总好过被尿憋死。</p>

@@ -98,7 +98,7 @@ div#footer{clear:both;width:100%}
 
 可以根据需要，选择适合的CSS。
 
-展示类网站，更常用的是定宽布局。各大门户的首页都是定宽布局,
+展示类网站，更常用的是定宽布局,各大门户的首页都是定宽布局。
 {{{
 网站          首页页面宽度
 Yahoo!        950px
@@ -119,17 +119,36 @@ AOL           960px
 
 分割图 grid_960.png
 
-通过这些列，规范页面中元素的尺寸，以实现规范化和快速开发。
+通过这些列统一页面中元素的尺寸，以实现规范化和快速开发。
 
-常见的列数有12列，16列，24列。960 Grid
+常见的列数有12列，16列，24列。
 
+960 Grid 提供了12列和16列的样式 page:css_frame_work/960/index.html 。
 
-http://www.spry-soft.com/grids/
+12列效果图 grid_960_12.png
 
+也可以在 http://www.spry-soft.com/grids/ 自定义列数和宽度，来按需生成CSS。
 
-演示
-page:css_frame_work/960/index.html
+960 Grid 的基本页面结构如下。
 
+{{{
+<div class="container_12">
+    <div class="grid_7 prefix_1">
+        <div class="grid_2 alpha">
+            ...
+        </div>
+        <div class="grid_3">
+            ...
+        </div>
+        <div class="grid_2 omega">
+            ...
+        </div>
+    </div>
+    <div class="grid_3 suffix_1">
+        ...
+    </div>
+</div>
+}}}
 
 -----------------------------
 
