@@ -75,7 +75,7 @@ div#footer{clear:left;width:100%}
 三个百分比栏目 l24_1.png
 
 
-24.两栏自适应，一边固定
+24.两栏自适应，一边固定宽度
 {{{
 div#wrapper{float:right;width:100%;margin-left:-200px}
 div#content{margin-left:200px}
@@ -84,9 +84,9 @@ div#extra{float:left;clear:left;width:200px}
 div#footer{clear:both;width:100%}
 }}}
 
-两栏自适应，一边固定 l24_24.png
+两栏自适应，一边固定宽度 l24_24.png
 
-39.固定品字形
+39.固定宽度品字形
 {{{
 div#container{width:700px;margin:0 auto}
 div#navigation{float:left;width:350px}
@@ -94,7 +94,7 @@ div#extra{float:right;width:350px}
 div#footer{clear:both;width:100%}
 }}}
 
-固定品字形 l24_39.png
+固定宽度品字形 l24_39.png
 
 可以根据需要，选择适合的CSS。
 
