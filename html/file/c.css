@@ -132,10 +132,10 @@ font-family: Baskerville, "Goudy Old Style", "Palatino", "Book Antiqua", serif;
 p a.comment {
 display: none;
 width: 100px;
-padding: 104px 0 100px 115px;
+padding: 104px 0 100px 0;
 position: absolute;
 margin-top: -100px;
-margin-left: 600px;
+margin-left: 730px;
 text-decoration: none;
 text-align: left;
 
