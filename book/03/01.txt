@@ -1,5 +1,44 @@
 WSGI 架网站
 
+什么是WSGI
+
+    * WSGI:Python Web Server Gateway Interface v1.0
+    * 它是 PEP333 中定义的
+    * WSGI是Python应用程序或框架和Web服务器之间的一种接口
+    * WSGI被广泛接受, 已基本达成它了可移植性方面的目标
+    * 在Guido的 Blog 中反复提及, 个人认为WSGI是Python Web方面最Pythonic的
+    * 类似于Java中的"servlet" API
+
+WSGI的实现(1)
+
+    * WSGI 没有官方的实现, 因为WSGI更像一个协议. 只要遵照这些协议,WSGI应用(Application)都可以在任何实现(Server)上运行, 反之亦然
+
+实现 ( 参看 WSGIImplementations)
+
+    * wsgiref - PEP333的作者写的WSGI基础库, 实现了大多数WSGI实现中的难点.
+    * Python Paste - WSGI底层工具集. 包括多线程, SSL和 基于Cookies, sessions等的验证(authentication)库. 可以用Pasts方便得搭建自己的Web框架
+    * PEAK - Python Enterprise Application Kit
+    * WSGIUtils
+
+
+Middleware
+WSGI的扩展就在于中间件, 原则上中间件可各种WSGI实现中通用, 下面提供可以找到各种中间件的地方:
+
+    * flup 中间件包括error, gzip, session等
+    * WSGIarea
+    * 其它各种WSGI实现, 甚至是某些Framework的实现中
+
+ 一个简单的例子(1)
+Application/function
+
+ def simple_app(environ, start_response):
+     """Simplest possible application object"""
+     status = '200 OK'
+     response_headers = [('Content-type','text/plain')]
+     start_response(status, response_headers)
+     return ['Hello world!\n']
+
+
 
 http://www.python.org/ftp/python/2.6.2/python-2.6.2.msi
 下载安装
