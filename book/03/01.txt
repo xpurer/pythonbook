@@ -1,5 +1,34 @@
 WSGI 架网站
 
+麻油四喜欢花花草草。
+
+没有花花草草喜欢他。
+
+群芳丛中过，片叶不沾身。
+
+人常道：没有谈过恋爱的大学，是不完整的。
+
+生命如此短暂而宝贵，麻油四不想留下遗憾。
+
+一点儿遗憾也不想要。
+
+某日，他和同样孑然一身的阿牛对酒言愁。
+
+说着说着，阿牛提议：“来写个学校的交友网站吧，广结天下良缘，也算是一种善事。”
+
+“好啊，好啊”，麻油四终于不胜酒力，醉卧沙场。
+
+-------------------------------
+
+麻油四深深地吸了口清晨的空气，从他枕边发现了阿牛留下的字条和小册子。
+
+字条上只有八个字：“看懂册子 过来找我”。
+
+又是一本破旧的小册子，封面上写着“Python写网站入门 作者：阿牛”，麻油四翻看了起来。
+
+学Python ，三天就可以上手了。（Python手册 page:other/python25_man.pdf ）
+
+
 什么是WSGI
 
     * WSGI:Python Web Server Gateway Interface v1.0
@@ -19,7 +48,6 @@ WSGI的实现(1)
     * Python Paste - WSGI底层工具集. 包括多线程, SSL和 基于Cookies, sessions等的验证(authentication)库. 可以用Pasts方便得搭建自己的Web框架
     * PEAK - Python Enterprise Application Kit
     * WSGIUtils
-
 
 Middleware
 WSGI的扩展就在于中间件, 原则上中间件可各种WSGI实现中通用, 下面提供可以找到各种中间件的地方:
