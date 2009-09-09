@@ -26,7 +26,7 @@ WSGI 架网站
 
 又是一本破旧的小册子，封面上写着“Python写网站入门 作者：阿牛”，麻油四翻看了起来。
 
-学Python ，三天就可以上手了。（Python手册 page:other/python25_man.pdf ）
+学Python ，三天就可以上手了。（Python教程 page:other/python25_man.pdf ）
 
 
 什么是WSGI
