@@ -21,6 +21,17 @@
 <p>字条上只有八个字：“看懂册子 过来找我”。</p>
 <p>又是一本破旧的小册子，封面上写着“Python写网站入门 作者：阿牛”，麻油四翻看了起来。</p>
 <p>学Python ，三天就可以上手了。（Python教程 <a href="page/other/python25_man.pdf" target="_blank">链接</a> ）</p>
+<p>Python有一个好用的包管理，安装完Python2.6后，下载 <a target="_blank" href="http://peak.telecommunity.com/dist/ez_setup.py">http://peak.telecommunity.com/dist/ez_setup.py</a> 双击运行。</p>
+<p>然后在我的电脑上右键点击 --&gt; 属性 --&gt; 高级 --&gt; 环境变量 -- 系统变量 -- Path -- 双击出现编辑框</p>
+<p>--&gt; 在已经内容的结尾加上 ;C:\Python26\Scripts;  --&gt; 点击确定</p>
+<p>--&gt; 点击环境变量页面的确定</p>
+<p>开始 --&gt; 运行 --&gt; 输入 cmd --&gt; 输入</p>
+<div class="content"><pre>
+easy_install -U mypy
+</pre></div>
+<p>就可以安装网站的开发框架mypy了，大部分软件包都可以如此这般的安装。</p>
+<p>此外，还需要安装MySQL-Python。</p>
+<p>MySQL-Python一直迟迟没有发布Python2.6的官方Windows编译版，所以从 <a target="_blank" href="http://www.codegood.com/archives/4">http://www.codegood.com/archives/4</a>  下载非官方编译的Python2.6版的MySQL-Python <a href="page/other/mysql_python_1.2.3c1.win32-py2.6.exe" target="_blank">链接</a>  安装。</p>
 <p>什么是WSGI</p>
 <p>    * WSGI:Python Web Server Gateway Interface v1.0</p>
 <p>    * 它是 PEP333 中定义的</p>
@@ -48,21 +59,6 @@
 <p>     response_headers = [('Content-type','text/plain')]</p>
 <p>     start_response(status, response_headers)</p>
 <p>     return ['Hello world!\n']</p>
-<p><a target="_blank" href="http://www.python.org/ftp/python/2.6.2/python-2.6.2.msi">http://www.python.org/ftp/python/2.6.2/python-2.6.2.msi</a></p>
-<p>下载安装</p>
-<p><a target="_blank" href="http://peak.telecommunity.com/dist/ez_setup.py">http://peak.telecommunity.com/dist/ez_setup.py</a></p>
-<p>下载，双击运行</p>
-<p>我的电脑 -- 右键点击</p>
-<p>--&gt; 属性</p>
-<p>--&gt; 高级</p>
-<p>--&gt; 环境变量 -- 系统变量 -- Path -- 双击出现编辑框</p>
-<p>--&gt; 在已经内容的结尾加上 ;C:\Python26\Scripts;  --&gt; 点击确定</p>
-<p>--&gt; 点击环境变量页面的确定</p>
-<p>开始 --&gt; 运行 --&gt; 输入 cmd --&gt; 输入</p>
-<p>easy_install -U mako</p>
-<p>easy_install -U yaro</p>
-<p>easy_install -U static</p>
-<p>easy_install -U Mercurial</p>
 
 <div class="dirnav">
 <a href="2_4.html">上一节</a>
