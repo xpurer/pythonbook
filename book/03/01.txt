@@ -29,6 +29,8 @@ WSGI 架网站
 学Python ，三天就可以上手了。（Python教程 page:other/python25_man.pdf ）
 
 
+1.easy_install
+
 什么是WSGI
 
     * WSGI:Python Web Server Gateway Interface v1.0
