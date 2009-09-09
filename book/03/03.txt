@@ -1,3 +1,5 @@
 数据库与ORM
 
+CREATE DATABASE wtree CHARACTER SET utf8 COLLATE utf8_bin;
+
 表小 数据切片
