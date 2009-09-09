@@ -9,3 +9,8 @@ CREATE DATABASE wtree CHARACTER SET utf8 COLLATE utf8_bin;
 提示：使用UTF8时为了节省空间，使用VARCHAR而不要用CHAR。否则，MySQL必须为一个CHAR(10) CHARACTER SET utf8列预备30个字节，因为这是可能的最大长度。
 
 column1 VARCHAR(5) CHARACTER SET latin1 COLLATE latin1_german1_ci
+
+
+MySQL官方文档 page:other/learn_html_css.chm
+
+x
