@@ -13,4 +13,4 @@ column1 VARCHAR(5) CHARACTER SET latin1 COLLATE latin1_german1_ci
 
 MySQL官方文档 page:other/learn_html_css.chm
 
-x
+用户表 用户身份 管理员 企业 个人
