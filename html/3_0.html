@@ -38,6 +38,25 @@ easy_install -U mypy
 <div class="content"><pre>
 python -m mypy.cmd new ppmm
 </pre></div>
+<p>可以看到有两个python文件：</p>
+<div class="content"><pre>
+dev_server.py
+init_app.py
+</pre></div>
+<p>init_app.py 用于初始化网站，dev_server.py 是开发用的服务器，默认端口是9888。</p>
+<p>其他的目录结构如下</p>
+<div class="content"><pre>
+myconf
+myfile
+mylib
+mysite
+</pre></div>
+<p>myconf，配置文件所在的路径；myfile，静态文件所在路径；mylib，库文件所在路径。</p>
+<p>mysite 中为网站代码，其中又有四个目录：</p>
+<p>    ctrl，control的缩写，这里写页面相关的逻辑。</p>
+<p>    model，放置操作数据库的后台逻辑代码。</p>
+<p>    htm，用于网页模板。</p>
+<p>    util，一些公用的函数，比如分页。</p>
 <p>温馨提示：您的网费即将到期，  请拨打15811572792缴费。以免耽误您的使用，谢谢</p>
 
 <div class="dirnav">
