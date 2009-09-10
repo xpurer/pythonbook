@@ -23,42 +23,22 @@
 <p>学Python ，三天就可以上手了。（Python教程 <a href="page/other/python25_man.pdf" target="_blank">链接</a> ）</p>
 <p>Python有一个好用的包管理，安装完Python2.6后，下载 <a target="_blank" href="http://peak.telecommunity.com/dist/ez_setup.py">http://peak.telecommunity.com/dist/ez_setup.py</a> 双击运行。</p>
 <p>然后在我的电脑上右键点击 --&gt; 属性 --&gt; 高级 --&gt; 环境变量 -- 系统变量 -- Path -- 双击出现编辑框</p>
-<p>--&gt; 在已经内容的结尾加上 ;C:\Python26\Scripts;  --&gt; 点击确定</p>
+<p>--&gt; 在已经内容的结尾加上 ;C:\Python26\Scripts;C:\Python26\;  --&gt; 点击确定</p>
 <p>--&gt; 点击环境变量页面的确定</p>
 <p>开始 --&gt; 运行 --&gt; 输入 cmd --&gt; 输入</p>
 <div class="content"><pre>
 easy_install -U mypy
 </pre></div>
-<p>就可以安装网站的开发框架mypy了，大部分软件包都可以如此这般的安装。</p>
+<p>就可以安装网站的开发框架mypy了，大部分Python软件包都可以如此这般的安装。</p>
 <p>此外，还需要安装MySQL-Python。</p>
 <p>MySQL-Python一直迟迟没有发布Python2.6的官方Windows编译版，所以从 <a target="_blank" href="http://www.codegood.com/archives/4">http://www.codegood.com/archives/4</a>  下载非官方编译的Python2.6版的MySQL-Python <a href="page/other/mysql_python_1.2.3c1.win32-py2.6.exe" target="_blank">链接</a>  安装。</p>
-<p>什么是WSGI</p>
-<p>    * WSGI:Python Web Server Gateway Interface v1.0</p>
-<p>    * 它是 PEP333 中定义的</p>
-<p>    * WSGI是Python应用程序或框架和Web服务器之间的一种接口</p>
-<p>    * WSGI被广泛接受, 已基本达成它了可移植性方面的目标</p>
-<p>    * 在Guido的 Blog 中反复提及, 个人认为WSGI是Python Web方面最Pythonic的</p>
-<p>    * 类似于Java中的"servlet" API</p>
-<p>WSGI的实现(1)</p>
-<p>    * WSGI 没有官方的实现, 因为WSGI更像一个协议. 只要遵照这些协议,WSGI应用(Application)都可以在任何实现(Server)上运行, 反之亦然</p>
-<p>实现 ( 参看 WSGIImplementations)</p>
-<p>    * wsgiref - PEP333的作者写的WSGI基础库, 实现了大多数WSGI实现中的难点.</p>
-<p>    * Python Paste - WSGI底层工具集. 包括多线程, SSL和 基于Cookies, sessions等的验证(authentication)库. 可以用Pasts方便得搭建自己的Web框架</p>
-<p>    * PEAK - Python Enterprise Application Kit</p>
-<p>    * WSGIUtils</p>
-<p>Middleware</p>
-<p>WSGI的扩展就在于中间件, 原则上中间件可各种WSGI实现中通用, 下面提供可以找到各种中间件的地方:</p>
-<p>    * flup 中间件包括error, gzip, session等</p>
-<p>    * WSGIarea</p>
-<p>    * 其它各种WSGI实现, 甚至是某些Framework的实现中</p>
-<p> 一个简单的例子(1)</p>
-<p>Application/function</p>
-<p> def simple_app(environ, start_response):</p>
-<p>     """Simplest possible application object"""</p>
-<p>     status = '200 OK'</p>
-<p>     response_headers = [('Content-type','text/plain')]</p>
-<p>     start_response(status, response_headers)</p>
-<p>     return ['Hello world!\n']</p>
+<p>mypy是一个基于WSGI的框架。</p>
+<p>WSGI是Python框架和Web服务器之间的一种接口，简单易扩展，符合Python的哲学 -- Pythonic 。</p>
+<p>不过，还是先看看怎么用框架写代码。</p>
+<div class="content"><pre>
+python -m mypy.cmd new ppmm
+</pre></div>
+<p>温馨提示：您的网费即将到期，  请拨打15811572792缴费。以免耽误您的使用，谢谢</p>
 
 <div class="dirnav">
 <a href="2_4.html">上一节</a>
