@@ -26,6 +26,31 @@ WSGI 架网站
 
 又是一本破旧的小册子，封面上写着“Python写网站入门 作者：阿牛”，麻油四翻看了起来。
 
+Python，Google、Yahoo、YouTube、NASA(美国航空航天局)、FriendFeed、豆瓣、网易游戏、搜狐邮箱，都在用它。
+
+用Python写网站，选择非常丰富。常见的有：
+
+Zope
+
+Quixote
+
+Django
+
+Pylons
+
+web.py
+
+还有一些比较特别的框架，比如
+
+Facebook（FriendFeed部门）发布的Tornado http://www.tornadoweb.org/
+
+IBM(Second Life部门）发布的Mulib http://wiki.secondlife.com/wiki/Mulib
+
+国人沈崴的Eurasia http://code.google.com/p/eurasia/
+
+这三款框架共同的特点是支持大量并发的连接，写网页游戏，网页聊天室不妨考虑一下它们。
+
+
 学Python ，三天就可以上手了。（Python教程 page:other/python25_man.pdf ）
 
 Python有一个好用的包管理，安装完Python2.6后，下载 http://peak.telecommunity.com/dist/ez_setup.py 双击运行。
