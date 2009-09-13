@@ -30,7 +30,7 @@ WSGI 架网站
 
 Google、Yahoo、YouTube、NASA(美国航空航天局)、FriendFeed、豆瓣、网易游戏、搜狐邮箱，都是Python的忠实用户。
 
-而用Python写网站，选择非常丰富。常见的有：
+而用Python写网站，选择丰富。常见的有：
 
 Zope，早期的Python框架，著名的Plone内容管理系统（CMS）基于其开发，和Java类似，Zope也有一套自成体系的服务器，数据库。
 
@@ -38,7 +38,7 @@ Quixote，也是一个早期的Python框架，豆瓣网（douban.com）基于其
 
 Django，当下最流行的Python框架，玩聚网（ju690.com），好看簿（haokanbu.com）基于其开发，它能自动生成一套后台管理的界面，很适合用于快速完成小项目。
 
-Pylons，由各种Python库整合而成的框架，reddit.com基于其开发，可定制性好。
+Pylons，由各种Python库整合而成的框架，reddit.com 基于其开发，可定制性好。
 
 web.py，非常轻量级的一个Python框架，sohu邮箱基于其开发，它也常用于嵌入式设备。
 
@@ -58,8 +58,12 @@ IBM(Second Life部门）发布的Mulib http://wiki.secondlife.com/wiki/Mulib
 
 安装完Python2.6后，下载 http://peak.telecommunity.com/dist/ez_setup.py 双击运行，这样就安装了Python的包管理。
 
-然后在我的电脑上右键点击 --> 属性 --> 高级 --> 环境变量 -- 系统变量 -- Path -- 双击出现编辑框 
---> 在已经内容的结尾加上 ;C:\Python26\Scripts;C:\Python26\;  --> 点击确定
+然后在我的电脑上右键点击 
+--> 属性
+--> 高级 
+--> 环境变量 -- 系统变量 -- Path -- 双击出现编辑框 
+--> 在已经内容的结尾加上 ;C:\Python26\Scripts;C:\Python26\;  
+--> 点击确定
 --> 点击环境变量页面的确定
 
 
@@ -68,7 +72,7 @@ IBM(Second Life部门）发布的Mulib http://wiki.secondlife.com/wiki/Mulib
 easy_install -U mypy
 }}}
 
-就可以安装我们用到的网站开发框架mypy -- 一个在WSGI基础上搭建起来简单框架。
+就可以安装我们用到的网站开发框架mypy -- 一个在WSGI基础上搭建起来框架。
 
 WSGI是Python框架和Web服务器之间的一种接口，简单易扩展，符合Python的哲学 -- Pythonic 。
 
@@ -76,7 +80,7 @@ WSGI是Python框架和Web服务器之间的一种接口，简单易扩展，符�
 
 MySQL-Python迟迟没有发布Python2.6的官方Windows编译版，所以从 http://www.codegood.com/archives/4  下载非官方编译的Python2.6版的MySQL-Python page:other/mysql_python_1.2.3c1.win32-py2.6.exe  安装。 
 
-先看看怎么用框架写代码 -- 首先，新建一个项目。
+先看看怎么框架的目录结构 -- 首先，新建一个项目。
 
 {{{
 python -m mypy.cmd new ppmm
@@ -104,7 +108,7 @@ mylib
 mysite
 }}}
 
-myconf，配置文件所在的路径；myfile，静态文件所在路径；mylib，库文件所在路径。
+myconf，配置文件所在的路径；myfile，静态文件所在路径；mylib，定制的Python库所在路径。
 
 mysite 中为网站代码，其中又有四个目录：
 {{{
@@ -114,9 +118,21 @@ htm
 util
 }}}
 
-    
 ctrl，control的缩写，这里写页面相关的逻辑。
-model，放置操作数据库的后台逻辑代码。
-htm，用于网页模板。
-util，一些公用的函数，比如分页。
+model，操作数据库的后台逻辑代码所在目录。
+htm，放置网页模板。
+util，公用的函数，如分页等。
+
+首先，从最基本的用户注册写起。
+
+在开始写代码之前，先想要好应用的流程，构思好需要哪些数据。
+
+用户注册分两步。
+
+第一步，填写邮箱，发送激活邮件，
+第二步，用户激活，填写详细信息。
+
+
+
+
 
