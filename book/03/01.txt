@@ -70,13 +70,13 @@ easy_install -U mypy
 
 就可以安装我们用到的网站开发框架mypy -- 一个在WSGI基础上搭建起来简单框架。
 
-此外，还需要安装MySQL-Python，用于连接MySQL数据库。
-
-MySQL-Python一直迟迟没有发布Python2.6的官方Windows编译版，所以从 http://www.codegood.com/archives/4  下载非官方编译的Python2.6版的MySQL-Python page:other/mysql_python_1.2.3c1.win32-py2.6.exe  安装。 
-
 WSGI是Python框架和Web服务器之间的一种接口，简单易扩展，符合Python的哲学 -- Pythonic 。
 
-不过，还是先看看怎么用框架写代码 -- 首先，新建一个项目。
+此外，还需要安装MySQL-Python，用于连接MySQL数据库。
+
+MySQL-Python迟迟没有发布Python2.6的官方Windows编译版，所以从 http://www.codegood.com/archives/4  下载非官方编译的Python2.6版的MySQL-Python page:other/mysql_python_1.2.3c1.win32-py2.6.exe  安装。 
+
+先看看怎么用框架写代码 -- 首先，新建一个项目。
 
 {{{
 python -m mypy.cmd new ppmm
