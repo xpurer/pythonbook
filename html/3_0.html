@@ -20,20 +20,22 @@
 <p>麻油四深深地吸了口清晨的空气，从他枕边发现了阿牛留下的字条和小册子。</p>
 <p>字条上只有八个字：“看懂册子 过来找我”。</p>
 <p>又是一本破旧的小册子，封面上写着“Python写网站入门 作者：阿牛”，麻油四翻看了起来。</p>
-<p>Python，Google、Yahoo、YouTube、NASA(美国航空航天局)、FriendFeed、豆瓣、网易游戏、搜狐邮箱，都在用它。</p>
-<p>用Python写网站，选择非常丰富。常见的有：</p>
-<p>Zope</p>
-<p>Quixote</p>
-<p>Django</p>
-<p>Pylons</p>
-<p>web.py</p>
+<p>学Python ，三天就可以上手了。（Python教程 <a href="page/other/python25_man.pdf" target="_blank">链接</a> ）</p>
+<p>Google、Yahoo、YouTube、NASA(美国航空航天局)、FriendFeed、豆瓣、网易游戏、搜狐邮箱，都是Python的忠实用户。</p>
+<p>而用Python写网站，选择非常丰富。常见的有：</p>
+<p>Zope，早期的Python框架，著名的Plone内容管理系统（CMS）基于其开发，和Java类似，Zope也有一套自成体系的服务器，数据库。</p>
+<p>Quixote，也是一个早期的Python框架，豆瓣网（douban.com）基于其开发，它的起源是因为用Zope写的代码难以维护和调试。</p>
+<p>Django，当下最流行的Python框架，玩聚网（ju690.com），好看簿（haokanbu.com）基于其开发，它能自动生成一套后台管理的界面，很适合用于快速完成小项目。</p>
+<p>Pylons，由各种Python库整合而成的框架，reddit.com基于其开发，可定制性好。</p>
+<p>web.py，非常轻量级的一个Python框架，sohu邮箱基于其开发，它也常用于嵌入式设备。</p>
 <p>还有一些比较特别的框架，比如</p>
 <p>Facebook（FriendFeed部门）发布的Tornado <a target="_blank" href="http://www.tornadoweb.org/">http://www.tornadoweb.org/</a></p>
 <p>IBM(Second Life部门）发布的Mulib <a target="_blank" href="http://wiki.secondlife.com/wiki/Mulib">http://wiki.secondlife.com/wiki/Mulib</a></p>
 <p>国人沈崴的Eurasia <a target="_blank" href="http://code.google.com/p/eurasia/">http://code.google.com/p/eurasia/</a></p>
 <p>这三款框架共同的特点是支持大量并发的连接，写网页游戏，网页聊天室不妨考虑一下它们。</p>
-<p>学Python ，三天就可以上手了。（Python教程 <a href="page/other/python25_man.pdf" target="_blank">链接</a> ）</p>
-<p>Python有一个好用的包管理，安装完Python2.6后，下载 <a target="_blank" href="http://peak.telecommunity.com/dist/ez_setup.py">http://peak.telecommunity.com/dist/ez_setup.py</a> 双击运行。</p>
+<p>事实上，用Python按照自己的需求，搭建一个框架是非常轻松的事情，以至于有篇文章教你用3个小时，60行代码编写一个垃圾框架（<a target="_blank" href="http://code.google.com/p/robaccia/">http://code.google.com/p/robaccia/</a> ，robaccia，意大利语的垃圾）。</p>
+<p>好吧，还是先从环境配置开始。首先，安装Python。</p>
+<p>安装完Python2.6后，下载 <a target="_blank" href="http://peak.telecommunity.com/dist/ez_setup.py">http://peak.telecommunity.com/dist/ez_setup.py</a> 双击运行，这样就安装了Python的包管理。</p>
 <p>然后在我的电脑上右键点击 --&gt; 属性 --&gt; 高级 --&gt; 环境变量 -- 系统变量 -- Path -- 双击出现编辑框</p>
 <p>--&gt; 在已经内容的结尾加上 ;C:\Python26\Scripts;C:\Python26\;  --&gt; 点击确定</p>
 <p>--&gt; 点击环境变量页面的确定</p>
@@ -41,21 +43,24 @@
 <div class="content"><pre>
 easy_install -U mypy
 </pre></div>
-<p>就可以安装网站的开发框架mypy了，大部分Python软件包都可以如此这般的安装。</p>
-<p>此外，还需要安装MySQL-Python。</p>
+<p>就可以安装我们用到的网站开发框架mypy -- 一个在WSGI基础上搭建起来简单框架。</p>
+<p>此外，还需要安装MySQL-Python，用于连接MySQL数据库。</p>
 <p>MySQL-Python一直迟迟没有发布Python2.6的官方Windows编译版，所以从 <a target="_blank" href="http://www.codegood.com/archives/4">http://www.codegood.com/archives/4</a>  下载非官方编译的Python2.6版的MySQL-Python <a href="page/other/mysql_python_1.2.3c1.win32-py2.6.exe" target="_blank">链接</a>  安装。</p>
-<p>mypy是一个基于WSGI的框架。</p>
 <p>WSGI是Python框架和Web服务器之间的一种接口，简单易扩展，符合Python的哲学 -- Pythonic 。</p>
-<p>不过，还是先看看怎么用框架写代码。</p>
+<p>不过，还是先看看怎么用框架写代码 -- 首先，新建一个项目。</p>
 <div class="content"><pre>
 python -m mypy.cmd new ppmm
 </pre></div>
-<p>可以看到有两个python文件：</p>
+<p>这里ppmm便是项目名称。在生成的ppmm目录下，可以看到有三个python文件：</p>
 <div class="content"><pre>
-dev_server.py
 init_app.py
+dev_server.py
+simple_server.py
 </pre></div>
-<p>init_app.py 用于初始化网站，dev_server.py 是开发用的服务器，默认端口是9888。</p>
+<p>init_app.py 用于初始化网站。</p>
+<p>simple_server.py,是一个简单的纯Python服务器，默认端口是9888。</p>
+<p>dev_server.py 是开发用的服务器，当修改网站中Python文件时，会自动重启，默认端口是9889。</p>
+<p>运行dev_server.py，访问 <a target="_blank" href="http://127.0.0.1:9889">http://127.0.0.1:9889</a> ，就可以看到默认的提示页面了。</p>
 <p>其他的目录结构如下</p>
 <div class="content"><pre>
 myconf
@@ -65,12 +70,16 @@ mysite
 </pre></div>
 <p>myconf，配置文件所在的路径；myfile，静态文件所在路径；mylib，库文件所在路径。</p>
 <p>mysite 中为网站代码，其中又有四个目录：</p>
-<p>    ctrl，control的缩写，这里写页面相关的逻辑。</p>
-<p>    model，放置操作数据库的后台逻辑代码。</p>
-<p>    htm，用于网页模板。</p>
-<p>    util，一些公用的函数，比如分页。</p>
-<p>首先，配置数据库。</p>
-<p>温馨提示：您的网费即将到期，  请拨打15811572792缴费。以免耽误您的使用，谢谢</p>
+<div class="content"><pre>
+ctrl
+model
+htm
+util
+</pre></div>
+<p>ctrl，control的缩写，这里写页面相关的逻辑。</p>
+<p>model，放置操作数据库的后台逻辑代码。</p>
+<p>htm，用于网页模板。</p>
+<p>util，一些公用的函数，比如分页。</p>
 
 <div class="dirnav">
 <a href="2_4.html">上一节</a>
