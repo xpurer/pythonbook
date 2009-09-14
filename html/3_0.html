@@ -20,14 +20,37 @@
 <p>麻油四深深地吸了口清晨的空气，从他枕边发现了阿牛留下的字条和小册子。</p>
 <p>字条上只有八个字：“看懂册子 过来找我”。</p>
 <p>又是一本破旧的小册子，封面上写着“Python写网站入门 作者：阿牛”，麻油四翻看了起来。</p>
+<div style="border:0;border-bottom:1px #ccc dotted;margin:40px 0;"></div>
+<p>一座高山，一位老人，一个少年。</p>
+<p>“用Python写网站，最可怕的技术是什么？”少年问老人：“是不是名动天下的Zope？”</p>
+<p>“以前也许是，现在却不是了。”</p>
+<p>“为什么？”</p>
+<p>“因为Zope自从1996年初出江湖，到如今已经有十多年。十年的光阴，足以让许多事情改变”老人黯然叹息。</p>
+<p>“那个企业应用为王的时代已经过去，那些复杂而厚重的框架，已日渐衰落。”</p>
+<p>少年仰望高山，山巅白云悠悠。</p>
+<p>“那是什么？”少年又问老人：“是不是插件众多的Django？”</p>
+<p>“不是。”</p>
+<p>“是不是很小很轻量的web.py？”</p>
+<p>“不是。”</p>
+<p>“是不是Pylons？”</p>
+<p>“不是。”</p>
+<p>“是不是Facebook发布的Tornado？”</p>
+<p>“不是。”</p>
+<p>“我想起来了。”少年说得极有把握：“是世界上最大的纯Python网站--豆瓣，用的Quixote。”</p>
+<p>“也不是，”老人道：“你说的这些技术虽然都很可怕，却不是最可怕的一种。”</p>
+<p>“最可怕的一种是什么？”</p>
+<p>“是WSGI, 一个接口与两个参数。”</p>
+<p>“一个接口？”少年惊奇极了：“当今天下，用Python写网站，最可怕的技术只有一个接口与两个参数？”</p>
+<p>“是的。”</p>
+<div style="border:0;border-bottom:1px #ccc dotted;margin:40px 0;"></div>
 <p>学Python ，三天就可以上手了。（Python教程 <a href="page/other/python25_man.pdf" target="_blank">链接</a> ）</p>
 <p>Google、Yahoo、YouTube、NASA(美国航空航天局)、FriendFeed、豆瓣、网易游戏、搜狐邮箱，都是Python的忠实用户。</p>
-<p>而用Python写网站，选择非常丰富。常见的有：</p>
-<p>Zope，早期的Python框架，著名的Plone内容管理系统（CMS）基于其开发，和Java类似，Zope也有一套自成体系的服务器，数据库。</p>
+<p>而用Python写网站，选择丰富。常见的有：</p>
+<p>Zope，早期的Python框架，著名的Plone内容管理系统（CMS）基于其开发，用户包括GE、美国海军、波士顿在线，和Java类似，Zope也有一套自成体系的服务器，数据库。</p>
 <p>Quixote，也是一个早期的Python框架，豆瓣网（douban.com）基于其开发，它的起源是因为用Zope写的代码难以维护和调试。</p>
 <p>Django，当下最流行的Python框架，玩聚网（ju690.com），好看簿（haokanbu.com）基于其开发，它能自动生成一套后台管理的界面，很适合用于快速完成小项目。</p>
-<p>Pylons，由各种Python库整合而成的框架，reddit.com基于其开发，可定制性好。</p>
 <p>web.py，非常轻量级的一个Python框架，sohu邮箱基于其开发，它也常用于嵌入式设备。</p>
+<p>Pylons，由各种Python库整合而成的框架，reddit.com 基于其开发，基于WSGI，可定制性好。</p>
 <p>还有一些比较特别的框架，比如</p>
 <p>Facebook（FriendFeed部门）发布的Tornado <a target="_blank" href="http://www.tornadoweb.org/">http://www.tornadoweb.org/</a></p>
 <p>IBM(Second Life部门）发布的Mulib <a target="_blank" href="http://wiki.secondlife.com/wiki/Mulib">http://wiki.secondlife.com/wiki/Mulib</a></p>
@@ -35,19 +58,44 @@
 <p>这三款框架共同的特点是支持大量并发的连接，写网页游戏，网页聊天室不妨考虑一下它们。</p>
 <p>事实上，用Python按照自己的需求，搭建一个框架是非常轻松的事情，以至于有篇文章教你用3个小时，60行代码编写一个垃圾框架（<a target="_blank" href="http://code.google.com/p/robaccia/">http://code.google.com/p/robaccia/</a> ，robaccia，意大利语的垃圾）。</p>
 <p>好吧，还是先从环境配置开始。首先，安装Python。</p>
-<p>安装完Python2.6后，下载 <a target="_blank" href="http://peak.telecommunity.com/dist/ez_setup.py">http://peak.telecommunity.com/dist/ez_setup.py</a> 双击运行，这样就安装了Python的包管理。</p>
-<p>然后在我的电脑上右键点击 --&gt; 属性 --&gt; 高级 --&gt; 环境变量 -- 系统变量 -- Path -- 双击出现编辑框</p>
-<p>--&gt; 在已经内容的结尾加上 ;C:\Python26\Scripts;C:\Python26\;  --&gt; 点击确定</p>
+<p>然后安装MySQL-Python，用于连接MySQL数据库。</p>
+<p>MySQL-Python迟迟没有发布Python2.6的官方Windows编译版，所以从 <a target="_blank" href="http://www.codegood.com/archives/4">http://www.codegood.com/archives/4</a>  下载非官方编译的Python2.6版的MySQL-Python <a href="page/other/mysql_python_1.2.3c1.win32-py2.6.exe" target="_blank">链接</a>  安装。</p>
+<p>安装完MySQL-Python后，下载 <a target="_blank" href="http://peak.telecommunity.com/dist/ez_setup.py">http://peak.telecommunity.com/dist/ez_setup.py</a> 双击运行，这样就安装了Python的包管理。</p>
+<p>然后在我的电脑上右键点击</p>
+<p>--&gt; 属性</p>
+<p>--&gt; 高级</p>
+<p>--&gt; 环境变量 -- 系统变量 -- Path -- 双击出现编辑框</p>
+<p>--&gt; 在已经内容的结尾加上 ;C:\Python26\Scripts;C:\Python26\;</p>
+<p>--&gt; 点击确定</p>
 <p>--&gt; 点击环境变量页面的确定</p>
 <p>开始 --&gt; 运行 --&gt; 输入 cmd --&gt; 输入</p>
 <div class="content"><pre>
 easy_install -U mypy
 </pre></div>
-<p>就可以安装我们用到的网站开发框架mypy -- 一个在WSGI基础上搭建起来简单框架。</p>
-<p>WSGI是Python框架和Web服务器之间的一种接口，简单易扩展，符合Python的哲学 -- Pythonic 。</p>
-<p>此外，还需要安装MySQL-Python，用于连接MySQL数据库。</p>
-<p>MySQL-Python迟迟没有发布Python2.6的官方Windows编译版，所以从 <a target="_blank" href="http://www.codegood.com/archives/4">http://www.codegood.com/archives/4</a>  下载非官方编译的Python2.6版的MySQL-Python <a href="page/other/mysql_python_1.2.3c1.win32-py2.6.exe" target="_blank">链接</a>  安装。</p>
-<p>先看看怎么用框架写代码 -- 首先，新建一个项目。</p>
+<p>就可以安装我们用到的网站开发框架mypy -- 一个在WSGI基础上搭建起来框架。</p>
+<p>WSGI是一种协议规范，一个最简单的WSGI程序仅需要几行代码：</p>
+<div class="content"><pre>
+def application(environ, start_response):
+     status = '200 OK'
+     response_headers = [('Content-type','text/plain')]
+     start_response(status, response_headers)
+     return ['Hello']
+</pre></div>
+<p>它有两个参数，environ和start_response。</p>
+<p>environ参数是一个内建的python字典类型， 用于传递变量，比如REQUEST_METHOD，各种中间件的扩展变量。</p>
+<p>start_response则是一个函数，参数为状态码和响应的header。</p>
+<p>函数的返回值是一个列表，也是网页的正文。</p>
+<p>WSGI简单易扩展，符合Python的哲学 -- Pythonic 。</p>
+<p>WSGI的基础上，延伸出各式各样的中间件，你可以组装出你需要的功能。事实上，世上所有的框架本来都只不过是一些零碎的组件，一定要拼凑在一起之后，才会成称为框架。</p>
+<p>只是，不要试图去找一个无所不能，举世无双的框架。</p>
+<p>很多人都错在了这一点，他们执着于框架的优劣。</p>
+<p>他们希望找一个好的框架，大幅提高开发效率，保证项目进度，超越性能瓶颈，消灭网站漏洞。</p>
+<p>他们在论坛上口水战，在博客中相互鄙视。</p>
+<p>然而事实上，“银弹”这两个字根本就不存在，那只不过是某些自大狂妄的人，心里的一种幻觉，他们迟早都必将死在自己的这种幻觉中。</p>
+<p>框架是程序员手中的兵器，然而兵器是死的。</p>
+<p>无论多好的兵器，只有在最聪明的人的手里，才能显示其无比威力。</p>
+<div style="border:0;border-bottom:1px #ccc dotted;margin:40px 0;"></div>
+<p>还是先从mypy框架说起 -- 首先，新建一个项目。</p>
 <div class="content"><pre>
 python -m mypy.cmd new ppmm
 </pre></div>
@@ -68,7 +116,7 @@ myfile
 mylib
 mysite
 </pre></div>
-<p>myconf，配置文件所在的路径；myfile，静态文件所在路径；mylib，库文件所在路径。</p>
+<p>myconf，配置文件所在的路径；myfile，静态文件所在路径；mylib，定制的Python库所在路径。</p>
 <p>mysite 中为网站代码，其中又有四个目录：</p>
 <div class="content"><pre>
 ctrl
@@ -77,13 +125,15 @@ htm
 util
 </pre></div>
 <p>ctrl，control的缩写，这里写页面相关的逻辑。</p>
-<p>model，放置操作数据库的后台逻辑代码。</p>
-<p>htm，用于网页模板。</p>
-<p>util，一些公用的函数，比如分页。</p>
+<p>model，操作数据库的后台逻辑代码所在目录。</p>
+<p>htm，放置网页模板。</p>
+<p>util，公用的函数，如分页等。</p>
+<p>接下来，开始写一个基本功能 -- 用户注册。</p>
 
 <div class="dirnav">
 <a href="2_4.html">上一节</a>
 <a href="index.html">返回目录</a>
+<a href="3_1.html">下一节</a>
 </div>
 
 </div>
