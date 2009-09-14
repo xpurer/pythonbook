@@ -56,7 +56,11 @@ IBM(Second Life部门）发布的Mulib http://wiki.secondlife.com/wiki/Mulib
 
 好吧，还是先从环境配置开始。首先，安装Python。
 
-安装完Python2.6后，下载 http://peak.telecommunity.com/dist/ez_setup.py 双击运行，这样就安装了Python的包管理。
+然后安装MySQL-Python，用于连接MySQL数据库。
+
+MySQL-Python迟迟没有发布Python2.6的官方Windows编译版，所以从 http://www.codegood.com/archives/4  下载非官方编译的Python2.6版的MySQL-Python page:other/mysql_python_1.2.3c1.win32-py2.6.exe  安装。 
+
+安装完MySQL-Python后，下载 http://peak.telecommunity.com/dist/ez_setup.py 双击运行，这样就安装了Python的包管理。
 
 然后在我的电脑上右键点击 
 --> 属性
@@ -76,11 +80,7 @@ easy_install -U mypy
 
 WSGI是Python框架和Web服务器之间的一种接口，简单易扩展，符合Python的哲学 -- Pythonic 。
 
-此外，还需要安装MySQL-Python，用于连接MySQL数据库。
-
-MySQL-Python迟迟没有发布Python2.6的官方Windows编译版，所以从 http://www.codegood.com/archives/4  下载非官方编译的Python2.6版的MySQL-Python page:other/mysql_python_1.2.3c1.win32-py2.6.exe  安装。 
-
-先看看怎么框架的目录结构 -- 首先，新建一个项目。
+不过，还是先看看框架的目录结构 -- 首先，新建一个项目。
 
 {{{
 python -m mypy.cmd new ppmm
@@ -122,6 +122,8 @@ ctrl，control的缩写，这里写页面相关的逻辑。
 model，操作数据库的后台逻辑代码所在目录。
 htm，放置网页模板。
 util，公用的函数，如分页等。
+
+
 
 首先，从最基本的用户注册写起。
 
