@@ -1,17 +1,60 @@
 <!doctype html><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" type="text/css" href="file/c.css" media="all"><title>Mako模板</title></head><body>
+<link rel="stylesheet" type="text/css" href="file/c.css" media="all"><title>URL分发 与 Mako模板</title></head><body>
 <a id="bar" href="index.html">返回目录</a>
 <div id="header">
-<h1>Mako模板</h1>
+<h1>URL分发 与 Mako模板</h1>
 </div>
 
 <div id="preamble">
-<p>首先，从最基本的用户注册写起。</p>
-<p>在开始写代码之前，先想要好应用的流程，构思好需要哪些数据。</p>
-<p>用户注册分两步。</p>
-<p>第一步，填写邮箱，发送激活邮件，</p>
-<p>第二步，用户激活，填写详细信息。</p>
+<p>用户注册是大部分网站最基本的功能。</p>
+<p>这里，用户注册分两步，四个页面。</p>
+<p>第一步，</p>
+<p>    1.填写邮箱，提交注册申请</p>
+<p>    2.发出邮件，提示用户接收</p>
+<p>第二步，</p>
+<p>    1.用户激活，填写详细信息</p>
+<p>    2.激活成功，跳转欢迎页面</p>
+<p>每一步又对应一个URL,设计URL也有很多讲究。用一句话概述就是：简短好记，避免更变（有兴趣可以读读 Cool URI don't change <a target="_blank" href="http://www.w3.org/Provider/Style/URI">http://www.w3.org/Provider/Style/URI</a>）。</p>
+<p>这里，我们使用 /auth/apply 和 /auth/reg 。</p>
+<p>在 mysite/ctrl 目录下 新建 auth.py ， 内容如下</p>
+<div class="content"><pre>
+#coding:utf-8
+from mypy.route_render import route_render_func
+<br/>
+@route_render_func
+def apply():
+    pass
+<br/>
+@route_render_func
+def reg():
+    pass
+</pre></div>
+<p>同时在 init_url.py 中添加一行</p>
+<div class="content"><pre>
+import auth
+</pre></div>
+<p>最后，在 mysite/htm 下新建目录 auth，然后新建模板内容如下</p>
+<div class="content"><pre>
+&lt;%inherit file="/htmbase/simple_base.htm" /&gt;
+&lt;%def name="html_body()" filter="trim"&gt;
+&lt;p align="center"&gt;许多故事,从这里开始...&lt;/p&gt;
+<br/>
+&lt;p&gt;
+&lt;span class="Err" id="err_email"&gt;&lt;/span&gt;
+&lt;label&gt;邮箱&lt;/label&gt;&lt;input autocomplete="off" type="text" value="" class="text" name="email" id="email"/&gt;
+&lt;span&gt;输入Email邮箱,接收确认邮件以完成注册。 &lt;/span&gt;
+&lt;/p&gt;
+<br/>
+&lt;p&gt;
+&lt;span class="Err" id="err_name"&gt;&lt;/span&gt;
+&lt;label&gt;网名&lt;/label&gt;&lt;input autocomplete="off" type="text" value="" class="text" name="name" id="name"/&gt;
+&lt;span&gt;中英文皆可,不要超过8个汉字。 &lt;/span&gt;
+&lt;/p&gt;
+&lt;/%def&gt;
+</pre></div>
+<p>然后介绍模板 mako ， 等等</p>
+<p>介绍route 分发</p>
 
 <div class="dirnav">
 <a href="3_0.html">上一节</a>
