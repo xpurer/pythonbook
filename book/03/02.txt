@@ -1,11 +1,58 @@
-Mako模板
+URL分发 与 Mako模板
 
+用户注册是大部分网站最基本的功能。
 
-首先，从最基本的用户注册写起。
+这里，用户注册分两步，四个页面。
 
-在开始写代码之前，先想要好应用的流程，构思好需要哪些数据。
+第一步，
+    1.填写邮箱，提交注册申请
+    2.发出邮件，提示用户接收
 
-用户注册分两步。
+第二步，
+    1.用户激活，填写详细信息
+    2.激活成功，跳转欢迎页面
+    
 
-第一步，填写邮箱，发送激活邮件，
-第二步，用户激活，填写详细信息。
+每一步又对应一个URL,设计URL也有很多讲究。用一句话概述就是：简短好记，避免更变（有兴趣可以读读 Cool URI don't change http://www.w3.org/Provider/Style/URI）。
+
+这里，我们使用 /auth/apply 和 /auth/reg 。
+
+在 mysite/ctrl 目录下 新建 auth.py ， 内容如下
+
+{{{
+#coding:utf-8
+from mypy.route_render import route_render_func
+
+@route_render_func
+def apply():
+    pass
+
+@route_render_func
+def reg():
+    pass
+}}}
+
+同时在 init_url.py 中添加一行
+{{{
+import auth
+}}}
+
+最后，在 mysite/htm 下新建目录 auth，然后新建模板内容如下
+{{{
+<%inherit file="/htmbase/simple_base.htm" />
+<%def name="html_body()" filter="trim">
+<p align="center">许多故事,从这里开始...</p>
+
+<p>
+<span class="Err" id="err_email"></span>
+<label>邮箱</label><input autocomplete="off" type="text" value="" class="text" name="email" id="email"/>
+<span>输入Email邮箱,接收确认邮件以完成注册。 </span>
+</p>
+
+<p>
+<span class="Err" id="err_name"></span>
+<label>网名</label><input autocomplete="off" type="text" value="" class="text" name="name" id="name"/>
+<span>中英文皆可,不要超过8个汉字。 </span>
+</p>
+</%def>
+}}}
