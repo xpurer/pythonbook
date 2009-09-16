@@ -1,5 +1,15 @@
 数据库与ORM
 
+数据表 索引表
+
+
+"""
+学者要干的事情和工业界的街上混的程序员们干的事情完全不同，解决方案自然也完全两样。拿学术大师的话去指导工业开发，是要吃大亏的 ...
+"""
+ hongqn　　
+
+
+
 CREATE DATABASE wtree CHARACTER SET utf8 COLLATE utf8_bin;
 
 表小 数据切片
@@ -14,3 +24,18 @@ column1 VARCHAR(5) CHARACTER SET latin1 COLLATE latin1_german1_ci
 MySQL官方文档 page:other/learn_html_css.chm
 
 用户表 用户身份 管理员 企业 个人
+
+
+
+
+
+
+
+
+    * 确保表表示单个主题:                 类似面向对象的单职责原则，一个对象一个职责。
+    * 确保每个表都有一个主键：         主键唯一的标识了表中的每条记录；它还用来建立表之间的关系。
+    * 确保字段只包含一个单独的值：   一个字段只表示一个内容。
+    * 确保表中没有需要计算的字段
+    (减少计算 容忍冗余)
+    
+现在，一个结构良好的表算是设计好了，现在我们可以把单个Employee和任意多个Committee关联起来，也可以把单个Committee和任意多个Employee关联起来。而且，可以使用一条SQL语句来同时查看来自所有这3个表的信息。
