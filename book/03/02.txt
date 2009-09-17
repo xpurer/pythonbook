@@ -37,11 +37,45 @@ def reg():
 import auth
 }}}
 
-最后，在 mysite/htm 下新建目录 auth，然后新建模板内容如下
+
+在 myfile/css/my.css 的结尾加上
+{{{
+.FormPage{margin:40px auto 0;width:335px;}
+.BForm select{font-size:16px;margin-left:-6px;}
+.BForm span{display:block;margin-top:5px;font-size:14px;color:#666;text-align:left;margin-left:38px}
+.BForm p label{margin-right:10px}
+.BForm p input{width:286px}
+.BForm p{margin-bottom:20px;font-size:14px}
+.BForm .Err,.Err{padding-bottom:2px;font-size:12px;margin-top:0;color:#d30}
+.Err{display:block}
+.Warn{color:#d30;}
+.Ok{color:#090;}
+.HideErr .Err{display:none}
+}}}
+
+在 myfile/js 文件夹中新建 reg.js ,内容如下
+{{{
+$(function(){
+$(".FormPage input:first").focus()
+})
+}}}
+
+运行 myfile 下的 merge.py 。
+
+在 mysite/htm 下新建目录 auth，然后新建模板内容如下
 {{{
 <%inherit file="/htmbase/simple_base.htm" />
+<%!
+from myfile import js,css
+%>
+
+<%def name="html_head()" filter="trim">
+<script src="${js.reg}"></script>
+</%def>
+
 <%def name="html_body()" filter="trim">
-<p align="center">许多故事,从这里开始...</p>
+<form class="HideErr BForm FormPage" method="POST" onsubmit="return submit_form()">
+<p align="center" style="padding-bottom:20px">许多故事,从这里开始...</p>
 
 <p>
 <span class="Err" id="err_email"></span>
@@ -54,8 +88,13 @@ import auth
 <label>网名</label><input autocomplete="off" type="text" value="" class="text" name="name" id="name"/>
 <span>中英文皆可,不要超过8个汉字。 </span>
 </p>
+
+<p align="center"><button style="font-size:16px;padding:3px 6px;" type="submit">注册</button></p>
+</form>
 </%def>
 }}}
+
+KanRS申请注册 kanrs_apply.png
 
 然后介绍模板 mako ， 等等
 介绍route 分发 

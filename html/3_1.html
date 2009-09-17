@@ -21,11 +21,11 @@
 <div class="content"><pre>
 #coding:utf-8
 from mypy.route_render import route_render_func
-<br/>
+
 @route_render_func
 def apply():
     pass
-<br/>
+
 @route_render_func
 def reg():
     pass
@@ -34,25 +34,65 @@ def reg():
 <div class="content"><pre>
 import auth
 </pre></div>
-<p>最后，在 mysite/htm 下新建目录 auth，然后新建模板内容如下</p>
+<p>在 myfile/css/my.css 的结尾加上</p>
+<div class="content"><pre>
+.FormPage{margin:40px auto 0;width:335px;}
+.BForm select{font-size:16px;margin-left:-6px;}
+.BForm span{display:block;margin-top:5px;font-size:14px;color:#666;text-align:left;margin-left:38px}
+.BForm p label{margin-right:10px}
+.BForm p input{width:286px}
+.BForm p{margin-bottom:20px;font-size:14px}
+.BForm .Err,.Err{padding-bottom:2px;font-size:12px;margin-top:0;color:#d30}
+.Err{display:block}
+.Warn{color:#d30;}
+.Ok{color:#090;}
+.HideErr .Err{display:none}
+</pre></div>
+<p>在 myfile/js 文件夹中新建 reg.js ,内容如下</p>
+<div class="content"><pre>
+$(function(){
+$(".FormPage input:first").focus()
+})
+</pre></div>
+<p>运行 myfile 下的 merge.py 。</p>
+<p>在 mysite/htm 下新建目录 auth，然后新建模板内容如下</p>
 <div class="content"><pre>
 &lt;%inherit file="/htmbase/simple_base.htm" /&gt;
+&lt;%!
+from myfile import js,css
+%&gt;
+
+&lt;%def name="html_head()" filter="trim"&gt;
+&lt;script src="${js.reg}"&gt;&lt;/script&gt;
+&lt;/%def&gt;
+
 &lt;%def name="html_body()" filter="trim"&gt;
-&lt;p align="center"&gt;许多故事,从这里开始...&lt;/p&gt;
-<br/>
+&lt;form class="HideErr BForm FormPage" method="POST" onsubmit="return submit_form()"&gt;
+&lt;p align="center" style="padding-bottom:20px"&gt;许多故事,从这里开始...&lt;/p&gt;
+
 &lt;p&gt;
 &lt;span class="Err" id="err_email"&gt;&lt;/span&gt;
 &lt;label&gt;邮箱&lt;/label&gt;&lt;input autocomplete="off" type="text" value="" class="text" name="email" id="email"/&gt;
 &lt;span&gt;输入Email邮箱,接收确认邮件以完成注册。 &lt;/span&gt;
 &lt;/p&gt;
-<br/>
+
 &lt;p&gt;
 &lt;span class="Err" id="err_name"&gt;&lt;/span&gt;
 &lt;label&gt;网名&lt;/label&gt;&lt;input autocomplete="off" type="text" value="" class="text" name="name" id="name"/&gt;
 &lt;span&gt;中英文皆可,不要超过8个汉字。 &lt;/span&gt;
 &lt;/p&gt;
+
+&lt;p align="center"&gt;&lt;button style="font-size:16px;padding:3px 6px;" type="submit"&gt;注册&lt;/button&gt;&lt;/p&gt;
+&lt;/form&gt;
 &lt;/%def&gt;
 </pre></div>
+<div class="imageblock">
+<div class="content">
+<img alt="KanRS申请注册" src="img/kanrs_apply.png"/>
+</div>
+
+<div class="image-title">图:KanRS申请注册</div>
+</div>
 <p>然后介绍模板 mako ， 等等</p>
 <p>介绍route 分发</p>
 

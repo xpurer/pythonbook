@@ -183,7 +183,7 @@ for chapter in chapter_list:
                         else:
                             buffer.append("<p>%s</p>"%line)
                     elif inpre:
-                        buffer.append("<br/>")
+                        buffer.append("")
 
                 content = "\n".join(buffer)
                 index.write(
