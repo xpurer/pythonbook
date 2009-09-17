@@ -165,13 +165,16 @@ Mako（ http://www.makotemplates.org/ ），Mako会自动将HTML编译成Python�
 
 鉴于Mako的性能，和优雅的语法，以及可以直接写Python代码的便利，mypy选用它来作为页面模板。  
 
-简单的介绍一下Mako模板的语法。
+（Mako语法暂时不写了，以后来补吧，先给两个链接）
+http://www.cnblogs.com/RChen/archive/2007/06/15/mako_doc_translation_2.html
+http://www.cnblogs.com/RChen/archive/2007/06/15/mako_doc_translation_3.html
 
+不过原来的call方法被废弃了，需要注意一下。
 
+<%namespacename:defname>
+As of Mako 0.2.3, any user-defined "tag" can be created against a namespace by using a tag with a name of the form namespacename:defname. The closed and open formats of such a tag are equivalent to an inline expression and the <%call> tag, respectively.
 
-
-
-
-
-
-
+<%mynamespace:somedef param="some value">
+    this is the body
+</%mynamespace:somedef>
+To create custom tags which accept a body, see Calling a def with embedded content and/or other defs.
