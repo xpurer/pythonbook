@@ -80,7 +80,7 @@ body中是网页的正文，正文也由一系列标签组成。常用的基本�
     <img src="图片地址" />
         显示图片，常见的格式有jpg，gif，png，这里src称之为img标签的属性
 
-更多的元素可以参看 HTML手册 page:other/html.chm 和 HTML和CSS网页标准指南 page:other/learn_html_css.chm
+更多的元素可以参看 HTML手册 page:other/html.chm 和 HTML和CSS网页标准指南 page:other/learn_html_css.chm （如果chm文件无法显示，可以尝试在chm文件右键->属性->解除锁定）。
 
 ------------
 

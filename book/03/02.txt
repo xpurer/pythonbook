@@ -17,6 +17,8 @@ URL分发 与 Mako模板
 
 这里，我们使用 /auth/apply 和 /auth/reg 。
 
+还是先动手写一遍页面，然后慢慢来讲解。
+
 在 mysite/ctrl 目录下 新建 auth.py ， 内容如下
 
 {{{
@@ -40,7 +42,7 @@ import auth
 
 在 myfile/css/my.css 的结尾加上
 {{{
-.FormPage{margin:40px auto 0;width:335px;}
+.PageForm{margin:40px auto 0;width:335px;}
 .BForm select{font-size:16px;margin-left:-6px;}
 .BForm span{display:block;margin-top:5px;font-size:14px;color:#666;text-align:left;margin-left:38px}
 .BForm p label{margin-right:10px}
@@ -51,6 +53,7 @@ import auth
 .Warn{color:#d30;}
 .Ok{color:#090;}
 .HideErr .Err{display:none}
+.Bbtn{font-size:16px;padding:3px 6px;}
 }}}
 
 在 myfile/js 文件夹中新建 reg.js ,内容如下
@@ -62,7 +65,7 @@ $(".FormPage input:first").focus()
 
 运行 myfile 下的 merge.py 。
 
-在 mysite/htm 下新建目录 auth，然后新建模板内容如下
+在 mysite/htm 下新建目录 auth，然后新建模板 apply.htm 内容如下
 {{{
 <%inherit file="/htmbase/simple_base.htm" />
 <%!
@@ -74,28 +77,101 @@ from myfile import js,css
 </%def>
 
 <%def name="html_body()" filter="trim">
-<form class="HideErr BForm FormPage" method="POST" onsubmit="return submit_form()">
-<p align="center" style="padding-bottom:20px">许多故事,从这里开始...</p>
+<%inherit file="/htmbase/simple_base.htm" />
+<%!
+from myfile import js,css
+%>
+
+<%def name="html_head()" filter="trim">
+<script src="${js.reg}"></script>
+</%def>
+
+<%def name="html_body()" filter="trim">
+<form class="HideErr BForm PageForm" method="POST" onsubmit="return submit_form()">
+<p align="center" style="padding-bottom:10px">许多故事,从这里开始...</p>
 
 <p>
 <span class="Err" id="err_email"></span>
 <label>邮箱</label><input autocomplete="off" type="text" value="" class="text" name="email" id="email"/>
-<span>输入Email邮箱,接收确认邮件以完成注册。 </span>
+<span>输入Email邮箱,接收确认邮件以开始注册。 </span>
 </p>
 
-<p>
-<span class="Err" id="err_name"></span>
-<label>网名</label><input autocomplete="off" type="text" value="" class="text" name="name" id="name"/>
-<span>中英文皆可,不要超过8个汉字。 </span>
-</p>
-
-<p align="center"><button style="font-size:16px;padding:3px 6px;" type="submit">注册</button></p>
+<p align="center"><button class="Bbtn" type="submit">注册</button></p>
 </form>
+</%def>
 </%def>
 }}}
 
+启动 dev_server.py 服务器，访问 http://localhost:9889/auth/apply ，页面如图。
+
 KanRS申请注册 kanrs_apply.png
 
-然后介绍模板 mako ， 等等
-介绍route 分发 
+先来，一一讲解他们的用途。
+
+mypy整个设计遵循了MVC( 模型－视图－控制器 )的理念。
+
+MVC，是一种设计理念。它将数据的模型的表示，操作的响应，用户的界面分离开，使代码的逻辑更为清晰。
+
+auth.py，对应就是MVC中C -- control（控制器） 。
+
+这里只是简单的声明新函数，尚未编写响应代码。
+
+值得一题的是这里 import 的 route_render_func
+{{{
+from mypy.route_render import route_render_func
+}}}
+
+route_render_func 是由 route 函数 与 render_func函数混合而成的函数。
+
+route的作用是url route（url路由，有时也成为 url mapping，url映射），简单的说，就是将url对应到函数。
+
+在Python世界中有很多这样模块，比如
+Routes http://routes.groovie.org
+werkzeug.routing http://werkzeug.pocoo.org/documentation/dev/routing.html
+
+上面两个模块原理是基于正则，从url匹配到函数；但mypy采用的是从Quixote延伸出来的另外一种方式。
+
+在mypy中，通过route，将python的模块-函数的层次结构与url进行了自动映射。
+
+基本的规则是 模块 -> 函数名 -> 函数参数，比如这里 /auth/apply 就与 auth模块中apply函数 建立了映射。
+
+以下划线开头的函数不会被映射。
+
+用到了route的模块，需要在程序启动时加载到内存，于是，我们需要在 init_url.py 中导入 auth 模块，而 init_url.py 在 __init__.py 中被导入  。
+
+css 和 js 很普通，无需多言。
+
+apply.htm 是一个Moko模板文件 -- 不是原始Mako，而是为网页做了优化的hmako。hmako会删除网页中的多余空白。
+
+在讲Mako的语法之前，还是先谈谈Python的页面模板。
+
+所谓页面模板，就是将程序中的变量拼接成HTML字符串。
+
+如同，《封神演义》中“一气化三清”的故事，Python的模板可以大致可以分为三大流派。
+  
+比较激进的左派，它们的观点是模板归模板，Python归Python。模板要让那些不懂编程前端工程师们也能修修改改，所以模板中不要出现Python代码。
+
+其代表作品有：Django的模板，Jinja（ http://jinja.pocoo.org/ ) 。
+
+比较保守的右派，它们的代码很像php，是Python和HTML的混合体，这种模板的性能往往很出众。
+
+其代表作品有：Quixote的PTL，pyTenjin （ http://www.kuwata-lab.com/tenjin/pytenjin-users-guide.html ） 。
+
+第三派，自然是骑墙派了。骑墙派代表人物有
+
+基于XML的模板Genshi （ http://genshi.edgewall.org/ ） ，其速度比较慢。
+
+Mako（ http://www.makotemplates.org/ ），Mako会自动将HTML编译成Python模块，所以性能出众。
+
+鉴于Mako的性能，和优雅的语法，以及可以直接写Python代码的便利，mypy选用它来作为页面模板。  
+
+简单的介绍一下Mako模板的语法。
+
+
+
+
+
+
+
+
 
