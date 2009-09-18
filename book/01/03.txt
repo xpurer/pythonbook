@@ -77,10 +77,14 @@ body中是网页的正文，正文也由一系列标签组成。常用的基本�
     <b>内容</b>
         加粗字体
 
-    <img src="图片地址" />
+    <img src="图片地址">
         显示图片，常见的格式有jpg，gif，png，这里src称之为img标签的属性
 
 更多的元素可以参看 HTML手册 page:other/html.chm 和 HTML和CSS网页标准指南 page:other/learn_html_css.chm （如果chm文件无法显示，可以尝试在chm文件右键->属性->解除锁定）。
+
+值得一提的是，meta，img，input，br，hr在HTML中是单标记标签，在HTML中可不用闭合。
+
+其他标签都需要有闭合标签（即使是XHTML也应该单独写明闭合标签，而不能直接闭合。）
 
 ------------
 
