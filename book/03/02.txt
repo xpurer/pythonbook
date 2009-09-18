@@ -191,7 +191,7 @@ from myfile import js,css
 
 到 myfile目录下的 js 和 css 目录下可以看到 __init__.py 文件，文件中有reg这些变量和对应js文件。
 
-而此处的 __init__.py 文件又是通过merge.py生成的。
+而此处的 __init__.py 文件又是通过 merge.py 生成的。
 
 这样做的好处有，
 
@@ -205,4 +205,7 @@ from myfile import js,css
 
 通常的解决方案是，当js或css文件有更新时，同时改变网页中引用的文件名，强制浏览器刷新这些文件。
 
-而merge.py在生成__init__.py时，会监测文件改动，然后智能地对有改动的文件生成新的引用名称。部署线上服务器的时候，配合Url Rewrite,可以方便实现js和css文件的缓存控制。
+而 merge.py 在生成 __init__.py 时，会监测文件改动，然后智能地对有改动的文件生成新的引用名称。
+
+部署线上服务器的时候，配合Url Rewrite,可以方便实现js和css文件的缓存控制。
+
