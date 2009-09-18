@@ -207,5 +207,5 @@ from myfile import js,css
 
 而 merge.py 在生成 __init__.py 时，会监测文件改动，然后智能地对有改动的文件生成新的引用名称。
 
-部署线上服务器的时候，配合Url Rewrite,可以方便实现js和css文件的缓存控制。
+部署线上服务器的时候，配合Url Rewrite,可以方便实现js和css文件的缓存刷新的自动化。
 

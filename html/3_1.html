@@ -143,6 +143,23 @@ from mypy.route_render import route_render_func
 <p>    this is the body</p>
 <p>&lt;/%mynamespace:somedef&gt;</p>
 <p>To create custom tags which accept a body, see Calling a def with embedded content and/or other defs.</p>
+<p>另外，这里的js引用方式比较奇特。</p>
+<p>&lt;%!</p>
+<p>from myfile import js,css</p>
+<p>%&gt;</p>
+<p>&lt;%def name="html_head()" filter="trim"&gt;</p>
+<p>&lt;script src="${js.reg}"&gt;&lt;/script&gt;</p>
+<p>&lt;/%def&gt;</p>
+<p>到 myfile目录下的 js 和 css 目录下可以看到 __init__.py 文件，文件中有reg这些变量和对应js文件。</p>
+<p>而此处的 __init__.py 文件又是通过 merge.py 生成的。</p>
+<p>这样做的好处有，</p>
+<p>可以方便的更换js和css的域名。</p>
+<p>一般来说，大部分浏览器对同一个域名，在同一时刻只启用2个线程去加载，启用多个域名让浏览器启用更多的加载线程，从而加快页面的加载速度。</p>
+<p>对静态文件使用单独的域名，还可以减少在请求静态文件时，不必要的cookie数据发送，从而节带宽。</p>
+<p>另外，为了节约带宽，常常把静态文件设置浏览器永久缓存，但这样常常造成静态文件有更新时，客户不能同步更新后的文件。</p>
+<p>通常的解决方案是，当js或css文件有更新时，同时改变网页中引用的文件名，强制浏览器刷新这些文件。</p>
+<p>而 merge.py 在生成 __init__.py 时，会监测文件改动，然后智能地对有改动的文件生成新的引用名称。</p>
+<p>部署线上服务器的时候，配合Url Rewrite,可以方便实现js和css文件的缓存刷新的自动化。</p>
 
 <div class="dirnav">
 <a href="3_0.html">上一节</a>
