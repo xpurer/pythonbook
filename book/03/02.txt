@@ -116,7 +116,7 @@ auth.py，对应就是MVC中C -- control（控制器） 。
 
 这里只是简单的声明新函数，尚未编写响应代码。
 
-值得一题的是这里 import 的 route_render_func
+这里 import 的 route_render_func
 {{{
 from mypy.route_render import route_render_func
 }}}
@@ -161,7 +161,7 @@ apply.htm 是一个Moko模板文件 -- 不是原始Mako，而是为网页做了�
 
 基于XML的模板Genshi （ http://genshi.edgewall.org/ ） ，其速度比较慢。
 
-Mako（ http://www.makotemplates.org/ ），Mako会自动将HTML编译成Python模块，所以性能出众。
+新兴的Mako（ http://www.makotemplates.org/ ），Mako会自动将HTML编译成Python模块，所以性能出众。
 
 鉴于Mako的性能，和优雅的语法，以及可以直接写Python代码的便利，mypy选用它来作为页面模板。  
 
