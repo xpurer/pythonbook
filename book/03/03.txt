@@ -12,9 +12,7 @@
 
 数据库的设计，向来是根据应用场景而设计。下面我们假设应用场景为千万级访问量的Web2.0网站，数据库为MySQL。
 
-MySQL是Web2.0网站用的最广泛的数据库了，它在Facebook，Baidu，Google都有使用。
-
-很有必要先通读一遍MySQL官方文档 page:other/learn_html_css.chm ，下面只提一些注意点。
+MySQL是Web2.0网站用的最广泛的数据库了，它在Facebook，Baidu，Google都有使用。想要深入的了解MySQL，可以看看它的官方文档 page:other/learn_html_css.chm ，下面提一些注意点。
 
 首先，仔细选择MySQL使用的数据库引擎。MySQL有两大存储引擎，MyISAM和Innodb。
 
@@ -22,7 +20,7 @@ MyISAM 为读操作优化，速度比较快，但写是全局锁，并发性差�
 
 InnoDB 是行级锁，写并发性能好，支持事务，但读取比较慢。
 
-在设计表的时候，不要使用数据库中的外键。数据库中使用外键关系会显著拖累数据库的性能，同时制约了数据库表的可拆分性。
+在设计表的时候，不要显式的声明数据库中的外键关系。数据库中使用外键关系会显著拖累数据库的性能，同时制约了数据库表的可拆分性。
 
 需要作为where条件查询的字段，要加上索引。多个字段联合索引，比如 boy_id - grid_id , 当where条件中包含 boy_id 和 grid_id ，或只有 boy_id 时会使用该索引，当 where条件中只有 grid_id 时，不会使用该索引 。
 
@@ -37,7 +35,63 @@ explain select * from friends where grid_id = 987654;
 select * from misc where `key` = "salt";
 }}}
 
-每一张表中，不要有太多字段，但应该都有一个自增的id。
+每一张表中，不要有太多字段，但应该都有一个自增的id作为主键。
+
+总而言之，只使用MySQL最简单最基本功能。更多细节现在就不扯了，以后碰到再慢慢说，还是先看看怎么设计用户表。
+
+首先创建数据库，第一个数据库的名词就取世界树的缩写（World Tree）叫做 wtree 吧。
+
+{{{
+CREATE DATABASE wtree CHARACTER SET utf8 COLLATE utf8_bin;
+use wtree;
+}}}
+
+创建时指定编码为 utf8_bin ，这样以后建表的默认编码就是 utf8_bin 了。
+
+首先设计两个表 -- 用户申请注册的表 和 用户表 。
+
+用户申请注册的表结构很清晰， 主键 id ， 用于申请帐号的 email 地址，激活码 ，申请时间 ，是否已经激活。
+
+{{{
+CREATE TABLE `user_apply` (
+ `id` int(10) unsigned NOT NULL auto_increment,
+ `email` varchar(128) NOT NULL,
+ `ck` char(8) character set ascii collate ascii_bin NOT NULL,
+ `time` timestamp NOT NULL default CURRENT_TIMESTAMP,
+ `is_active` tinyint(1) NOT NULL default '0',
+ PRIMARY KEY  (`id`),
+ UNIQUE `email` (`email`)
+) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_bin ;
+}}}
+其中 ck 是 challenge key 的缩写，代表激活码。
+
+utf-8 编码的表中每一个定长char需要预备3个字节 ，因为这是可能的最大长度。因为我们生成ck只是英文和数字，为了节省空间，重定义了ck的编码集。
+
+对于数值类型，比如 tinyint ，后面圆括号是指出最大的显示尺寸，与实际的存储范围无关。
+
+接下来设计用户名表，用户的字段有 Email帐号，昵称，头像的版本号，个性url的后缀，性别，出身年代，是否单身，行业，职业，现居城市。
+
+根据字段使用频率不同，我们用两个表来区别保存。
+
+user表
+{{{
+CREATE TABLE `user` (
+`id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`email` VARCHAR( 128 ) NOT NULL ,
+`name` CHAR( 8 ) NOT NULL ,
+`url` VARCHAR( 32 ) NULL ,
+`ver` TINYINT UNSIGNED NOT NULL ,
+UNIQUE email (`email`),
+UNIQUE url(`url`)
+) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_bin ;
+}}}
+
+user_profile表
+{{{
+性别，出身年代，是否单身，行业，职业，现居城市
+}}}
+
+
 
 数据库表保持精简，对大文本字段单独建表存储。
 
@@ -47,26 +101,9 @@ select * from misc where `key` = "salt";
 
 其二，将来大文本字段的存储，可以方便切换到分布式的键值数据库。
 
-ORM，是 对象-表 的映射。
+ORM，是 对象-表 的映射，用它可以简化常见的增删查找代码的编写，提高开发效率。
 
-page:memcached.pdf
-
-
-Memcache
-{{{
-CREATE DATABASE wtree CHARACTER SET utf8 COLLATE utf8_bin;
-}}}
-
-{{{
- CREATE TABLE `wtree`.`user_apply` (
-`id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-`email` VARCHAR( 256 ) NOT NULL ,
-`ck` CHAR( 8 ) CHARACTER SET ascii COLLATE ascii_bin NOT NULL ,
-`time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
-INDEX ( `email` )
-) ENGINE = MYISAM ;
-}}}
-
+Memcache，是一个高性能的基于内存的键值缓存，性能优异，使用它可以提高页面的响应速度，同时降低mysql的查询压力。想要更深入的了解memcache可以看看这个手册 page:memcached.pdf 。
 
 
 
