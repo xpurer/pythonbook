@@ -49,7 +49,7 @@ select * from misc where `key` = "salt";
 
 ORM，是 对象-表 的映射。
 
-
+page:memcached.pdf
 
 
 Memcache
