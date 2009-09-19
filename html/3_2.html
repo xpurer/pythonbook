@@ -1,9 +1,9 @@
 <!doctype html><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" type="text/css" href="file/c.css" media="all"><title>数据库与ORM</title></head><body>
+<link rel="stylesheet" type="text/css" href="file/c.css" media="all"><title>数据库 与 ORM</title></head><body>
 <a id="bar" href="index.html">返回目录</a>
 <div id="header">
-<h1>数据库与ORM</h1>
+<h1>数据库 与 ORM</h1>
 </div>
 
 <div id="preamble">
@@ -13,25 +13,37 @@
 <p>学者要干的事情和街上混的程序员们干的事情完全不同，解决方案自然也完全两样。拿学术大师的话去指导产品开发，是要吃大亏的 ...</p>
 <p>”</p>
 <p>好吧，先把那些范式忘了吧，欢迎回到现实世界。</p>
-<p>众所周知，ACID是Atomicity（原子性）, Consistency（一致性）, Isolation（隔离性）, 和 Durability（持久性）的缩写。</p>
-<p>ACID原则被多数商业数据库产品的严格准则。</p>
-<p>但大规模Web网站为了可扩展性和可靠性，往往弃用ACID，而采用BASE这种更为松散的模式。</p>
-<p>BASE 策略是 Eric A. Brewer 在 1988 年提出的。这几个缩写词如下定义：</p>
-<p>Basically Availble --基本可用</p>
-<p>Soft-State --   软状态（可以理解为，无连接）</p>
-<p>Eventual Consistency --最终一致性</p>
-<p>最简单的建议就是，给一个为小规模应用而设计的架构增加资源并不能让它变成大规模的架构。你必须打破常规模式，比如ACID和分布式事务。乐于寻找机会放松一些约束，即使传统上认为是不能放松的。</p>
-<p>亚马逊CTO Werner Vogels引用Eric Brewer的CAP定理提供了一些权衡取舍更深层的背景。</p>
-<p>对于数据共享系统的三项属性——数据一致性、系统可用性、对网络分区的耐受性——在同一时间只能达成其中的两项。</p>
-<p>换句话说，一个不能容忍网络分区的系统可以利用像事务这样普通的技术来实现一致性和可用性。然而，像亚马逊和eBay这样的大型分布式系统，网络分区是既定的。它的后果就是，大型分布式系统的架构必须决定时放松对一致性的要求，还是放松对可用性的要求。两种选择都会给开发人员造成一些负担，他们需要了解他们处理的架构的特点。比如说，如果你选择放松一致性要求，那么开发人员就要决定怎样处理这种情形——对系统的写入不会立即反映到对应的读出中。就像Windows Live项目经理Dare Obasanjo在他的博客中写的一样。</p>
-<p>还有两条简单的原则：把每样东西都设计成分离的；考虑BASE、而不是ACID。</p>
-<p>数据表 索引表</p>
-<p>洪强宁</p>
+<p>数据库的设计，向来是根据应用场景而设计。下面我们假设应用场景为千万级访问量的Web2.0网站，数据库为MySQL。</p>
+<p>MySQL是Web2.0网站用的最广泛的数据库了，它在Facebook，Baidu，Google都有使用。</p>
+<p>很有必要先通读一遍MySQL官方文档 <a href="page/other/learn_html_css.chm" target="_blank">链接</a> ，下面只提一些注意点。</p>
+<p>首先，仔细选择MySQL使用的数据库引擎。MySQL有两大存储引擎，MyISAM和Innodb。</p>
+<p>MyISAM 为读操作优化，速度比较快，但写是全局锁，并发性差，并且不支持事务。</p>
+<p>InnoDB 是行级锁，写并发性能好，支持事务，但读取比较慢。</p>
+<p>在设计表的时候，不要使用数据库中的外键。数据库中使用外键关系会显著拖累数据库的性能，同时制约了数据库表的可拆分性。</p>
+<p>需要作为where条件查询的字段，要加上索引。多个字段联合索引，比如 boy_id - grid_id , 当where条件中包含 boy_id 和 grid_id ，或只有 boy_id 时会使用该索引，当 where条件中只有 grid_id 时，不会使用该索引 。</p>
+<p>可以用explian语句查看索引使用的细节，比如</p>
+<div class="content"><pre>
+explain select * from friends where grid_id = 987654;
+</pre></div>
+<p>如果字段的名字是sql语句的关键词 -- 比如 key ，你在查询时需要加上反引号，如下：</p>
+<div class="content"><pre>
+select * from misc where `key` = "salt";
+</pre></div>
+<p>每一张表中，不要有太多字段，但应该都有一个自增的id。</p>
+<p>数据库表保持精简，对大文本字段单独建表存储。</p>
+<p>这样做有两个好处，</p>
+<p>其一，方便配合ORM和Memcache使用，能加快表的读取速度；</p>
+<p>其二，将来大文本字段的存储，可以方便切换到分布式的键值数据库。</p>
+<p>ORM，是 对象-表 的映射。</p>
+<p>Memcache</p>
+<p>user_apply</p>
+<p>多对多 不要级联 数据表 索引表</p>
+<p>理念 把预先能计算的数据先准备好</p>
+<p>可以容忍 必要的数据冗余</p>
 <p>CREATE DATABASE wtree CHARACTER SET utf8 COLLATE utf8_bin;</p>
 <p>表小 数据切片</p>
 <p>提示：使用UTF8时为了节省空间，使用VARCHAR而不要用CHAR。否则，MySQL必须为一个CHAR(10) CHARACTER SET utf8列预备30个字节，因为这是可能的最大长度。</p>
 <p>column1 VARCHAR(5) CHARACTER SET latin1 COLLATE latin1_german1_ci</p>
-<p>MySQL官方文档 <a href="page/other/learn_html_css.chm" target="_blank">链接</a></p>
 <p>用户表 用户身份 管理员 企业 个人</p>
 <p>    * 确保表表示单个主题:                 类似面向对象的单职责原则，一个对象一个职责。</p>
 <p>    * 确保每个表都有一个主键：         主键唯一的标识了表中的每条记录；它还用来建立表之间的关系。</p>
