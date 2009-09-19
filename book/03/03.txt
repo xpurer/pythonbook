@@ -53,10 +53,19 @@ page:memcached.pdf
 
 
 Memcache
+{{{
+CREATE DATABASE wtree CHARACTER SET utf8 COLLATE utf8_bin;
+}}}
 
-
-user_apply
-
+{{{
+ CREATE TABLE `wtree`.`user_apply` (
+`id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`email` VARCHAR( 256 ) NOT NULL ,
+`ck` CHAR( 8 ) CHARACTER SET ascii COLLATE ascii_bin NOT NULL ,
+`time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+INDEX ( `email` )
+) ENGINE = MYISAM ;
+}}}
 
 
 
@@ -67,7 +76,6 @@ user_apply
 
 
 
-CREATE DATABASE wtree CHARACTER SET utf8 COLLATE utf8_bin;
 
 表小 数据切片
 

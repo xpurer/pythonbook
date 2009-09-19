@@ -37,11 +37,21 @@ select * from misc where `key` = "salt";
 <p>ORM，是 对象-表 的映射。</p>
 <p><a href="page/memcached.pdf" target="_blank">链接</a></p>
 <p>Memcache</p>
-<p>user_apply</p>
+<div class="content"><pre>
+CREATE DATABASE wtree CHARACTER SET utf8 COLLATE utf8_bin;
+</pre></div>
+<div class="content"><pre>
+ CREATE TABLE `wtree`.`user_apply` (
+`id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`email` VARCHAR( 256 ) NOT NULL ,
+`ck` CHAR( 8 ) CHARACTER SET ascii COLLATE ascii_bin NOT NULL ,
+`time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+INDEX ( `email` )
+) ENGINE = MYISAM ;
+</pre></div>
 <p>多对多 不要级联 数据表 索引表</p>
 <p>理念 把预先能计算的数据先准备好</p>
 <p>可以容忍 必要的数据冗余</p>
-<p>CREATE DATABASE wtree CHARACTER SET utf8 COLLATE utf8_bin;</p>
 <p>表小 数据切片</p>
 <p>提示：使用UTF8时为了节省空间，使用VARCHAR而不要用CHAR。否则，MySQL必须为一个CHAR(10) CHARACTER SET utf8列预备30个字节，因为这是可能的最大长度。</p>
 <p>column1 VARCHAR(5) CHARACTER SET latin1 COLLATE latin1_german1_ci</p>
