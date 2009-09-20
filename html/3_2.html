@@ -52,7 +52,7 @@ CREATE TABLE `user_apply` (
 <p>其中 ck 是 challenge key 的缩写，代表激活码。</p>
 <p>utf-8 编码的表中每一个定长char需要预备3个字节 ，因为这是可能的最大长度。因为我们生成ck只是英文和数字，为了节省空间，重定义了ck的编码集。</p>
 <p>对于数值类型，比如 tinyint ，后面圆括号是指出最大的显示尺寸，与实际的存储范围无关。</p>
-<p>接下来设计用户名表，用户的字段有 Email帐号，昵称，头像的版本号，个性url的后缀，性别，出身年代，是否单身，行业，职业，现居城市。</p>
+<p>接下来设计用户名表，用户的字段有 Email帐号，昵称，头像的版本号，个性url的后缀，性别，出身年代，是否单身，行业，职业，现居城市，家乡。</p>
 <p>根据字段使用频率不同，我们用两个表来区别保存。</p>
 <p>user表</p>
 <div class="content"><pre>
@@ -68,7 +68,19 @@ UNIQUE url(`url`)
 </pre></div>
 <p>user_profile表</p>
 <div class="content"><pre>
-性别，出身年代，是否单身，行业，职业，现居城市
+CREATE TABLE `user_profile` (
+ `id` int(10) unsigned NOT NULL auto_increment,
+ `sex` char(1) character set ascii collate ascii_bin NOT NULL,
+ `birth_age` tinyint(3) unsigned NOT NULL,
+ `is_single` tinyint(4) NOT NULL,
+ `industry` tinyint(3) unsigned NOT NULL,
+ `title` varchar(16) collate utf8_bin NOT NULL,
+ `city` smallint(5) unsigned NOT NULL,
+ `hometown` smallint(5) unsigned NOT NULL,
+ PRIMARY KEY  (`id`),
+ KEY `industry` (`industry`),
+ KEY `city_hometown` (`city`,`hometown`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 </pre></div>
 <p>数据库表保持精简，对大文本字段单独建表存储。</p>
 <p>这样做有两个好处，</p>

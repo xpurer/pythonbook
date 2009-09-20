@@ -69,7 +69,7 @@ utf-8 编码的表中每一个定长char需要预备3个字节 ，因为这是�
 
 对于数值类型，比如 tinyint ，后面圆括号是指出最大的显示尺寸，与实际的存储范围无关。
 
-接下来设计用户名表，用户的字段有 Email帐号，昵称，头像的版本号，个性url的后缀，性别，出身年代，是否单身，行业，职业，现居城市。
+接下来设计用户名表，用户的字段有 Email帐号，昵称，头像的版本号，个性url的后缀，性别，出身年代，是否单身，行业，职业，现居城市，家乡。
 
 根据字段使用频率不同，我们用两个表来区别保存。
 
@@ -88,8 +88,22 @@ UNIQUE url(`url`)
 
 user_profile表
 {{{
-性别，出身年代，是否单身，行业，职业，现居城市
+CREATE TABLE `user_profile` (
+ `id` int(10) unsigned NOT NULL auto_increment,
+ `sex` char(1) character set ascii collate ascii_bin NOT NULL,
+ `birth_age` tinyint(3) unsigned NOT NULL,
+ `is_single` tinyint(4) NOT NULL,
+ `industry` tinyint(3) unsigned NOT NULL,
+ `title` varchar(16) collate utf8_bin NOT NULL,
+ `city` smallint(5) unsigned NOT NULL,
+ `hometown` smallint(5) unsigned NOT NULL,
+ PRIMARY KEY  (`id`),
+ KEY `industry` (`industry`),
+ KEY `city_hometown` (`city`,`hometown`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 }}}
+
+
 
 
 
