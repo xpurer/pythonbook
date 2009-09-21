@@ -48,22 +48,64 @@ use wtree;
 
 创建时指定编码为 utf8_bin ，这样以后建表的默认编码就是 utf8_bin 了。
 
-首先设计两个表 -- 用户申请注册的表 和 用户表 。
+首先设计三个表 -- 用户的电子邮件表，用户密码表 和 用户申请注册的表 。
 
-用户申请注册的表结构很清晰， 主键 id ， 用于申请帐号的 email 地址，激活码 ，申请时间 ，是否已经激活。
+用户电子邮件表结构很简单，都只有2列，。
 
 {{{
-CREATE TABLE `user_apply` (
- `id` int(10) unsigned NOT NULL auto_increment,
- `email` varchar(128) NOT NULL,
- `ck` char(8) character set ascii collate ascii_bin NOT NULL,
- `time` timestamp NOT NULL default CURRENT_TIMESTAMP,
- `is_active` tinyint(1) NOT NULL default '0',
- PRIMARY KEY  (`id`),
- UNIQUE `email` (`email`)
-) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_bin ;
+CREATE TABLE `user_email` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `email` varchar(128) collate utf8_bin default NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+CREATE TABLE `user_password` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `password` binary(32) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 }}}
+
+对于密码，我们不存放原文，而存放用 sha256 哈希过的密码。binary表示是二进制数值。
+
+用户申请注册的表如下：
+{{{
+CREATE TABLE `user_apply` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `ck` binary(6) NOT NULL,
+  `time` timestamp NOT NULL default CURRENT_TIMESTAMP,
+  `name` varchar(8) collate utf8_bin default NULL,
+  PRIMARY KEY  (`id`),
+  KEY `time` (`time`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+}}}
+
 其中 ck 是 challenge key 的缩写，代表激活码。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 utf-8 编码的表中每一个定长char需要预备3个字节 ，因为这是可能的最大长度。因为我们生成ck只是英文和数字，为了节省空间，重定义了ck的编码集。
 
