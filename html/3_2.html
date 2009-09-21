@@ -36,20 +36,116 @@ CREATE DATABASE wtree CHARACTER SET utf8 COLLATE utf8_bin;
 use wtree;
 </pre></div>
 <p>创建时指定编码为 utf8_bin ，这样以后建表的默认编码就是 utf8_bin 了。</p>
-<p>首先设计两个表 -- 用户申请注册的表 和 用户表 。</p>
-<p>用户申请注册的表结构很清晰， 主键 id ， 用于申请帐号的 email 地址，激活码 ，申请时间 ，是否已经激活。</p>
+<p>首先设计四个表 -- 用户的电子邮件表，用户密码表，用户申请注册的表 和 用户的基本信息表。</p>
+<p>用户电子邮件表结构很简单，都只有2列，。</p>
+<div class="content"><pre>
+CREATE TABLE `user_email` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `email` varchar(128) collate utf8_bin default NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+CREATE TABLE `user_password` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `password` binary(32) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+</pre></div>
+<p>对于密码，我们不存放原文，而存放用 sha256 哈希过的密码。binary表示是二进制数值。</p>
+<p>用户申请注册的表如下：</p>
 <div class="content"><pre>
 CREATE TABLE `user_apply` (
- `id` int(10) unsigned NOT NULL auto_increment,
- `email` varchar(128) NOT NULL,
- `ck` char(8) character set ascii collate ascii_bin NOT NULL,
- `time` timestamp NOT NULL default CURRENT_TIMESTAMP,
- `is_active` tinyint(1) NOT NULL default '0',
- PRIMARY KEY  (`id`),
- UNIQUE `email` (`email`)
-) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_bin ;
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `ck` binary(6) NOT NULL,
+  `time` timestamp NOT NULL default CURRENT_TIMESTAMP,
+  `name` varchar(8) collate utf8_bin default NULL,
+  PRIMARY KEY  (`id`),
+  KEY `time` (`time`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 </pre></div>
 <p>其中 ck 是 challenge key 的缩写，代表激活码。</p>
+<p>用户表如下：</p>
+<div class="content"><pre>
+CREATE TABLE `user` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `name` char(8) collate utf8_bin NOT NULL,
+  `url` varchar(32) collate utf8_bin default NULL,
+  `ver` tinyint(3) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `url` (`url`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+</pre></div>
+<p>url是让用户可以指定个性化的url，ver是用户头像的版本号，作用和之前介绍过的静态文件的版本号一样。</p>
+<p>在数据库中创建上述表之后，修改 myconf/config.py ，配置数据库。</p>
+<div class="content"><pre>
+WTREE_HOST = "localhost:3306:wtree:root:111111"
+
+DATABASE_CONFIG = {
+    "wtree": {
+        "master": WTREE_HOST,
+        "tables": ["*","user","user_profile","user_apply"],
+    },
+}
+</pre></div>
+<p>tables是指定表在哪一个数据库中，*是通配符，代表默认数据库。</p>
+<p>这样，将来不同的表可以方便的分解到不同机器上的数据库中去，以便实现最简单的分布式。</p>
+<p>编辑 mysite/model/user.py 。</p>
+<div class="content"><pre>
+#coding:utf-8
+from init_db import McModel, Model
+from mysite.util.security import get_ck
+
+class UserEmail(McModel):
+    pass
+
+class UserPassword(Model):
+    pass
+
+class UserApply(Model):
+    @classmethod
+    def sendmail(cls,email):
+        pass
+
+    @classmethod
+    def create(cls,email,name=None):
+        e = UserEmail.get_or_create(email = email)
+        apply = cls.get(e.id)
+        if apply is None:
+            apply = cls(id=e.id,ck=get_ck())
+        if name:
+            apply.name = name
+        apply.save()
+        return apply
+
+class User(McModel):
+    pass
+
+def is_existed(email):
+    e = UserEmail.mc_get(email)
+    if e:
+        return User.mc_get(e.id)
+
+def create_user(id):
+    apply = UserApply.get(id)
+    if apply:
+        user = User(name=apply.name)
+        user.save()
+        apply.delete()
+        return user
+
+</pre></div>
+<p>首先可以看到引入了 Model 和 McModel 。</p>
+<p>Model 和 McModel 是一种 ORM 的基类。</p>
+<p>ORM，全称 Object Relation Mapping ， 中文含义是对象和关系的映射。通过ORM，可以简化常见的增删查改，提高开发效率。</p>
+<p>继承这个ORM的基类，它会自动的将数据库中表和对象进行映射。</p>
+<p>McModel 和 Model 的区别是，McModel附带了Memcache的支持，我们稍后来探讨他。</p>
+<p>sendmail是发送邮箱的函数，暂时空在那里不写。</p>
+<p>#coding:utf-8</p>
+<p>from os import urandom</p>
+<p>def get_ck():</p>
+<p>    return urandom(6)</p>
+<p>是一个高性能的基于内存的键值缓存，性能优异，使用它可以提高页面的响应速度，同时降低mysql的查询压力。想要更深入的了解memcache可以看看这个手册 <a href="page/memcached.pdf" target="_blank">链接</a> 。</p>
 <p>utf-8 编码的表中每一个定长char需要预备3个字节 ，因为这是可能的最大长度。因为我们生成ck只是英文和数字，为了节省空间，重定义了ck的编码集。</p>
 <p>对于数值类型，比如 tinyint ，后面圆括号是指出最大的显示尺寸，与实际的存储范围无关。</p>
 <p>接下来设计用户名表，用户的字段有 Email帐号，昵称，头像的版本号，个性url的后缀，性别，出身年代，是否单身，行业，职业，现居城市，家乡。</p>
@@ -61,7 +157,7 @@ CREATE TABLE `user` (
 `email` VARCHAR( 128 ) NOT NULL ,
 `name` CHAR( 8 ) NOT NULL ,
 `url` VARCHAR( 32 ) NULL ,
-`ver` TINYINT UNSIGNED NOT NULL ,
+`ver` TINYINT UNSIGNED NOT NULL  DEFAULT 0,
 UNIQUE email (`email`),
 UNIQUE url(`url`)
 ) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_bin ;

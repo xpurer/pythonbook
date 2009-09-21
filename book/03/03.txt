@@ -48,7 +48,7 @@ use wtree;
 
 创建时指定编码为 utf8_bin ，这样以后建表的默认编码就是 utf8_bin 了。
 
-首先设计三个表 -- 用户的电子邮件表，用户密码表 和 用户申请注册的表 。
+首先设计四个表 -- 用户的电子邮件表，用户密码表，用户申请注册的表 和 用户的基本信息表。
 
 用户电子邮件表结构很简单，都只有2列，。
 
@@ -83,8 +83,110 @@ CREATE TABLE `user_apply` (
 
 其中 ck 是 challenge key 的缩写，代表激活码。
 
+用户表如下：
+{{{
+CREATE TABLE `user` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `name` char(8) collate utf8_bin NOT NULL,
+  `url` varchar(32) collate utf8_bin default NULL,
+  `ver` tinyint(3) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `url` (`url`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+}}}
+url是让用户可以指定个性化的url，ver是用户头像的版本号，作用和之前介绍过的静态文件的版本号一样。
 
 
+在数据库中创建上述表之后，修改 myconf/config.py ，配置数据库。
+
+{{{
+WTREE_HOST = "localhost:3306:wtree:root:111111"
+
+DATABASE_CONFIG = {
+    "wtree": {
+        "master": WTREE_HOST,
+        "tables": ["*","user","user_profile","user_apply"],
+    },
+}
+}}}
+
+tables是指定表在哪一个数据库中，*是通配符，代表默认数据库。
+
+这样，将来不同的表可以方便的分解到不同机器上的数据库中去，以便实现最简单的分布式。
+
+编辑 mysite/model/user.py 。
+
+{{{
+#coding:utf-8
+from init_db import McModel, Model
+from mysite.util.security import get_ck
+
+class UserEmail(McModel):
+    pass
+
+class UserPassword(Model):
+    pass
+
+class UserApply(Model):
+    @classmethod
+    def sendmail(cls,email):
+        pass
+
+    @classmethod
+    def create(cls,email,name=None):
+        e = UserEmail.get_or_create(email = email)
+        apply = cls.get(e.id)
+        if apply is None:
+            apply = cls(id=e.id,ck=get_ck())
+        if name:
+            apply.name = name
+        apply.save()
+        return apply
+
+class User(McModel):
+    pass
+
+def is_existed(email):
+    e = UserEmail.mc_get(email)
+    if e:
+        return User.mc_get(e.id)
+
+def create_user(id):
+    apply = UserApply.get(id)
+    if apply:
+        user = User(name=apply.name)
+        user.save()
+        apply.delete()
+        return user        
+    
+}}}
+
+首先可以看到引入了 Model 和 McModel 。
+
+Model 和 McModel 是一种 ORM 的基类。
+
+ORM，全称 Object Relation Mapping ， 中文含义是对象和关系的映射。通过ORM，可以简化常见的增删查改，提高开发效率。
+
+继承这个ORM的基类，它会自动的将数据库中表和对象进行映射。
+
+McModel 和 Model 的区别是，McModel附带了Memcache的支持，我们稍后来探讨他。
+
+sendmail是发送邮箱的函数，暂时空在那里不写。
+
+#coding:utf-8
+from os import urandom
+
+def get_ck():
+    return urandom(6)
+
+
+
+
+
+
+
+
+是一个高性能的基于内存的键值缓存，性能优异，使用它可以提高页面的响应速度，同时降低mysql的查询压力。想要更深入的了解memcache可以看看这个手册 page:memcached.pdf 。
 
 
 
@@ -143,39 +245,6 @@ CREATE TABLE `user_profile` (
  KEY `industry` (`industry`),
  KEY `city_hometown` (`city`,`hometown`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-}}}
-
-首先修改 myconf/config.py ，配置数据库。
-
-{{{
-WTREE_HOST = "localhost:3306:wtree:root:111111"
-
-DATABASE_CONFIG = {
-    "wtree": {
-        "master": WTREE_HOST,
-        "tables": ["*","user","user_profile","user_apply"],
-    },
-}
-}}}
-
-tables是指定表在哪一个数据库中，*是通配符，代表默认数据库。
-
-这样，将来不同的表可以方便的分解到不同机器上的数据库中去，以便实现最简单的分布式。
-
-编辑 mysite/model/user.py 。
-
-{{{
-#coding:utf-8
-from init_db import McModel,Model
-
-class UserApply(McModel):
-    pass
-
-class UserProfile(McModel):
-    pass
-
-class User(McModel):
-    pass
 }}}
 
 
