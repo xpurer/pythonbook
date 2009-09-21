@@ -65,7 +65,7 @@ GAE注册 gae_reg.jpg
 
 将静态页面和相关的CSS，图片，都复制到这个文件夹下面。同时修改静态页面的文件名为 index.html 。
 
-再新建一个 server.py ，内容如下
+再新建一个 serve.py ，内容如下
 
 {{{
 print 'Content-Type: text/html; charset=UTF-8'
