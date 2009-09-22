@@ -117,48 +117,7 @@ tables是指定表在哪一个数据库中，*是通配符，代表默认数据�
 编辑 mysite/model/user.py 。
 
 {{{
-#coding:utf-8
-from init_db import McModel, Model
-from mysite.util.security import get_ck
 
-class UserEmail(McModel):
-    pass
-
-class UserPassword(Model):
-    pass
-
-class UserApply(Model):
-    @classmethod
-    def sendmail(cls,email):
-        pass
-
-    @classmethod
-    def create(cls,email,name=None):
-        e = UserEmail.get_or_create(email = email)
-        apply = cls.get(e.id)
-        if apply is None:
-            apply = cls(id=e.id,ck=get_ck())
-        if name:
-            apply.name = name
-        apply.save()
-        return apply
-
-class User(McModel):
-    pass
-
-def is_existed(email):
-    e = UserEmail.mc_get(email)
-    if e:
-        return User.mc_get(e.id)
-
-def create_user(id):
-    apply = UserApply.get(id)
-    if apply:
-        user = User(name=apply.name)
-        user.save()
-        apply.delete()
-        return user        
-    
 }}}
 
 首先可以看到引入了 Model 和 McModel 。

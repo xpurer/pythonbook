@@ -92,47 +92,6 @@ DATABASE_CONFIG = {
 <p>这样，将来不同的表可以方便的分解到不同机器上的数据库中去，以便实现最简单的分布式。</p>
 <p>编辑 mysite/model/user.py 。</p>
 <div class="content"><pre>
-#coding:utf-8
-from init_db import McModel, Model
-from mysite.util.security import get_ck
-
-class UserEmail(McModel):
-    pass
-
-class UserPassword(Model):
-    pass
-
-class UserApply(Model):
-    @classmethod
-    def sendmail(cls,email):
-        pass
-
-    @classmethod
-    def create(cls,email,name=None):
-        e = UserEmail.get_or_create(email = email)
-        apply = cls.get(e.id)
-        if apply is None:
-            apply = cls(id=e.id,ck=get_ck())
-        if name:
-            apply.name = name
-        apply.save()
-        return apply
-
-class User(McModel):
-    pass
-
-def is_existed(email):
-    e = UserEmail.mc_get(email)
-    if e:
-        return User.mc_get(e.id)
-
-def create_user(id):
-    apply = UserApply.get(id)
-    if apply:
-        user = User(name=apply.name)
-        user.save()
-        apply.delete()
-        return user
 
 </pre></div>
 <p>首先可以看到引入了 Model 和 McModel 。</p>
