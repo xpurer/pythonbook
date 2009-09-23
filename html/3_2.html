@@ -171,10 +171,23 @@ def is_existed(email):
 def create_user(id):
     apply = UserApply.get(id)
     if apply:
-        user = User(name=apply.name)
+        user = User(id=id, name=apply.name)
         user.save()
         apply.delete()
         return user
+
+
+USER_RELATED_BY_ID = (User, UserEmail, UserApply, )
+
+def remove_user_by_email(email):
+    e = UserEmail.get(email=email)
+    if e:
+        id = e.id
+
+        for cls in USER_RELATED_BY_ID:
+            cls(id=id).delete()
+
+        e.delete()
 </pre></div>
 <p>首先可以看到引入了 Model 和 McModel 。</p>
 <p>Model 和 McModel 是一种 ORM 的基类。</p>
@@ -186,6 +199,7 @@ def create_user(id):
 <p>我们将在以后的实战中慢慢介绍它。想要更深入的了解memcache可以看看这个手册 <a href="page/memcached.pdf" target="_blank">链接</a> 。</p>
 <p>windows下，我们只做开发，所以不用启动memcache和修改配置文件，mypy框架会默认使用一个假的（fake）memcache。</p>
 <p>接着看代码。</p>
+<p>UserPassword中定义了verify方法，用来校验密码是否正确。</p>
 <p>hash_password， 是用来对密码进行哈希的单向函数。数据库中是不保存密码明文的，即使数据库被黑客窃取，黑客也无法获知用户的密码。</p>
 <p>不少黑客预先将大量常见密码的哈希值计算出来，试图通过查表的方式迅速破解密码。为了防止这种暴力破解，我们把密码与id拼接起来再做哈希。密码学上将这种用于拼接的字符串称为salt，中文含义为盐。</p>
 <p>apply，就是用于创建申请的表了。其中用ORM来操作数据库，用到了ORM中的几个函数。</p>
@@ -210,29 +224,35 @@ apply = UserApply(id=id, ck=get_ck())
 apply.name = name
 apply.save()
 </pre></div>
-<p>接着，我们看下一个函数，is_existed。他用的McModel中的一个函数，mc_get。</p>
+<p>接着往下看代码。</p>
+<div class="content"><pre>
+def is_existed(email):
+    e = UserEmail.get(email=email)
+    if e:
+        return User.mc_get(e.id)
+</pre></div>
+<p>is_existed，用到了McModel中的一个函数，mc_get。</p>
 <p>mc_get的参数是函数的id，它会先尝试从memcache中获取数据。</p>
 <p>如果memcache中不存在该行，它会去数据库中查询。查询有结果，将缓存结果 -- 下一次mc_get就会从memcache中获取数据了。</p>
-<p>可以看到，这里我们没有使用多表级联来查询结果。用多表级联限制了这些表必须在同一台服务器上，不利于以后的扩展。</p>
-<p>正如Dan Pritchard在谈论eBay构架时那段对白</p>
+<p>对于那些可能会频繁读取的数据，我们使用memcache来缓存它，比如这里的user对象。</p>
+<p>我们没有使用多表级联来查询结果。</p>
+<p>多表级联会限制关联到的表必须在同一台服务器上，不利于以后的扩展。</p>
+<p>正如 Dan Pritchard 在谈论eBay构架时那段对白</p>
 <blockquote>
 <p>对其它大型系统的架构，你有什么建议吗？</p>
 <p>Dan Pritchard:</p>
 <p>最简单的建议就是，给一个为小规模应用而设计的架构增加资源并不能让它变成大规模的架构。你必须打破常规模式，比如ACID和分布式事务。乐于寻找机会放松一些约束，即使传统上认为是不能放松的。</p>
 <p>还有两条简单的原则：把每样东西都设计成分离的；考虑BASE、而不是ACID。</p>
 </blockquote>
-<p>是的，把每样东西都设计成分离的。</p>
-<p>utf-8编码的表中每一个定长char需要预备3个字节 ，因为这是可能的最大长度。如果只是英文和数字，可以重定义某一个字段的编码集，来节省空间。</p>
-<p>数据库表保持精简，对大文本字段单独建表存储。</p>
-<p>这样做有两个好处，</p>
-<p>其一，方便配合ORM和Memcache使用，能加快表的读取速度；</p>
-<p>其二，将来大文本字段的存储，可以方便切换到分布式的键值数据库。</p>
-<p>ORM，是 对象-表 的映射，用它可以简化常见的增删查找代码的编写，提高开发效率。</p>
-<p>Memcache，是一个高性能的基于内存的键值缓存，性能优异，使用它可以提高页面的响应速度，同时降低mysql的查询压力。想要更深入的了解memcache可以看看这个手册 <a href="page/memcached.pdf" target="_blank">链接</a> 。</p>
-<p>多对多 不要级联 数据表 索引表</p>
-<p>理念 把预先能计算的数据先准备好</p>
-<p>可以容忍 必要的数据冗余</p>
-<p>表小 数据切片</p>
+<p>是的，把每样东西都设计成分离的，这是一个好习惯。</p>
+<p>最后看 remove_user_by_email ， 这里的用于删除用户账号的。通常的删除方式是</p>
+<div class="content"><pre>
+cls.where(id=id).delete()
+</pre></div>
+<p>但这样做的缺点是需要手工的清空memcache，如果是根据id删除，可以采用下面这种写法。</p>
+<div class="content"><pre>
+cls(id=id).delete()
+</pre></div>
 
 <div class="dirnav">
 <a href="3_1.html">上一节</a>
