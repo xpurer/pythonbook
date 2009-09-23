@@ -134,21 +134,29 @@ class User(McModel):
     pass
 
 def hash_password(id, password):
-    return password_hash("%s%s"%(password,pack('L',id))).digest()
+    return password_hash("%s%s"%(password, pack('L', id))).digest()
 
+def send_apply_email(email, name, id, ck):
+    render_email("auth/send_apply_email", email, name, id=id, ck=ck)
 
 def apply(email, password, name):
-    e = UserEmail.get_or_create(email=email)
-    id = e.id
-    password = hash_password(id, password)
-    UserPassword.get_or_create(id=id, password=password)
+    id = UserEmail.get_or_create(email=email).id
 
-    apply = UserApply.get(e.id)
+    password = hash_password(id, password)
+    user_password = UserPassword.get(id=id)
+    if user_password is None:
+        user_password = UserPassword(id=id)
+    user_password.password = password
+    user_password.save()
+
+    apply = UserApply.get(id)
     if apply is None:
         apply = UserApply(id=id, ck=get_ck())
     apply.name = name
     apply.save()
-    render_email("auth/send_apply_email",email, name, id=id,ck=ck)
+
+    send_apply_email(email, name, id, apply.ck)
+
     return apply
 
 def is_existed(email):
