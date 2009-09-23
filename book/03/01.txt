@@ -220,7 +220,7 @@ util，公用的函数，如分页等。
 
 运行它需要配置一些数据库，参见 3.3小节，数据库，ORM 与 单元测试 。
 
-配置完数据库，导入stdyun/mytool/create_table下的tabel.sql，便可以运行。
+配置完数据库，导入stdyun/mytool/create_table下的tabel.sql，便可以运行。导入的命令如下：
 {{{
 mysql -u用户名 -p密码 数据库名 < tabel.sql
 }}}
