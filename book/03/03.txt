@@ -2,7 +2,7 @@
 
 很多人在大学都学过数据库，喜欢用那些第一范式，第二范式 ... 第X范式，来指导表设计。
 
-这些设计思想充满了形式上的优雅和数学上的美感，不过正如一位低调的前辈大牛所说的那样：
+这些设计思想充满了数学上的优雅和形式上的美感，不过正如一位低调的前辈大牛所说的那样：
 
 “
 学者要干的事情和街上混的程序员们干的事情完全不同，解决方案自然也完全两样。拿学术大师的话去指导产品开发，是要吃大亏的 ...
@@ -50,24 +50,26 @@ use wtree;
 
 首先设计四个表 -- 用户的电子邮件表，用户密码表，用户申请注册的表 和 用户的基本信息表。
 
-用户电子邮件表结构很简单，都只有2列，。
+建表可以使用一些辅助工具，比如客户端的MySQL GUI Tools （ http://dev.mysql.com/downloads/gui-tools/ ） ，或WEB界面的phpmyadmin( http://www.phpmyadmin.net/ )。
 
+用户电子邮件表结构很简单，只有2列。电子邮件表中的id就是用户的id。我们将其自增主键id的起始值设置为一千万，小于一千万的id预留做其他用途。
 {{{
 CREATE TABLE `user_email` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `email` varchar(128) collate utf8_bin default NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=MyISAM AUTO_INCREMENT=10000000 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+}}}
 
+对于密码表，我们不存放密码原文，而存放用 sha256 哈希过的密码。binary表示是二进制数值。
+{{{
 CREATE TABLE `user_password` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `password` binary(32) default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 }}}
-
-对于密码，我们不存放原文，而存放用 sha256 哈希过的密码。binary表示是二进制数值。
 
 用户申请注册的表如下：
 {{{
@@ -108,7 +110,10 @@ if not DATABASE_CONFIG:
     DATABASE_CONFIG = {
         "wtree": {
             "master": WTREE_HOST,
-            "tables": ("*","user","user_profile","user_apply","user_password","user_email"),
+            "tables": (
+                "*",
+                "user","user_apply","user_password","user_email",
+            ),
         },
     }
 }}}
@@ -215,11 +220,15 @@ if result is None:
 }}}
 
 
-get,是创建函数
-
+get,获取单条记录。默认查询条件是id，比如
+{{{
 UserApply.get(e.id)
+}}}
 
-
+如果要指定查询,可以用类似下面的写法
+{{{
+UserApply.get(email=email)
+}}}
 
 
 
