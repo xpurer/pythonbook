@@ -37,23 +37,23 @@ import auth
 </pre></div>
 <p>在 myfile/css/my.css 的结尾加上</p>
 <div class="content"><pre>
-.PageForm{margin:40px auto 0;width:335px;}
-.BForm select{font-size:16px;margin-left:-6px;}
-.BForm span{display:block;margin-top:5px;font-size:14px;color:#666;text-align:left;margin-left:38px}
-.BForm p label{margin-right:10px}
-.BForm p input{width:286px}
-.BForm p{margin-bottom:20px;font-size:14px}
-.BForm .Err,.Err{padding-bottom:2px;font-size:12px;margin-top:0;color:#d30}
+.Pform{margin:40px auto 0;width:335px;}
+.Bform select{font-size:16px;margin-left:-6px;}
+.Bform .Err,.Bform span{display:block;margin-top:5px;font-size:14px;color:#666;text-align:left;margin-left:38px}
+.Bform p label{margin-right:10px}
+.Bform p input{width:286px}
+.Bform p{margin-bottom:20px;font-size:14px}
+.Bform .Err,.Err{padding-bottom:2px;font-size:12px;margin-top:0;color:#d30}
 .Err{display:block}
 .Warn{color:#d30;}
 .Ok{color:#090;}
 .HideErr .Err{display:none}
-.Bbtn{font-size:16px;padding:3px 6px;}
+.Bbtn{font-size:16px;padding:3px 6px;_padding:0 6px;overflow:visible}
 </pre></div>
 <p>在 myfile/js 文件夹中新建 reg.js ,内容如下</p>
 <div class="content"><pre>
 $(function(){
-$(".FormPage input:first").focus()
+$(".Pform input:first").focus()
 })
 </pre></div>
 <p>运行 myfile 下的 merge.py 。</p>
@@ -63,43 +63,44 @@ $(".FormPage input:first").focus()
 &lt;%!
 from myfile import js,css
 %&gt;
-
 &lt;%def name="html_head()" filter="trim"&gt;
-&lt;script src="${js.reg}"&gt;&lt;/script&gt;
+    &lt;script src="${js.reg}"&gt;&lt;/script&gt;
 &lt;/%def&gt;
 
 &lt;%def name="html_body()" filter="trim"&gt;
-&lt;%inherit file="/htmbase/simple_base.htm" /&gt;
-&lt;%!
-from myfile import js,css
-%&gt;
+    &lt;form method="POST" class="HideErr Bform Pform"&gt;
+        &lt;p align="center" style="padding-bottom:10px"&gt;许多故事,从这里开始...&lt;/p&gt;
 
-&lt;%def name="html_head()" filter="trim"&gt;
-&lt;script src="${js.reg}"&gt;&lt;/script&gt;
-&lt;/%def&gt;
+        &lt;p&gt;
+            &lt;span class="Err" id="err_email"&gt;&lt;/span&gt;
+            &lt;label&gt;邮箱&lt;/label&gt;&lt;input autocomplete="off" type="text" value="" class="text" name="email" id="email"/&gt;
+            &lt;span&gt;输入Email邮箱,接收确认邮件以开始注册。 &lt;/span&gt;
+        &lt;/p&gt;
 
-&lt;%def name="html_body()" filter="trim"&gt;
-&lt;form class="HideErr BForm PageForm" method="POST" onsubmit="return submit_form()"&gt;
-&lt;p align="center" style="padding-bottom:10px"&gt;许多故事,从这里开始...&lt;/p&gt;
+        &lt;p&gt;
+            &lt;label&gt;名号&lt;/label&gt;&lt;input autocomplete="off" type="text" value="" class="text" name="name" id="name"&gt;
+            &lt;span&gt;中英文皆可,不要超过8个汉字。 &lt;/span&gt;
+        &lt;/p&gt;
 
-&lt;p&gt;
-&lt;span class="Err" id="err_email"&gt;&lt;/span&gt;
-&lt;label&gt;邮箱&lt;/label&gt;&lt;input autocomplete="off" type="text" value="" class="text" name="email" id="email"/&gt;
-&lt;span&gt;输入Email邮箱,接收确认邮件以开始注册。 &lt;/span&gt;
-&lt;/p&gt;
+        &lt;p&gt;
+            &lt;label&gt;密码&lt;/label&gt;&lt;input type="password" value="" class="text" name="password" id="password"&gt;
+            &lt;span&gt;最少6个字符,区分大小写。 &lt;/span&gt;
+        &lt;/p&gt;
 
-&lt;p align="center"&gt;&lt;button class="Bbtn" type="submit"&gt;注册&lt;/button&gt;&lt;/p&gt;
-&lt;/form&gt;
-&lt;/%def&gt;
+        &lt;p align="center"&gt;&lt;button class="Bbtn" type="submit"&gt;注册&lt;/button&gt;&lt;/p&gt;
+        &lt;p align="right" style="font-size:12px;color:#333"&gt;忘记密码了?
+            &lt;a style="color:#33c" href="/auth/reset_password"&gt;点此找回&lt;/a&gt;
+        &lt;/p&gt;
+    &lt;/form&gt;
 &lt;/%def&gt;
 </pre></div>
-<p>启动 dev_server.py 服务器，访问 <a target="_blank" href="http://localhost:9889/auth/apply">http://localhost:9889/auth/apply</a> ，页面如图。</p>
+<p>启动 dev_server.py 服务器，访问 <a target="_blank" href="http://localhost:9889/auth/apply">http://localhost:9889/auth/apply</a> ，页面如图。右上角的Logo图片是用 Logo Creatr（ <a target="_blank" href="http://creatr.cc/creatr/">http://creatr.cc/creatr/</a> ）生成的。</p>
 <div class="imageblock">
 <div class="content">
-<img alt="KanRS申请注册" src="img/kanrs_apply.png"/>
+<img alt="stdyun申请注册" src="img/kanrs_apply.png"/>
 </div>
 
-<div class="image-title">图:KanRS申请注册</div>
+<div class="image-title">图:stdyun申请注册</div>
 </div>
 <p>先来，一一讲解他们的用途。</p>
 <p>mypy整个设计遵循了MVC( 模型－视图－控制器 )的理念。</p>

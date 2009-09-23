@@ -116,6 +116,10 @@ MySQL-Python迟迟没有发布Python2.6的官方Windows编译版，所以从 htt
 --> 点击确定
 --> 点击环境变量页面的确定
 
+如图所示
+
+设置环境变量 set_env.png
+
 开始 --> 运行 --> 输入 cmd --> 输入
 {{{
 easy_install -U mypy

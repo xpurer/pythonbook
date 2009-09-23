@@ -11,7 +11,6 @@ URL分发 与 Mako模板
 第二步，
     1.用户激活，填写详细信息
     2.激活成功，跳转欢迎页面
-    
 
 每一步又对应一个URL,设计URL也有很多讲究。用一句话概述就是：简短好记，避免更变（有兴趣可以读读 Cool URI don't change http://www.w3.org/Provider/Style/URI）。
 
@@ -42,24 +41,24 @@ import auth
 
 在 myfile/css/my.css 的结尾加上
 {{{
-.PageForm{margin:40px auto 0;width:335px;}
-.BForm select{font-size:16px;margin-left:-6px;}
-.BForm span{display:block;margin-top:5px;font-size:14px;color:#666;text-align:left;margin-left:38px}
-.BForm p label{margin-right:10px}
-.BForm p input{width:286px}
-.BForm p{margin-bottom:20px;font-size:14px}
-.BForm .Err,.Err{padding-bottom:2px;font-size:12px;margin-top:0;color:#d30}
+.Pform{margin:40px auto 0;width:335px;}
+.Bform select{font-size:16px;margin-left:-6px;}
+.Bform .Err,.Bform span{display:block;margin-top:5px;font-size:14px;color:#666;text-align:left;margin-left:38px}
+.Bform p label{margin-right:10px}
+.Bform p input{width:286px}
+.Bform p{margin-bottom:20px;font-size:14px}
+.Bform .Err,.Err{padding-bottom:2px;font-size:12px;margin-top:0;color:#d30}
 .Err{display:block}
 .Warn{color:#d30;}
 .Ok{color:#090;}
 .HideErr .Err{display:none}
-.Bbtn{font-size:16px;padding:3px 6px;}
+.Bbtn{font-size:16px;padding:3px 6px;_padding:0 6px;overflow:visible}
 }}}
 
 在 myfile/js 文件夹中新建 reg.js ,内容如下
 {{{
 $(function(){
-$(".FormPage input:first").focus()
+$(".Pform input:first").focus()
 })
 }}}
 
@@ -71,40 +70,41 @@ $(".FormPage input:first").focus()
 <%!
 from myfile import js,css
 %>
-
 <%def name="html_head()" filter="trim">
-<script src="${js.reg}"></script>
+    <script src="${js.reg}"></script>
 </%def>
 
 <%def name="html_body()" filter="trim">
-<%inherit file="/htmbase/simple_base.htm" />
-<%!
-from myfile import js,css
-%>
+    <form method="POST" class="HideErr Bform Pform">
+        <p align="center" style="padding-bottom:10px">许多故事,从这里开始...</p>
 
-<%def name="html_head()" filter="trim">
-<script src="${js.reg}"></script>
-</%def>
+        <p>
+            <span class="Err" id="err_email"></span>
+            <label>邮箱</label><input autocomplete="off" type="text" value="" class="text" name="email" id="email"/>
+            <span>输入Email邮箱,接收确认邮件以开始注册。 </span>
+        </p>
 
-<%def name="html_body()" filter="trim">
-<form class="HideErr BForm PageForm" method="POST" onsubmit="return submit_form()">
-<p align="center" style="padding-bottom:10px">许多故事,从这里开始...</p>
+        <p>
+            <label>名号</label><input autocomplete="off" type="text" value="" class="text" name="name" id="name">
+            <span>中英文皆可,不要超过8个汉字。 </span>
+        </p>
 
-<p>
-<span class="Err" id="err_email"></span>
-<label>邮箱</label><input autocomplete="off" type="text" value="" class="text" name="email" id="email"/>
-<span>输入Email邮箱,接收确认邮件以开始注册。 </span>
-</p>
+        <p>
+            <label>密码</label><input type="password" value="" class="text" name="password" id="password">
+            <span>最少6个字符,区分大小写。 </span>
+        </p>
 
-<p align="center"><button class="Bbtn" type="submit">注册</button></p>
-</form>
-</%def>
+        <p align="center"><button class="Bbtn" type="submit">注册</button></p>
+        <p align="right" style="font-size:12px;color:#333">忘记密码了? 
+            <a style="color:#33c" href="/auth/reset_password">点此找回</a>
+        </p>
+    </form>
 </%def>
 }}}
 
-启动 dev_server.py 服务器，访问 http://localhost:9889/auth/apply ，页面如图。
+启动 dev_server.py 服务器，访问 http://localhost:9889/auth/apply ，页面如图。右上角的Logo图片是用 Logo Creatr（ http://creatr.cc/creatr/ ）生成的。
 
-KanRS申请注册 kanrs_apply.png
+stdyun申请注册 kanrs_apply.png
 
 先来，一一讲解他们的用途。
 
@@ -208,4 +208,3 @@ from myfile import js,css
 而 merge.py 在生成 __init__.py 时，会监测文件改动，然后智能地对有改动的文件生成新的引用名称。
 
 部署线上服务器的时候，配合Url Rewrite,可以方便实现js和css文件的缓存刷新的自动化。
-

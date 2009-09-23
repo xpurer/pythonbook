@@ -29,7 +29,7 @@ explain select * from friends where grid_id = 987654;
 select * from misc where `key` = "salt";
 </pre></div>
 <p>每一张表中，不要有太多字段，但应该都有一个自增的id作为主键。</p>
-<p>总而言之，只使用MySQL最简单最基本功能。更多细节现在就不扯了，以后碰到再慢慢说，还是先看看怎么设计用户表。</p>
+<p>总而言之，只使用MySQL最简单最基本功能。更多细节现在就不扯了，以后碰到再慢慢说，我们开始实战。</p>
 <p>首先创建数据库，第一个数据库的名词就取世界树的缩写（World Tree）叫做 wtree 吧。</p>
 <div class="content"><pre>
 CREATE DATABASE wtree CHARACTER SET utf8 COLLATE utf8_bin;
@@ -81,30 +81,102 @@ CREATE TABLE `user` (
 <div class="content"><pre>
 WTREE_HOST = "localhost:3306:wtree:root:111111"
 
-DATABASE_CONFIG = {
-    "wtree": {
-        "master": WTREE_HOST,
-        "tables": ["*","user","user_profile","user_apply"],
-    },
-}
+... ... ...
+
+if not DATABASE_CONFIG:
+    DATABASE_CONFIG = {
+        "wtree": {
+            "master": WTREE_HOST,
+            "tables": ("*","user","user_profile","user_apply","user_password","user_email"),
+        },
+    }
 </pre></div>
 <p>tables是指定表在哪一个数据库中，*是通配符，代表默认数据库。</p>
 <p>这样，将来不同的表可以方便的分解到不同机器上的数据库中去，以便实现最简单的分布式。</p>
+<p>同时去新浪申请一个邮箱,我们先借用新浪邮件的SMTP服务器来发邮件。申请完成后，同样修改一下配置。</p>
+<div class="content"><pre>
+#系统发信人的邮箱地址和显示名称
+SYS_EMAIL_SENDER = "stdyun@sina.com"
+SYS_EMAIL_SENDER_NAME = "stdyun"
+
+#发信的SMTP服务器，用户名，密码
+SMTP = "smtp.sina.com"
+SMTP_USERNAME = "stdyun"
+SMTP_PASSWORD = "xxxxxx"
+</pre></div>
 <p>编辑 mysite/model/user.py 。</p>
 <div class="content"><pre>
+#coding:utf-8
+from init_db import McModel, Model
+from mysite.util.security import get_ck
+from base64 import urlsafe_b64encode
+from sendmail import render_email
+from struct import pack
+from hashlib import sha256 as password_hash
 
+class UserEmail(McModel):
+    pass
+
+class UserPassword(Model):
+    pass
+
+class UserApply(Model):
+    pass
+
+class User(McModel):
+    pass
+
+def hash_password(id, password):
+    return password_hash("%s\n%s"%(password, pack('L',id))).digest()
+
+def apply(email, password, name):
+    e = UserEmail.get_or_create(email=email)
+    id = e.id
+    password = hash_password(id, password)
+    UserPassword.get_or_create(id=id, password=password)
+
+    apply = UserApply.get(e.id)
+    if apply is None:
+        apply = UserApply(id=id, ck=get_ck())
+    apply.name = name
+    apply.save()
+    return apply
+
+def is_existed(email):
+    e = UserEmail.get(email=email)
+    if e:
+        return User.mc_get(e.id)
+
+def create_user(id):
+    apply = UserApply.get(id)
+    if apply:
+        user = User(name=apply.name)
+        user.save()
+        apply.delete()
+        return user
+
+def send_apply_email(email, name, id, ck):
+    render_email("auth/send_apply_email",email, name, id=id,ck=ck)
 </pre></div>
 <p>首先可以看到引入了 Model 和 McModel 。</p>
 <p>Model 和 McModel 是一种 ORM 的基类。</p>
 <p>ORM，全称 Object Relation Mapping ， 中文含义是对象和关系的映射。通过ORM，可以简化常见的增删查改，提高开发效率。</p>
 <p>继承这个ORM的基类，它会自动的将数据库中表和对象进行映射。</p>
-<p>McModel 和 Model 的区别是，McModel附带了Memcache的支持，我们稍后来探讨他。</p>
-<p>sendmail是发送邮箱的函数，暂时空在那里不写。</p>
-<p>#coding:utf-8</p>
-<p>from os import urandom</p>
-<p>def get_ck():</p>
-<p>    return urandom(6)</p>
-<p>是一个高性能的基于内存的键值缓存，性能优异，使用它可以提高页面的响应速度，同时降低mysql的查询压力。想要更深入的了解memcache可以看看这个手册 <a href="page/memcached.pdf" target="_blank">链接</a> 。</p>
+<p>McModel 和 Model 的区别是，McModel附带了Memcache的支持。</p>
+<p>Memcache是一个高性能的基于内存的键值缓存，性能优异，使用它可以提高页面的响应速度，同时降低mysql的查询压力。</p>
+<p>我们将在以后的实战中慢慢介绍它。想要更深入的了解memcache可以看看这个手册 <a href="page/memcached.pdf" target="_blank">链接</a> 。</p>
+<p>hash_password， 是用来对密码进行哈希的单向函数。数据库中是不保存密码明文的，即使数据库被黑客窃取，黑客也无法获知用户的密码。</p>
+<p>不少黑客预先将大量常见密码的哈希值计算出来，试图通过查表的方式迅速破解密码。为了防止这种暴力破解，我们把密码与id拼接起来再做哈希。密码学上将这种用于拼接的字符串称为salt，中文含义为盐。</p>
+<p>apply，就是用于创建申请的表了。其中用ORM来操作数据库，用到了ORM中的几个函数。</p>
+<p>get_or_create，顾名思义，就是获取或创建，如果用SQL来写，类似于下面的代码。</p>
+<div class="content"><pre>
+cursor.execute("select * from user where email = %s limit 1", email)
+result = cursor.fetchone()
+if result is None:
+    cursor.execute("insert into user (email) values (%s)",email)
+</pre></div>
+<p>get,是创建函数</p>
+<p>UserApply.get(e.id)</p>
 <p>utf-8 编码的表中每一个定长char需要预备3个字节 ，因为这是可能的最大长度。因为我们生成ck只是英文和数字，为了节省空间，重定义了ck的编码集。</p>
 <p>对于数值类型，比如 tinyint ，后面圆括号是指出最大的显示尺寸，与实际的存储范围无关。</p>
 <p>接下来设计用户名表，用户的字段有 Email帐号，昵称，头像的版本号，个性url的后缀，性别，出身年代，是否单身，行业，职业，现居城市，家乡。</p>
