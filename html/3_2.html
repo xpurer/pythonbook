@@ -201,7 +201,23 @@ def remove_user_by_email(email):
 <p>UserPassword中定义了verify方法，用来校验密码是否正确。</p>
 <p>hash_password， 是用来对密码进行哈希的单向函数。数据库中是不保存密码明文的，即使数据库被黑客窃取，黑客也无法获知用户的密码。</p>
 <p>不少黑客预先将大量常见密码的哈希值计算出来，试图通过查表的方式迅速破解密码。为了防止这种暴力破解，我们把密码与id拼接起来再做哈希。密码学上将这种用于拼接的字符串称为salt，中文含义为盐。</p>
-<p>apply，就是用于创建申请的表了。其中用ORM来操作数据库，用到了ORM中的几个函数。</p>
+<p>send_apply_email,调用了 render_email 函数来发送邮件。第一个参数 "auth/send_apply_email" 指定了邮件的模板，对于模板文件是 mysite/txt/auth/send_apply_email.txt 。模板内容如下，内容第一行是邮件的标题：</p>
+<div class="content"><pre>
+欢迎注册stdyun.com, 请验证您的邮箱。
+
+{name}，你好:
+
+{email} 在 stdyun.com 申请注册，因此我们发送这封邮件进行确认。
+
+请在七天内点击下面的链接来验证您的邮箱。
+
+<a target="_blank" href="http://stdyun.com/auth/active/">http://stdyun.com/auth/active/</a>{id}/{ck}
+
+如果无法点击上面的链接，你可以复制该地址，并粘帖在浏览器的地址栏中访问。
+</pre></div>
+<p>该模板是利用了python2.6字符串自带的format函数进行格式化，不支持mako那些复杂的语法，但是简单高效。</p>
+<p>render_email接下来的参数是收件人的邮箱（email）,收件人的姓名（name）, 接下来 id=id, ck=ck 是传给模板的变量。</p>
+<p>apply，用于创建申请。其中用ORM来操作数据库，用到了ORM中的几个函数。</p>
 <p>get_or_create，顾名思义，就是获取或创建，如果用SQL来写，类似于下面的代码。</p>
 <div class="content"><pre>
 cursor.execute("select * from user where email = %s limit 1", email)
@@ -310,7 +326,9 @@ if __name__ == '__main__':
 <p>好了，到此为止，数据库相关的逻辑就写完了，接下来开始写页面逻辑。</p>
 <div style="border:0;border-bottom:1px #ccc dotted;margin:40px 0;"></div>
 <p>麻油四看的七荤八素，无语凝咽，吐血十五公升。</p>
-<p>雄关漫道真如铁，而今迈步从头越 ...</p>
+<p>早岁哪知世事艰，中原北望气如山。</p>
+<p>雄关漫道真如铁，而今迈步从头越。</p>
+<p>唉，读书人一声长叹 ...</p>
 
 <div class="dirnav">
 <a href="3_1.html">上一节</a>
