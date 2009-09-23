@@ -200,12 +200,14 @@ mysite 中为网站代码，其中又有四个目录：
 {{{
 ctrl
 model
+modeltest
 htm
 util
 }}}
 
 ctrl，control的缩写，这里写页面相关的逻辑。
 model，操作数据库的后台逻辑代码所在目录。
+modeltest，后台逻辑单元测试代码所在目录。
 htm，放置网页模板。
 util，公用的函数，如分页等。
 
