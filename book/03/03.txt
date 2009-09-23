@@ -202,10 +202,22 @@ def is_existed(email):
 def create_user(id):
     apply = UserApply.get(id)
     if apply:
-        user = User(name=apply.name)
+        user = User(id=id, name=apply.name)
         user.save()
         apply.delete()
         return user
+
+USER_RELATED_BY_ID = (User, UserEmail, UserApply, )
+
+def remove_user_by_email(email):
+    UserEmail.begin()
+    e = UserEmail.get(email=email)
+    if e:
+        id = e.id
+        for cls in USER_RELATED_BY_ID:
+            cls(id=id).delete()
+        e.delete()
+    UserEmail.commit()
 }}}
 
 首先可以看到引入了 Model 和 McModel 。
@@ -227,6 +239,8 @@ Memcache是一个高性能的基于内存的键值缓存，性能优异，是MyS
 windows下，我们只做开发，所以不用启动memcache和修改配置文件，mypy框架会默认使用一个假的（fake）memcache。
 
 接着看代码。
+
+UserPassword中定义了verify方法，用来校验密码是否正确。
 
 hash_password， 是用来对密码进行哈希的单向函数。数据库中是不保存密码明文的，即使数据库被黑客窃取，黑客也无法获知用户的密码。
 
@@ -261,15 +275,28 @@ apply.name = name
 apply.save()
 }}}
 
-接着，我们看下一个函数，is_existed。他用的McModel中的一个函数，mc_get。
+接着往下看代码。
+
+{{{
+def is_existed(email):
+    e = UserEmail.get(email=email)
+    if e:
+        return User.mc_get(e.id)
+}}}
+
+is_existed，用到了McModel中的一个函数，mc_get。
 
 mc_get的参数是函数的id，它会先尝试从memcache中获取数据。
 
 如果memcache中不存在该行，它会去数据库中查询。查询有结果，将缓存结果 -- 下一次mc_get就会从memcache中获取数据了。
 
-可以看到，这里我们没有使用多表级联来查询结果。用多表级联限制了这些表必须在同一台服务器上，不利于以后的扩展。
+对于那些可能会频繁读取的数据，我们使用memcache来缓存它，比如这里的user对象。
 
-正如Dan Pritchard在谈论eBay构架时那段对白
+我们没有使用多表级联来查询结果。
+
+多表级联会限制关联到的表必须在同一台服务器上，不利于以后的扩展。
+
+正如 Dan Pritchard 在谈论eBay构架时那段对白
 
 ==>
 对其它大型系统的架构，你有什么建议吗？
@@ -281,44 +308,22 @@ Dan Pritchard:
 还有两条简单的原则：把每样东西都设计成分离的；考虑BASE、而不是ACID。
 <==
 
-是的，把每样东西都设计成分离的。
+是的，把每样东西都设计成分离的，这是一个好习惯。
 
+最后看 remove_user_by_email ，这里的用于删除用户账号的。通常的删除方式是
+{{{
+cls.where(id=id).delete()
+}}}
 
+但这样做的缺点是需要手工的清空memcache，如果是根据id删除，可以采用下面这种写法，它能自动清空memcache。
+{{{
+cls(id=id).delete()
+}}}
 
+UserEmail.begin 是对 UserEmail 所在的数据库使用事务，它对这个数据库的所有InnoDB表都会造成影响。
 
+不过启用事务并不是为了保证数据的完整性，而是可以减少InnoDB的自动提交（AUTOCOMMIT）。对于大量的修改操作而言，如果每次改变数据都自动提交，会导致性能急剧下降。
 
-
-
-
-
-
-
-
-
-
-utf-8编码的表中每一个定长char需要预备3个字节 ，因为这是可能的最大长度。如果只是英文和数字，可以重定义某一个字段的编码集，来节省空间。
-
-数据库表保持精简，对大文本字段单独建表存储。
-
-这样做有两个好处，
-
-其一，方便配合ORM和Memcache使用，能加快表的读取速度；
-
-其二，将来大文本字段的存储，可以方便切换到分布式的键值数据库。
-
-ORM，是 对象-表 的映射，用它可以简化常见的增删查找代码的编写，提高开发效率。
-
-Memcache，是一个高性能的基于内存的键值缓存，性能优异，使用它可以提高页面的响应速度，同时降低mysql的查询压力。想要更深入的了解memcache可以看看这个手册 page:memcached.pdf 。
-
-
-
-多对多 不要级联 数据表 索引表 
-理念 把预先能计算的数据先准备好
-可以容忍 必要的数据冗余
-
-
-
-
-表小 数据切片
+当然，对remove_user_by_email这个函数而言，用不用事务区别不大。
 
 

@@ -176,18 +176,17 @@ def create_user(id):
         apply.delete()
         return user
 
-
 USER_RELATED_BY_ID = (User, UserEmail, UserApply, )
 
 def remove_user_by_email(email):
+    UserEmail.begin()
     e = UserEmail.get(email=email)
     if e:
         id = e.id
-
         for cls in USER_RELATED_BY_ID:
             cls(id=id).delete()
-
         e.delete()
+    UserEmail.commit()
 </pre></div>
 <p>首先可以看到引入了 Model 和 McModel 。</p>
 <p>Model 和 McModel 是一种 ORM 的基类。</p>
@@ -245,14 +244,17 @@ def is_existed(email):
 <p>还有两条简单的原则：把每样东西都设计成分离的；考虑BASE、而不是ACID。</p>
 </blockquote>
 <p>是的，把每样东西都设计成分离的，这是一个好习惯。</p>
-<p>最后看 remove_user_by_email ， 这里的用于删除用户账号的。通常的删除方式是</p>
+<p>最后看 remove_user_by_email ，这里的用于删除用户账号的。通常的删除方式是</p>
 <div class="content"><pre>
 cls.where(id=id).delete()
 </pre></div>
-<p>但这样做的缺点是需要手工的清空memcache，如果是根据id删除，可以采用下面这种写法。</p>
+<p>但这样做的缺点是需要手工的清空memcache，如果是根据id删除，可以采用下面这种写法，它能自动清空memcache。</p>
 <div class="content"><pre>
 cls(id=id).delete()
 </pre></div>
+<p>UserEmail.begin 是对 UserEmail 所在的数据库使用事务，它对这个数据库的所有InnoDB表都会造成影响。</p>
+<p>不过启用事务并不是为了保证数据的完整性，而是可以减少InnoDB的自动提交（AUTOCOMMIT）。对于大量的修改操作而言，如果每次改变数据都自动提交，会导致性能急剧下降。</p>
+<p>当然，对remove_user_by_email这个函数而言，用不用事务区别不大。</p>
 
 <div class="dirnav">
 <a href="3_1.html">上一节</a>
