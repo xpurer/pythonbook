@@ -105,11 +105,6 @@ http://ah.anwang.cn/yinyong521/SnagIt%20V8.02%BA%BA%BB%AF%C2%CC%C9%AB%CC%D8%B1%F
 
 
 
-    5.英文名拼写的问题，统一采用这种格式
-    Google Code
-    Tortoise Svn
-    Mozilla Firefox
-    
     
     
     

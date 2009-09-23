@@ -9,15 +9,12 @@
 <div id="preamble">
 <p>很多人在大学都学过数据库，喜欢用那些第一范式，第二范式 ... 第X范式，来指导表设计。</p>
 <p>这些设计思想充满了数学上的优雅和形式上的美感，不过正如一位低调的前辈大牛所说的那样：</p>
-<p>“</p>
+<blockquote>
 <p>学者要干的事情和街上混的程序员们干的事情完全不同，解决方案自然也完全两样。拿学术大师的话去指导产品开发，是要吃大亏的 ...</p>
-<p>”</p>
+</blockquote>
 <p>好吧，先把那些范式忘了吧，欢迎回到现实世界。</p>
 <p>数据库的设计，向来是根据应用场景而设计。下面我们假设应用场景为千万级访问量的Web2.0网站，数据库为MySQL。</p>
 <p>MySQL是Web2.0网站用的最广泛的数据库了，它在Facebook，Baidu，Google都有使用。想要深入的了解MySQL，可以看看它的官方文档 <a href="page/other/learn_html_css.chm" target="_blank">链接</a> ，下面提一些注意点。</p>
-<p>首先，仔细选择MySQL使用的数据库引擎。MySQL有两大存储引擎，MyISAM和Innodb。</p>
-<p>MyISAM 为读操作优化，速度比较快，但写是全局锁，并发性差，并且不支持事务。</p>
-<p>InnoDB 是行级锁，写并发性能好，支持事务，但读取比较慢。</p>
 <p>在设计表的时候，不要显式的声明数据库中的外键关系。数据库中使用外键关系会显著拖累数据库的性能，同时制约了数据库表的可拆分性。</p>
 <p>需要作为where条件查询的字段，要加上索引。多个字段联合索引，比如 boy_id - grid_id , 当where条件中包含 boy_id 和 grid_id ，或只有 boy_id 时会使用该索引，当 where条件中只有 grid_id 时，不会使用该索引 。</p>
 <p>可以用explian语句查看索引使用的细节，比如</p>
@@ -39,6 +36,7 @@ use wtree;
 <p>首先设计四个表 -- 用户的电子邮件表，用户密码表，用户申请注册的表 和 用户的基本信息表。</p>
 <p>建表可以使用一些辅助工具，比如客户端的MySQL GUI Tools （ <a target="_blank" href="http://dev.mysql.com/downloads/gui-tools/">http://dev.mysql.com/downloads/gui-tools/</a> ） ，或WEB界面的phpmyadmin( <a target="_blank" href="http://www.phpmyadmin.net/">http://www.phpmyadmin.net/</a> )。</p>
 <p>用户电子邮件表结构很简单，只有2列。电子邮件表中的id就是用户的id。我们将其自增主键id的起始值设置为一千万，小于一千万的id预留做其他用途。</p>
+<p>数值类型，比如 int ，后面圆括号是指出最大的显示尺寸，与实际的存储范围无关。</p>
 <div class="content"><pre>
 CREATE TABLE `user_email` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -47,7 +45,7 @@ CREATE TABLE `user_email` (
   UNIQUE KEY `email` (`email`)
 ) ENGINE=MyISAM AUTO_INCREMENT=10000000 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 </pre></div>
-<p>对于密码表，我们不存放密码原文，而存放用 sha256 哈希过的密码。binary表示是二进制数值。</p>
+<p>密码表，我们不存放密码原文，而存放用 sha256 哈希过的密码。binary表示是二进制数值。</p>
 <div class="content"><pre>
 CREATE TABLE `user_password` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -55,7 +53,7 @@ CREATE TABLE `user_password` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 </pre></div>
-<p>用户申请注册的表如下：</p>
+<p>用户申请注册的表如下，其中 ck 是 challenge key 的缩写，代表激活码。：</p>
 <div class="content"><pre>
 CREATE TABLE `user_apply` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -66,8 +64,13 @@ CREATE TABLE `user_apply` (
   KEY `time` (`time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 </pre></div>
-<p>其中 ck 是 challenge key 的缩写，代表激活码。</p>
-<p>用户表如下：</p>
+<p>用户表如下，url是让用户可以指定个性化的url，ver是用户头像的版本号，作用和之前介绍过的静态文件的版本号一样。</p>
+<p>用户表的是存储引擎是Innodb。</p>
+<p>MySQL有两大存储引擎，MyISAM和Innodb。</p>
+<p>MyISAM 为读操作优化，速度比较快，但是写使用全局锁，并发性差，并且不支持事务。</p>
+<p>InnoDB 是行级锁，写并发性能好，支持事务，但读取相比会慢一些。</p>
+<p>注册以后，用户可以自行修改用户名，上传头像时会改动版本号，所以该表可能会有频繁的修改，因此选用 Innodb。</p>
+<p>当然，对于小规模的网站，这些细微地性能差异可以忽略。</p>
 <div class="content"><pre>
 CREATE TABLE `user` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -78,7 +81,6 @@ CREATE TABLE `user` (
   UNIQUE KEY `url` (`url`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 </pre></div>
-<p>url是让用户可以指定个性化的url，ver是用户头像的版本号，作用和之前介绍过的静态文件的版本号一样。</p>
 <p>在数据库中创建上述表之后，修改 myconf/config.py ，配置数据库。</p>
 <div class="content"><pre>
 WTREE_HOST = "localhost:3306:wtree:root:111111"
@@ -132,7 +134,8 @@ class User(McModel):
     pass
 
 def hash_password(id, password):
-    return password_hash("%s\n%s"%(password, pack('L',id))).digest()
+    return password_hash("%s%s"%(password,pack('L',id))).digest()
+
 
 def apply(email, password, name):
     e = UserEmail.get_or_create(email=email)
@@ -145,6 +148,7 @@ def apply(email, password, name):
         apply = UserApply(id=id, ck=get_ck())
     apply.name = name
     apply.save()
+    render_email("auth/send_apply_email",email, name, id=id,ck=ck)
     return apply
 
 def is_existed(email):
@@ -159,17 +163,17 @@ def create_user(id):
         user.save()
         apply.delete()
         return user
-
-def send_apply_email(email, name, id, ck):
-    render_email("auth/send_apply_email",email, name, id=id,ck=ck)
 </pre></div>
 <p>首先可以看到引入了 Model 和 McModel 。</p>
 <p>Model 和 McModel 是一种 ORM 的基类。</p>
 <p>ORM，全称 Object Relation Mapping ， 中文含义是对象和关系的映射。通过ORM，可以简化常见的增删查改，提高开发效率。</p>
 <p>继承这个ORM的基类，它会自动的将数据库中表和对象进行映射。</p>
 <p>McModel 和 Model 的区别是，McModel附带了Memcache的支持。</p>
-<p>Memcache是一个高性能的基于内存的键值缓存，性能优异，使用它可以提高页面的响应速度，同时降低mysql的查询压力。</p>
+<p>Memcache是一个高性能的基于内存的键值缓存，性能优异，是MySQL的十多倍，使用它可以提高页面的响应速度。</p>
+<p>但更重要的是，简单的键值方式存储可以非常方便方便的实现多机分布式（Facebook用了600台memcached）。这样可以大大降低MySQL的查询压力 -- 通常，MySQL数据库是网站最瓶颈的地方。</p>
 <p>我们将在以后的实战中慢慢介绍它。想要更深入的了解memcache可以看看这个手册 <a href="page/memcached.pdf" target="_blank">链接</a> 。</p>
+<p>windows下，我们只做开发，所以不用启动memcache和修改配置文件，mypy框架会默认使用一个假的（fake）memcache。</p>
+<p>接着看代码。</p>
 <p>hash_password， 是用来对密码进行哈希的单向函数。数据库中是不保存密码明文的，即使数据库被黑客窃取，黑客也无法获知用户的密码。</p>
 <p>不少黑客预先将大量常见密码的哈希值计算出来，试图通过查表的方式迅速破解密码。为了防止这种暴力破解，我们把密码与id拼接起来再做哈希。密码学上将这种用于拼接的字符串称为salt，中文含义为盐。</p>
 <p>apply，就是用于创建申请的表了。其中用ORM来操作数据库，用到了ORM中的几个函数。</p>
@@ -188,38 +192,27 @@ UserApply.get(e.id)
 <div class="content"><pre>
 UserApply.get(email=email)
 </pre></div>
-<p>utf-8 编码的表中每一个定长char需要预备3个字节 ，因为这是可能的最大长度。因为我们生成ck只是英文和数字，为了节省空间，重定义了ck的编码集。</p>
-<p>对于数值类型，比如 tinyint ，后面圆括号是指出最大的显示尺寸，与实际的存储范围无关。</p>
-<p>接下来设计用户名表，用户的字段有 Email帐号，昵称，头像的版本号，个性url的后缀，性别，出身年代，是否单身，行业，职业，现居城市，家乡。</p>
-<p>根据字段使用频率不同，我们用两个表来区别保存。</p>
-<p>user表</p>
+<p>新建的行，在ORM,可以在初始化时传入参数赋值；也可以在对象创建后，通过类操作赋值，最后记得要保存。如</p>
 <div class="content"><pre>
-CREATE TABLE `user` (
-`id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-`email` VARCHAR( 128 ) NOT NULL ,
-`name` CHAR( 8 ) NOT NULL ,
-`url` VARCHAR( 32 ) NULL ,
-`ver` TINYINT UNSIGNED NOT NULL  DEFAULT 0,
-UNIQUE email (`email`),
-UNIQUE url(`url`)
-) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_bin ;
+apply = UserApply(id=id, ck=get_ck())
+apply.name = name
+apply.save()
 </pre></div>
-<p>user_profile表</p>
-<div class="content"><pre>
-CREATE TABLE `user_profile` (
- `id` int(10) unsigned NOT NULL auto_increment,
- `sex` char(1) character set ascii collate ascii_bin NOT NULL,
- `birth_age` tinyint(3) unsigned NOT NULL,
- `is_single` tinyint(4) NOT NULL,
- `industry` tinyint(3) unsigned NOT NULL,
- `title` varchar(16) collate utf8_bin NOT NULL,
- `city` smallint(5) unsigned NOT NULL,
- `hometown` smallint(5) unsigned NOT NULL,
- PRIMARY KEY  (`id`),
- KEY `industry` (`industry`),
- KEY `city_hometown` (`city`,`hometown`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-</pre></div>
+<p>接着，我们看下一个函数，is_existed。他用的McModel中的一个函数，mc_get。</p>
+<p>mc_get的参数是函数的id，它会先尝试从memcache中获取数据。</p>
+<p>如果memcache中不存在该行，它会去数据库中查询，如果查询有结果，将缓存结果 -- 下一次mc_get就会从memcache中获取数据了。</p>
+<p>可以看到，这里我们没有使用多表级联来查询结果。用多表级联限制了这些表必须在同一台服务器上，不利于以后的扩展。</p>
+<p>正如Dan Pritchard在谈论eBay构架时那段对白</p>
+<blockquote>
+<p>对其它大型系统的架构，你有什么建议吗？</p>
+<p>Dan Pritchard:</p>
+<p>最简单的建议就是，给一个为小规模应用而设计的架构增加资源并不能让它变成大规模的架构。你必须打破常规模式，比如ACID和分布式事务。乐于寻找机会放松一些约束，即使传统上认为是不能放松的。</p>
+<p>还有两条简单的原则：把每样东西都设计成分离的；考虑BASE、而不是ACID。</p>
+</blockquote>
+<p>是的，把每样东西都设计成分离的。</p>
+<p>最后再来看一眼</p>
+<p>send_apply_email</p>
+<p>utf-8编码的表中每一个定长char需要预备3个字节 ，因为这是可能的最大长度。如果只是英文和数字，可以重定义某一个字段的编码集，来节省空间。</p>
 <p>数据库表保持精简，对大文本字段单独建表存储。</p>
 <p>这样做有两个好处，</p>
 <p>其一，方便配合ORM和Memcache使用，能加快表的读取速度；</p>
@@ -230,15 +223,6 @@ CREATE TABLE `user_profile` (
 <p>理念 把预先能计算的数据先准备好</p>
 <p>可以容忍 必要的数据冗余</p>
 <p>表小 数据切片</p>
-<p>提示：使用UTF8时为了节省空间，使用VARCHAR而不要用CHAR。否则，MySQL必须为一个CHAR(10) CHARACTER SET utf8列预备30个字节，因为这是可能的最大长度。</p>
-<p>column1 VARCHAR(5) CHARACTER SET latin1 COLLATE latin1_german1_ci</p>
-<p>用户表 用户身份 管理员 企业 个人</p>
-<p>    * 确保表表示单个主题:                 类似面向对象的单职责原则，一个对象一个职责。</p>
-<p>    * 确保每个表都有一个主键：         主键唯一的标识了表中的每条记录；它还用来建立表之间的关系。</p>
-<p>    * 确保字段只包含一个单独的值：   一个字段只表示一个内容。</p>
-<p>    * 确保表中没有需要计算的字段</p>
-<p>    (减少计算 容忍冗余)</p>
-<p>现在，一个结构良好的表算是设计好了，现在我们可以把单个Employee和任意多个Committee关联起来，也可以把单个Committee和任意多个Employee关联起来。而且，可以使用一条SQL语句来同时查看来自所有这3个表的信息。</p>
 
 <div class="dirnav">
 <a href="3_1.html">上一节</a>
