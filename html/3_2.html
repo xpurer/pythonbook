@@ -125,7 +125,9 @@ class UserEmail(McModel):
     pass
 
 class UserPassword(Model):
-    pass
+    def verify(self, password):
+        p = self.password
+        return p == hash_password(self.id, p)
 
 class UserApply(Model):
     pass
@@ -155,7 +157,9 @@ def apply(email, password, name):
     apply.name = name
     apply.save()
 
-    send_apply_email(email, name, id, apply.ck)
+    ck = urlsafe_b64encode(apply.ck)
+
+    send_apply_email(email, name, id, ck)
 
     return apply
 
@@ -196,7 +200,7 @@ if result is None:
 <div class="content"><pre>
 UserApply.get(e.id)
 </pre></div>
-<p>如果要指定查询,可以用类似下面的写法</p>
+<p>要指定查询,可以用类似下面的写法</p>
 <div class="content"><pre>
 UserApply.get(email=email)
 </pre></div>
@@ -208,7 +212,7 @@ apply.save()
 </pre></div>
 <p>接着，我们看下一个函数，is_existed。他用的McModel中的一个函数，mc_get。</p>
 <p>mc_get的参数是函数的id，它会先尝试从memcache中获取数据。</p>
-<p>如果memcache中不存在该行，它会去数据库中查询，如果查询有结果，将缓存结果 -- 下一次mc_get就会从memcache中获取数据了。</p>
+<p>如果memcache中不存在该行，它会去数据库中查询。查询有结果，将缓存结果 -- 下一次mc_get就会从memcache中获取数据了。</p>
 <p>可以看到，这里我们没有使用多表级联来查询结果。用多表级联限制了这些表必须在同一台服务器上，不利于以后的扩展。</p>
 <p>正如Dan Pritchard在谈论eBay构架时那段对白</p>
 <blockquote>
@@ -218,8 +222,6 @@ apply.save()
 <p>还有两条简单的原则：把每样东西都设计成分离的；考虑BASE、而不是ACID。</p>
 </blockquote>
 <p>是的，把每样东西都设计成分离的。</p>
-<p>最后再来看一眼</p>
-<p>send_apply_email</p>
 <p>utf-8编码的表中每一个定长char需要预备3个字节 ，因为这是可能的最大长度。如果只是英文和数字，可以重定义某一个字段的编码集，来节省空间。</p>
 <p>数据库表保持精简，对大文本字段单独建表存储。</p>
 <p>这样做有两个好处，</p>

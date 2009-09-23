@@ -156,7 +156,9 @@ class UserEmail(McModel):
     pass
 
 class UserPassword(Model):
-    pass
+    def verify(self, password):
+        p = self.password
+        return p == hash_password(self.id, p)
 
 class UserApply(Model):
     pass
@@ -186,7 +188,9 @@ def apply(email, password, name):
     apply.name = name
     apply.save()
 
-    send_apply_email(email, name, id, apply.ck)
+    ck = urlsafe_b64encode(apply.ck)
+
+    send_apply_email(email, name, id, ck)
 
     return apply
 
@@ -245,7 +249,7 @@ get,获取单条记录。默认查询条件是id，比如
 UserApply.get(e.id)
 }}}
 
-如果要指定查询,可以用类似下面的写法
+要指定查询,可以用类似下面的写法
 {{{
 UserApply.get(email=email)
 }}}
@@ -261,7 +265,7 @@ apply.save()
 
 mc_get的参数是函数的id，它会先尝试从memcache中获取数据。
 
-如果memcache中不存在该行，它会去数据库中查询，如果查询有结果，将缓存结果 -- 下一次mc_get就会从memcache中获取数据了。
+如果memcache中不存在该行，它会去数据库中查询。查询有结果，将缓存结果 -- 下一次mc_get就会从memcache中获取数据了。
 
 可以看到，这里我们没有使用多表级联来查询结果。用多表级联限制了这些表必须在同一台服务器上，不利于以后的扩展。
 
@@ -279,8 +283,6 @@ Dan Pritchard:
 
 是的，把每样东西都设计成分离的。
 
-最后再来看一眼
-send_apply_email
 
 
 
