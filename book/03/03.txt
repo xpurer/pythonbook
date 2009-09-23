@@ -1,4 +1,4 @@
-数据库 与 ORM
+数据库，ORM 与 单元测试 
 
 很多人在大学都学过数据库，喜欢用那些第一范式，第二范式 ... 第X范式，来指导表设计。
 
@@ -326,4 +326,68 @@ UserEmail.begin 是对 UserEmail 所在的数据库使用事务，它对这个�
 
 当然，对remove_user_by_email这个函数而言，用不用事务区别不大。
 
+到此为止，用户需要的一些函数都准备好了，我们可以写一个测试来看看它们是否正常工作。
 
+编辑 mysite/modeltest/auth.py 。
+{{{
+#coding:utf-8
+import init_path
+
+import unittest
+from mysite.model import auth
+
+class TestAuth(unittest.TestCase):
+    def setUp(self):
+        self.email = "zsp.007@gmail.com"
+        self.password = "test123456"
+        self.name = "张沈鹏"
+
+    def tearDown(self):
+        auth.remove_user_by_email(self.email)
+
+    def test_reg(self):
+        if auth.UserEmail.get(email = self.email):
+            auth.remove_user_by_email(self.email)
+
+        auth.apply(self.email, self.password, self.name)
+
+        e = auth.UserEmail.get(email = self.email)
+        assert e is not None
+
+        id = e.id
+
+        assert auth.UserApply.get(id) is not None
+
+        user_password = auth.UserPassword.get(id)
+        assert user_password is not None
+        assert user_password.verify(self.password)
+
+        user = auth.create_user(id)
+        assert user is not None
+        assert auth.UserApply.get(id) is None
+
+        user = auth.User.get(id)
+        assert user is not None
+        assert self.name == user.name
+
+        assert auth.is_existed(self.email)
+
+if __name__ == '__main__':
+    unittest.main()
+}}}
+
+unittest 是 Python 的测试框架，新建一个以Test开头的类，继承 unittest.TestCase 。
+
+setUp 是初始化函数，tearDown 是结束时的清理函数。
+
+你可以新建一系列的测试函数，只需要函数名以test开头。这里test_reg是用来测试注册的。
+
+assert的判断其后的条件是否成立。
+
+好了，到此为止，数据库相关的逻辑就写完了，接下来开始写页面逻辑。
+
+------------------------------------
+
+麻油四看的七荤八素，无语凝咽，吐血十五公升。
+
+雄关漫道真如铁，而今迈步从头越 ...
