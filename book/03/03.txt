@@ -37,7 +37,7 @@ select * from misc where `key` = "salt";
 
 每一张表中，不要有太多字段，但应该都有一个自增的id作为主键。
 
-总而言之，只使用MySQL最简单最基本功能。更多细节现在就不扯了，以后碰到再慢慢说，还是先看看怎么设计用户表。
+总而言之，只使用MySQL最简单最基本功能。更多细节现在就不扯了，以后碰到再慢慢说，我们开始实战。
 
 首先创建数据库，第一个数据库的名词就取世界树的缩写（World Tree）叫做 wtree 吧。
 
@@ -102,22 +102,87 @@ url是让用户可以指定个性化的url，ver是用户头像的版本号，�
 {{{
 WTREE_HOST = "localhost:3306:wtree:root:111111"
 
-DATABASE_CONFIG = {
-    "wtree": {
-        "master": WTREE_HOST,
-        "tables": ["*","user","user_profile","user_apply"],
-    },
-}
+... ... ...
+
+if not DATABASE_CONFIG:
+    DATABASE_CONFIG = {
+        "wtree": {
+            "master": WTREE_HOST,
+            "tables": ("*","user","user_profile","user_apply","user_password","user_email"),
+        },
+    }
 }}}
 
 tables是指定表在哪一个数据库中，*是通配符，代表默认数据库。
 
 这样，将来不同的表可以方便的分解到不同机器上的数据库中去，以便实现最简单的分布式。
 
-编辑 mysite/model/user.py 。
+同时去新浪申请一个邮箱,我们先借用新浪邮件的SMTP服务器来发邮件。申请完成后，同样修改一下配置。
 
 {{{
+#系统发信人的邮箱地址和显示名称
+SYS_EMAIL_SENDER = "stdyun@sina.com"
+SYS_EMAIL_SENDER_NAME = "stdyun"
 
+#发信的SMTP服务器，用户名，密码
+SMTP = "smtp.sina.com"
+SMTP_USERNAME = "stdyun"
+SMTP_PASSWORD = "xxxxxx"
+}}}
+
+编辑 mysite/model/user.py 。
+{{{
+#coding:utf-8
+from init_db import McModel, Model
+from mysite.util.security import get_ck
+from base64 import urlsafe_b64encode
+from sendmail import render_email
+from struct import pack
+from hashlib import sha256 as password_hash
+
+class UserEmail(McModel):
+    pass
+
+class UserPassword(Model):
+    pass
+
+class UserApply(Model):
+    pass
+
+class User(McModel):
+    pass
+
+def hash_password(id, password):
+    return password_hash("%s\n%s"%(password, pack('L',id))).digest()
+
+def apply(email, password, name):
+    e = UserEmail.get_or_create(email=email)
+    id = e.id
+    password = hash_password(id, password)
+    UserPassword.get_or_create(id=id, password=password)
+
+    apply = UserApply.get(e.id)
+    if apply is None:
+        apply = UserApply(id=id, ck=get_ck())
+    apply.name = name
+    apply.save()
+    return apply
+
+def is_existed(email):
+    e = UserEmail.get(email=email)
+    if e:
+        return User.mc_get(e.id)
+
+def create_user(id):
+    apply = UserApply.get(id)
+    if apply:
+        user = User(name=apply.name)
+        user.save()
+        apply.delete()
+        return user
+
+def send_apply_email(email, name, id, ck):
+    render_email("auth/send_apply_email",email, name, id=id,ck=ck)
 }}}
 
 首先可以看到引入了 Model 和 McModel 。
@@ -128,28 +193,31 @@ ORM，全称 Object Relation Mapping ， 中文含义是对象和关系的映射
 
 继承这个ORM的基类，它会自动的将数据库中表和对象进行映射。
 
-McModel 和 Model 的区别是，McModel附带了Memcache的支持，我们稍后来探讨他。
+McModel 和 Model 的区别是，McModel附带了Memcache的支持。
 
-sendmail是发送邮箱的函数，暂时空在那里不写。
+Memcache是一个高性能的基于内存的键值缓存，性能优异，使用它可以提高页面的响应速度，同时降低mysql的查询压力。
 
-#coding:utf-8
-from os import urandom
+我们将在以后的实战中慢慢介绍它。想要更深入的了解memcache可以看看这个手册 page:memcached.pdf 。
 
-def get_ck():
-    return urandom(6)
+hash_password， 是用来对密码进行哈希的单向函数。数据库中是不保存密码明文的，即使数据库被黑客窃取，黑客也无法获知用户的密码。
+
+不少黑客预先将大量常见密码的哈希值计算出来，试图通过查表的方式迅速破解密码。为了防止这种暴力破解，我们把密码与id拼接起来再做哈希。密码学上将这种用于拼接的字符串称为salt，中文含义为盐。
+
+apply，就是用于创建申请的表了。其中用ORM来操作数据库，用到了ORM中的几个函数。
+
+get_or_create，顾名思义，就是获取或创建，如果用SQL来写，类似于下面的代码。
+
+{{{
+cursor.execute("select * from user where email = %s limit 1", email)
+result = cursor.fetchone()
+if result is None:
+    cursor.execute("insert into user (email) values (%s)",email)
+}}}
 
 
+get,是创建函数
 
-
-
-
-
-
-是一个高性能的基于内存的键值缓存，性能优异，使用它可以提高页面的响应速度，同时降低mysql的查询压力。想要更深入的了解memcache可以看看这个手册 page:memcached.pdf 。
-
-
-
-
+UserApply.get(e.id)
 
 
 
