@@ -59,7 +59,7 @@ CREATE TABLE `user_email` (
 
 
 
-密码表，我们不存放密码原文，而存放用 sha256 哈希过的密码。binary表示是二进制数值。
+密码表，我们不存放密码原文，而存放用 sha256 哈希过的密码。binary表示是二进制数值，存放它比直接存字符串类型（char）更节省空间。
 {{{
 CREATE TABLE `user_password` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -228,15 +228,15 @@ ORM，全称 Object Relation Mapping ， 中文含义是对象和关系的映射
 
 继承这个ORM的基类，它会自动的将数据库中表和对象进行映射。
 
-McModel 和 Model 的区别是，McModel附带了Memcache的支持。
+McModel 和 Model 的区别是，McModel附带了memcached的支持。
 
-Memcache是一个高性能的基于内存的键值缓存，性能优异，是MySQL的十多倍，使用它可以提高页面的响应速度。
+memcached是一个高性能的基于内存的键值缓存，性能优异，是MySQL的十多倍，使用它可以提高页面的响应速度。
 
 但更重要的是，简单的键值方式存储可以非常方便方便的实现多机分布式（Facebook用了800台memcached）。这样可以大大降低MySQL的查询压力 -- 通常，MySQL数据库是网站最瓶颈的地方。
 
-我们将在以后的实战中慢慢介绍它。想要更深入的了解memcache可以看看这个手册 page:memcached.pdf 。
+我们将在以后的实战中慢慢介绍它。想要更深入的了解memcached可以看看这个手册 page:memcached.pdf 。
 
-windows下，我们只做开发，所以不用启动memcache和修改配置文件，mypy框架会默认使用一个假的（fake）memcache。
+windows下，我们只做开发，所以不用启动memcached和修改配置文件，mypy框架会默认使用一个假的（fake）memcached。
 
 接着看代码。
 
@@ -261,7 +261,7 @@ http://stdyun.com/auth/active/{id}/{ck}
 如果无法点击上面的链接，你可以复制该地址，并粘帖在浏览器的地址栏中访问。
 }}}
 
-该模板是利用了python2.6字符串自带的format函数进行格式化，不支持mako那些复杂的语法，但是简单高效。
+该模板是利用了python2.6字符串自带的format函数进行格式化，不支持mako模板那些复杂的语法，但是简单高效。
 
 render_email接下来的参数是收件人的邮箱（email）,收件人的姓名（name）, 接下来 id=id, ck=ck 是传给模板的变量。
 
@@ -305,11 +305,11 @@ def is_existed(email):
 
 is_existed，用到了McModel中的一个函数，mc_get。
 
-mc_get的参数是函数的id，它会先尝试从memcache中获取数据。
+mc_get的参数是函数的id，它会先尝试从memcached中获取数据。
 
-如果memcache中不存在该行，它会去数据库中查询。查询有结果，将缓存结果 -- 下一次mc_get就会从memcache中获取数据了。
+如果memcached中不存在该行，它会去数据库中查询。查询有结果，将缓存结果 -- 下一次mc_get就会从memcached中获取数据了。
 
-对于那些可能会频繁读取的数据，我们使用memcache来缓存它，比如这里的user对象。
+对于那些可能会频繁读取的数据，我们使用memcached来缓存它，比如这里的user对象。
 
 我们没有使用多表级联来查询结果。
 
@@ -334,7 +334,7 @@ Dan Pritchard:
 cls.where(id=id).delete()
 }}}
 
-但这样做的缺点是需要手工的清空memcache，如果是根据id删除，可以采用下面这种写法，它能自动清空memcache。
+但这样做的缺点是需要手工的清空memcached，如果是根据id删除，可以采用下面这种写法，它能自动清空memcached。
 {{{
 cls(id=id).delete()
 }}}
