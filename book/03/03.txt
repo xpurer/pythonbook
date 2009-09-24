@@ -12,7 +12,7 @@
 
 数据库的设计，向来是根据应用场景而设计。下面我们假设应用场景为千万级访问量的Web2.0网站，数据库为MySQL。
 
-MySQL是Web2.0网站用的最广泛的数据库了，它在Facebook，Baidu，Google都有使用。想要深入的了解MySQL，可以看看它的官方文档 page:other/learn_html_css.chm ，下面提一些注意点。
+MySQL是Web2.0网站用的最广泛的数据库了，它在Facebook，Baidu，Google都有使用。想要深入的了解MySQL，可以看看它的官方文档 page:other/mysql.chm ，下面提一些注意点。
 
 在设计表的时候，不要显式的声明数据库中的外键关系。数据库中使用外键关系会显著拖累数据库的性能，也制约了数据库表的可拆分性。同样那些触发器，存储过程，也不要使用。
 
