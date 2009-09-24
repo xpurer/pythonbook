@@ -196,7 +196,7 @@ def remove_user_by_email(email):
 <p>继承这个ORM的基类，它会自动的将数据库中表和对象进行映射。</p>
 <p>McModel 和 Model 的区别是，McModel附带了memcached的支持。</p>
 <p>memcached是一个高性能的基于内存的键值缓存，性能优异，是MySQL的十多倍，使用它可以提高页面的响应速度。</p>
-<p>但更重要的是，简单的键值方式存储可以非常方便方便的实现多机分布式（Facebook用了800台memcached）。这样可以大大降低MySQL的查询压力 -- 通常，MySQL数据库是网站最瓶颈的地方。</p>
+<p>但更重要的是，简单的键值方式存储可以非常方便的实现多机分布式（Facebook用了800台memcached）。这样可以大大降低MySQL的查询压力 -- 通常，MySQL数据库是网站最瓶颈的地方。</p>
 <p>我们将在以后的实战中慢慢介绍它。想要更深入的了解memcached可以看看这个手册 <a href="page/memcached.pdf" target="_blank">链接</a> 。</p>
 <p>windows下，我们只做开发，所以不用启动memcached和修改配置文件，mypy框架会默认使用一个假的（fake）memcached。</p>
 <p>接着看代码。</p>
