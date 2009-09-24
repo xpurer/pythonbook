@@ -45,7 +45,7 @@ CREATE TABLE `user_email` (
   UNIQUE KEY `email` (`email`)
 ) ENGINE=MyISAM AUTO_INCREMENT=10000000 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 </pre></div>
-<p>密码表，我们不存放密码原文，而存放用 sha256 哈希过的密码。binary表示是二进制数值。</p>
+<p>密码表，我们不存放密码原文，而存放用 sha256 哈希过的密码。binary表示是二进制数值，存放它比直接存字符串类型（char）更节省空间。</p>
 <div class="content"><pre>
 CREATE TABLE `user_password` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -192,11 +192,11 @@ def remove_user_by_email(email):
 <p>Model 和 McModel 是一种 ORM 的基类。</p>
 <p>ORM，全称 Object Relation Mapping ， 中文含义是对象和关系的映射。通过ORM，可以简化常见的增删查改，提高开发效率。</p>
 <p>继承这个ORM的基类，它会自动的将数据库中表和对象进行映射。</p>
-<p>McModel 和 Model 的区别是，McModel附带了Memcache的支持。</p>
-<p>Memcache是一个高性能的基于内存的键值缓存，性能优异，是MySQL的十多倍，使用它可以提高页面的响应速度。</p>
+<p>McModel 和 Model 的区别是，McModel附带了memcached的支持。</p>
+<p>memcached是一个高性能的基于内存的键值缓存，性能优异，是MySQL的十多倍，使用它可以提高页面的响应速度。</p>
 <p>但更重要的是，简单的键值方式存储可以非常方便方便的实现多机分布式（Facebook用了800台memcached）。这样可以大大降低MySQL的查询压力 -- 通常，MySQL数据库是网站最瓶颈的地方。</p>
-<p>我们将在以后的实战中慢慢介绍它。想要更深入的了解memcache可以看看这个手册 <a href="page/memcached.pdf" target="_blank">链接</a> 。</p>
-<p>windows下，我们只做开发，所以不用启动memcache和修改配置文件，mypy框架会默认使用一个假的（fake）memcache。</p>
+<p>我们将在以后的实战中慢慢介绍它。想要更深入的了解memcached可以看看这个手册 <a href="page/memcached.pdf" target="_blank">链接</a> 。</p>
+<p>windows下，我们只做开发，所以不用启动memcached和修改配置文件，mypy框架会默认使用一个假的（fake）memcached。</p>
 <p>接着看代码。</p>
 <p>UserPassword中定义了verify方法，用来校验密码是否正确。</p>
 <p>hash_password， 是用来对密码进行哈希的单向函数。数据库中是不保存密码明文的，即使数据库被黑客窃取，黑客也无法获知用户的密码。</p>
@@ -215,7 +215,7 @@ def remove_user_by_email(email):
 
 如果无法点击上面的链接，你可以复制该地址，并粘帖在浏览器的地址栏中访问。
 </pre></div>
-<p>该模板是利用了python2.6字符串自带的format函数进行格式化，不支持mako那些复杂的语法，但是简单高效。</p>
+<p>该模板是利用了python2.6字符串自带的format函数进行格式化，不支持mako模板那些复杂的语法，但是简单高效。</p>
 <p>render_email接下来的参数是收件人的邮箱（email）,收件人的姓名（name）, 接下来 id=id, ck=ck 是传给模板的变量。</p>
 <p>apply，用于创建申请。其中用ORM来操作数据库，用到了ORM中的几个函数。</p>
 <p>get_or_create，顾名思义，就是获取或创建，如果用SQL来写，类似于下面的代码。</p>
@@ -247,9 +247,9 @@ def is_existed(email):
         return User.mc_get(e.id)
 </pre></div>
 <p>is_existed，用到了McModel中的一个函数，mc_get。</p>
-<p>mc_get的参数是函数的id，它会先尝试从memcache中获取数据。</p>
-<p>如果memcache中不存在该行，它会去数据库中查询。查询有结果，将缓存结果 -- 下一次mc_get就会从memcache中获取数据了。</p>
-<p>对于那些可能会频繁读取的数据，我们使用memcache来缓存它，比如这里的user对象。</p>
+<p>mc_get的参数是函数的id，它会先尝试从memcached中获取数据。</p>
+<p>如果memcached中不存在该行，它会去数据库中查询。查询有结果，将缓存结果 -- 下一次mc_get就会从memcached中获取数据了。</p>
+<p>对于那些可能会频繁读取的数据，我们使用memcached来缓存它，比如这里的user对象。</p>
 <p>我们没有使用多表级联来查询结果。</p>
 <p>多表级联会限制关联到的表必须在同一台服务器上，不利于以后的扩展。</p>
 <p>正如 Dan Pritchard 在谈论eBay构架时那段对白</p>
@@ -264,7 +264,7 @@ def is_existed(email):
 <div class="content"><pre>
 cls.where(id=id).delete()
 </pre></div>
-<p>但这样做的缺点是需要手工的清空memcache，如果是根据id删除，可以采用下面这种写法，它能自动清空memcache。</p>
+<p>但这样做的缺点是需要手工的清空memcached，如果是根据id删除，可以采用下面这种写法，它能自动清空memcached。</p>
 <div class="content"><pre>
 cls(id=id).delete()
 </pre></div>
