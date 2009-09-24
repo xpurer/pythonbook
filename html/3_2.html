@@ -322,13 +322,17 @@ if __name__ == '__main__':
 <p>unittest 是 Python 的测试框架，新建一个以Test开头的类，继承 unittest.TestCase 。</p>
 <p>setUp 是初始化函数，tearDown 是结束时的清理函数。</p>
 <p>你可以新建一系列的测试函数，只需要函数名以test开头。这里test_reg是用来测试注册的。</p>
-<p>assert的判断其后的条件是否成立。</p>
+<p>test_reg中，模拟了一个用户从申请注册到真正注册的过程，assert用于判断其后条件是否成立。</p>
+<div class="content"><pre>
+if __name__ == '__main__':
+</pre></div>
+<p>这种写法是Python中常见的一种写法，表示这段代码在独立运行该脚本时才执行；如果被别的程序导入，这段脚本就不会执行。</p>
 <p>好了，到此为止，数据库相关的逻辑就写完了，接下来开始写页面逻辑。</p>
 <div style="border:0;border-bottom:1px #ccc dotted;margin:40px 0;"></div>
 <p>麻油四看的七荤八素，无语凝咽，流泪一公升，吐血十五公升。</p>
 <p>早岁哪知世事艰，中原北望气如山。</p>
 <p>雄关漫道真如铁，而今迈步从头越。</p>
-<p>伤心处，红颜不见，读书人一声长叹 ...</p>
+<p>夜静无声，键盘做伴，读书人一声长叹 ...</p>
 
 <div class="dirnav">
 <a href="3_1.html">上一节</a>
