@@ -1,0 +1,185 @@
+#运行用户
+#user nginx nginx;
+#启动进程
+worker_processes 2;
+
+#全局错误日志及PID文档
+error_log                   /home/zuroc/dev/ppmm/ztmp/log/error.log       notice;
+pid                         /home/zuroc/dev/ppmm/ztmp/pid/nginx.pid;
+
+#工作模式及连接数上限
+events {
+    use epoll;
+    worker_connections      1024;
+}
+
+http   {
+log_format                  main
+'>>>main\n'
+'$status\n'
+'$remote_addr\n'
+'$remote_user\n'
+'$request\n'
+'$http_referer\n'
+'$http_user_agent\n'
+'$bytes_sent\n'
+'$time_local\n'
+#'$gzip_ratio\n'
+;
+
+log_format                  download
+'>>>down\n'
+'$status\n'
+'$remote_addr\n'
+'$remote_user\n'
+'$request\n'
+'$http_referer\n'
+'$http_user_agent\n'
+'$bytes_sent\n'
+'$time_local\n'
+'$http_range\n'
+'$sent_http_content_range\n'
+;
+
+#设定mime类型
+include      /etc/nginx/mime.types;
+default_type text/html;
+
+#开启gzip模块
+gzip            on;
+gzip_http_version 1.0;
+gzip_comp_level 5;
+gzip_proxied any;
+gzip_types      text/plain text/html text/css application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+
+output_buffers  1 64k;
+postpone_output 3124;
+
+#设定access log
+access_log                  /home/zuroc/dev/ppmm/ztmp/log/access.log      main;
+client_header_timeout       10m;
+client_body_timeout         10m;
+send_timeout                10m;
+sendfile                    on;
+tcp_nopush                  on;
+tcp_nodelay                 on;
+keepalive_timeout           1000;
+fastcgi_temp_path /home/zuroc/dev/ppmm/ztmp/nginx;
+client_body_temp_path /home/zuroc/dev/ppmm/ztmp/nginx;
+proxy_temp_path /home/zuroc/dev/ppmm/ztmp/nginx;
+    server {
+        listen          10555;
+        server_name     _;
+
+        rewrite ^(.*)$ http://kanrs.com$1 permanent;
+    }
+    #设定虚拟主机
+    server {
+
+        listen          10602;
+        server_name     _;
+
+        charset utf-8;
+        ##设定本虚拟主机的访问日志
+        
+        location      ~  /(css|js)/ {
+            valid_referers none blocked *.kanrss.com *.kanrss.info kanrss.com kanrss.info *.google.com *.baidu.com *.appspot.com kanrs.com kanrs.cn *.kanrs.com *.kanrs.cn;
+            if ($invalid_referer) {
+                return 412;
+            }
+            rewrite ^/css/([^!]*)!(.*)$ /css/$2 last;
+            rewrite ^/js/([^!]*)!(.*)$ /js/$2 last;
+            root    /home/zuroc/dev/ppmm/zapp;
+            expires max;
+            access_log off;
+        }
+        
+        location      ~  /fs/ {
+            valid_referers none blocked *.kanrss.com *.kanrss.info kanrss.com kanrss.info *.google.com *.baidu.com *.appspot.com kanrs.com kanrs.cn *.kanrs.com *.kanrs.cn;
+            if ($invalid_referer) {
+                return 412;
+            }
+            root    /home/zuroc/dev/ppmm/zfs;
+            expires max;
+            access_log off;
+        }
+        location ~ /_debug/media/ {
+            root    /home/zuroc/dev/ppmm/zfs;
+            expires max;
+            access_log off;
+        }
+        location = /robots.txt {
+            root    /home/zuroc/dev/ppmm/zfs/robots/info;
+        }
+        location = /favicon.ico {
+            root /home/zuroc/dev/ppmm/zfs;
+        }
+        location = /bazs.cert {
+            root /home/zuroc/dev/ppmm/zfs;
+        }
+        location / {
+            proxy_pass http://127.0.0.1:10567;
+        }
+        
+        rewrite ^/@([^@/]*)/@(.*)$ /people/$1/favorite/$2 last;
+        rewrite ^/@(.*)$ /people/$1 last;
+        rewrite ^/:(.*)$ /group/$1 last;
+    }#server
+    
+    server {
+
+        listen          10567;
+        server_name     kanrss.info _;
+
+        charset utf-8;
+        
+        access_log  /home/zuroc/dev/ppmm/ztmp/log/zfs.log      main;
+        
+        location / {
+            proxy_pass http://127.0.0.1:10568;
+        }
+        
+    }#server
+    
+    upstream kanrs_upstream {
+        server 127.0.0.1:10565 max_fails=3 fail_timeout=30s;
+    }
+    server {
+
+        listen          19800;
+        server_name     _;
+
+        charset utf-8;
+        
+        access_log                  /home/zuroc/dev/ppmm/ztmp/log/py.log      main;
+        
+         
+        location / {
+            include /etc/nginx/fastcgi_params;
+            fastcgi_pass 127.0.0.1:19801;
+            expires off;
+        }
+        
+    }#server
+    server {
+
+        listen          10601;
+        server_name     _;
+
+        charset utf-8;
+        ##设定本虚拟主机的访问日志
+        
+        
+        location      ~  / {
+            valid_referers none blocked *.nttnhj.cn *.kanrss.com *.kanrss.info kanrss.com kanrss.info *.google.com *.baidu.com *.appspot.com kanrs.com kanrs.cn *.kanrs.com *.kanrs.cn;
+            if ($invalid_referer) {
+                return 412;
+            }
+            root    /home/zuroc/dev/pybook/html;
+            expires max;
+            access_log off;
+        }
+    }
+
+}#http
+
