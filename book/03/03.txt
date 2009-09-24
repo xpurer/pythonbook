@@ -252,7 +252,7 @@ hash_password， 是用来对密码进行哈希的单向函数。数据库中是
 
 send_apply_email,调用了 render_email 函数来发送邮件。第一个参数 "auth/send_apply_email" 指定了邮件的模板，对于模板文件是 mysite/txt/auth/send_apply_email.txt 。模板内容如下，内容第一行是邮件的标题：
 {{{
-欢迎注册stdyun.com, 请验证您的邮箱。
+欢迎注册 stdyun.com , 请验证您的邮箱
 
 {name}，你好:
 
