@@ -1,9 +1,9 @@
 
-
+3.3小节，数据库，ORM 与 单元测试 发布
 
 大家可以先用SVN检出 http://mayoufour.googlecode.com/svn/trunk/stdyun/ 。
 
-这里是最终项目的代码，可以边学边对比。 
+这里是项目的演示代码，可以边学边对比。 
 
 运行它需要配置一些数据库，参见 3.3小节，数据库，ORM 与 单元测试 。
 
@@ -13,10 +13,9 @@ mysql -u用户名 -p密码 数据库名 < tabel.sql
 
 已经安装过mypy的同学，请用 easy_install -U mypy更新并升级，然后
 
-{{{
 python -m mypy.cmd new ppmm
-}}}
-新建一个项目
+
+新建一个项目:)
 
 
 
