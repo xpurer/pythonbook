@@ -15,7 +15,8 @@
 <p>好吧，先把那些范式忘了吧，欢迎回到现实世界。</p>
 <p>数据库的设计，向来是根据应用场景而设计。下面我们假设应用场景为千万级访问量的Web2.0网站，数据库为MySQL。</p>
 <p>MySQL是Web2.0网站用的最广泛的数据库了，它在Facebook，Baidu，Google都有使用。想要深入的了解MySQL，可以看看它的官方文档 <a href="page/other/learn_html_css.chm" target="_blank">链接</a> ，下面提一些注意点。</p>
-<p>在设计表的时候，不要显式的声明数据库中的外键关系。数据库中使用外键关系会显著拖累数据库的性能，同时制约了数据库表的可拆分性。</p>
+<p>在设计表的时候，不要显式的声明数据库中的外键关系。数据库中使用外键关系会显著拖累数据库的性能，也制约了数据库表的可拆分性。同样那些触发器，存储过程，也不要使用。</p>
+<p>简单地说，只使用MySQL最简单最基本功能，来保证性能的高效，同时将逻辑代码与数据库分隔开，可以方便以后更换后端的存储方式 -- 比如还没发布但是很有前景的Drizzle （ <a target="_blank" href="https://launchpad.net/drizzle">https://launchpad.net/drizzle</a> ） 。</p>
 <p>需要作为where条件查询的字段，要加上索引。多个字段联合索引，比如 boy_id - grid_id , 当where条件中包含 boy_id 和 grid_id ，或只有 boy_id 时会使用该索引，当 where条件中只有 grid_id 时，不会使用该索引 。</p>
 <p>可以用explian语句查看索引使用的细节，比如</p>
 <div class="content"><pre>
@@ -26,7 +27,8 @@ explain select * from friends where grid_id = 987654;
 select * from misc where `key` = "salt";
 </pre></div>
 <p>每一张表中，不要有太多字段，但应该都有一个自增的id作为主键。</p>
-<p>总而言之，只使用MySQL最简单最基本功能。更多细节现在就不扯了，以后碰到再慢慢说，我们开始实战。</p>
+<p>更多细节现在就不扯了，以后碰到再慢慢说。</p>
+<p>我们开始实战。</p>
 <p>首先创建数据库，第一个数据库的名词就取世界树的缩写（World Tree）叫做 wtree 吧。</p>
 <div class="content"><pre>
 CREATE DATABASE wtree CHARACTER SET utf8 COLLATE utf8_bin;
