@@ -166,8 +166,10 @@ class UserPassword(Model):
 
 class UserApply(Model):
     def send_apply_email(self, email):
-        ck = urlsafe_b64encode(self.ck)
-        render_email("auth/send_apply_email", email, self.name, id=self.id, ck=ck)
+        render_email("auth/send_apply_email", email, self.name, ck=ck)
+
+    def verify(self, ck):
+        return urlsafe_b64encode(self.ck) == ck
 
 class User(McModel):
     pass
@@ -255,7 +257,7 @@ UserApply 的 send_apply_email ，调用了 render_email 函数来发送邮件�
 
 请在七天内点击下面的链接来验证您的邮箱。
 
-http://stdyun.com/auth/active/{id}/{ck}
+http://stdyun.com/auth/active/{email}/{ck}
 
 如果无法点击上面的链接，你可以复制该地址，并粘帖在浏览器的地址栏中访问。
 }}}
