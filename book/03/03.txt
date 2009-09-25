@@ -165,16 +165,15 @@ class UserPassword(Model):
         return p == hash_password(self.id, p)
 
 class UserApply(Model):
-    pass
+    def send_apply_email(self, email):
+        ck = urlsafe_b64encode(self.ck)
+        render_email("auth/send_apply_email", email, self.name, id=self.id, ck=ck)
 
 class User(McModel):
     pass
 
 def hash_password(id, password):
     return password_hash("%s%s"%(password, pack('L', id))).digest()
-
-def send_apply_email(email, name, id, ck):
-    render_email("auth/send_apply_email", email, name, id=id, ck=ck)
 
 def apply(email, password, name):
     id = UserEmail.get_or_create(email=email).id
@@ -191,10 +190,6 @@ def apply(email, password, name):
         apply = UserApply(id=id, ck=get_ck())
     apply.name = name
     apply.save()
-
-    ck = urlsafe_b64encode(apply.ck)
-
-    send_apply_email(email, name, id, ck)
 
     return apply
 
@@ -250,7 +245,7 @@ hash_password， 是用来对密码进行哈希的单向函数。数据库中是
 
 不少黑客预先将大量常见密码的哈希值计算出来，试图通过查表的方式迅速破解密码。为了防止这种暴力破解，我们把密码与id拼接起来再做哈希。密码学上将这种用于拼接的字符串称为salt，中文含义为盐。
 
-send_apply_email,调用了 render_email 函数来发送邮件。第一个参数 "auth/send_apply_email" 指定了邮件的模板，对于模板文件是 mysite/txt/auth/send_apply_email.txt 。模板内容如下，内容第一行是邮件的标题：
+UserApply 的 send_apply_email ，调用了 render_email 函数来发送邮件。第一个参数 "auth/send_apply_email" 指定了邮件的模板，对于模板文件是 mysite/txt/auth/send_apply_email.txt 。模板内容如下，内容第一行是邮件的标题：
 {{{
 欢迎注册 stdyun.com , 请验证您的邮箱
 
