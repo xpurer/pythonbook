@@ -200,6 +200,17 @@ def is_existed(email):
     if e:
         return User.mc_get(e.id)
 
+def is_applyed(email):
+    user_email = UserEmail.get(email=email)
+    if User.mc_get(user_email.id):
+        return False
+    elif user_email:
+        user_apply = UserApply.get(user_email.id)
+        if user_apply:
+            return user_apply
+        else:
+            user_email.delete()
+
 def create_user(id):
     apply = UserApply.get(id)
     if apply:
@@ -366,13 +377,16 @@ class TestAuth(unittest.TestCase):
         auth.remove_user_by_email(self.email)
 
     def test_reg(self):
-        if auth.UserEmail.get(email = self.email):
-            auth.remove_user_by_email(self.email)
+        email = self.email
+        if auth.UserEmail.get(email = email):
+            auth.remove_user_by_email(email)
 
-        auth.apply(self.email, self.password, self.name)
+        auth.apply(email, self.password, self.name)
 
-        e = auth.UserEmail.get(email = self.email)
+        e = auth.UserEmail.get(email = email)
         assert e is not None
+
+        assert auth.is_applyed(email)
 
         id = e.id
 
@@ -390,7 +404,7 @@ class TestAuth(unittest.TestCase):
         assert user is not None
         assert self.name == user.name
 
-        assert auth.is_existed(self.email)
+        assert auth.is_existed(email)
 
 if __name__ == '__main__':
     unittest.main()
