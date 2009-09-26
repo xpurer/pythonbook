@@ -145,14 +145,10 @@ def hash_password(id, password):
     return password_hash("%s%s"%(password, pack('L', id))).digest()
 
 def apply(email, password, name):
-    id = UserEmail.get_or_create(email=email).id
+    id = UserEmail.replace_into(email=email).id
 
     password = hash_password(id, password)
-    user_password = UserPassword.get(id=id)
-    if user_password is None:
-        user_password = UserPassword(id=id)
-    user_password.password = password
-    user_password.save()
+    user_password = UserPassword.replace_into(id=id,password = password)
 
     apply = UserApply.get(id)
     if apply is None:
@@ -229,12 +225,18 @@ def remove_user_by_email(email):
 <p>该模板是利用了python2.6字符串自带的format函数进行格式化，不支持mako模板那些复杂的语法，但是简单高效。</p>
 <p>render_email接下来的参数是收件人的邮箱（email）,收件人的姓名（name）, 接下来 id=id, ck=ck 是传给模板的变量。</p>
 <p>apply，用于创建申请。其中用ORM来操作数据库，用到了ORM中的几个函数。</p>
-<p>get_or_create，顾名思义，就是获取或创建，如果用SQL来写，类似于下面的代码。</p>
+<p>replace_into，作用类似MySQL的replace语法，如果用Python和标准SQL来写，类似于下面的代码。</p>
 <div class="content"><pre>
-cursor.execute("select * from user where email = %s limit 1", email)
-result = cursor.fetchone()
-if result is None:
+if id:
+    cursor.execute("select * from user where id = %s", id)
+    result = cursor.fetchone()
+    if result is None:
+        id = None
+
+if id is None:
     cursor.execute("insert into user (email) values (%s)",email)
+else:
+    cursor.execute("update user set email='%s' where id=%s",(email, id))
 </pre></div>
 <p>get,获取单条记录。默认查询条件是id，比如</p>
 <div class="content"><pre>
