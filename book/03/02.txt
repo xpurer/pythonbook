@@ -54,7 +54,7 @@ import auth
 .Bbtn{font-size:16px;padding:3px 6px;_padding:0 6px;overflow:visible}
 }}}
 
-在 myfile/js 文件夹中新建 reg.js ,内容如下
+在 myfile/js 文件夹中新建 auth_apply.js ,内容如下
 {{{
 $(function(){
 $(".Pform input:first").focus()
@@ -71,7 +71,7 @@ from myfile import js,css
 %>
 <%def name="html_head()" filter="trim">
     <link href="${css.bform}" rel="stylesheet" type="text/css" />
-    <script src="${js.reg}"></script>
+    <script src="${js.auth_apply}"></script>
 </%def>
 
 <%def name="html_body()" filter="trim">
@@ -96,7 +96,7 @@ from myfile import js,css
         
         <p align="center"><button class="Bbtn" type="submit">注册</button></p>
         <p align="right" style="font-size:12px;color:#333">忘记密码了? 
-            <a style="color:#33c" href="/auth/reset_password">点此找回</a>
+            <a href="/auth/reset_password">点此找回</a>
         </p>
     </form>
 </%def>

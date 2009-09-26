@@ -169,14 +169,15 @@ def is_existed(email):
 
 def is_applyed(email):
     user_email = UserEmail.get(email=email)
-    if User.mc_get(user_email.id):
-        return False
-    elif user_email:
-        user_apply = UserApply.get(user_email.id)
-        if user_apply:
-            return user_apply
-        else:
-            user_email.delete()
+    if user_email:
+        if User.mc_get(user_email.id):
+            return False
+        elif user_email:
+            user_apply = UserApply.get(user_email.id)
+            if user_apply:
+                return user_apply
+            else:
+                user_email.delete()
 
 def create_user(id):
     apply = UserApply.get(id)
