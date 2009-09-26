@@ -33,9 +33,10 @@ def apply():
 <div class="content"><pre>
 import auth
 </pre></div>
-<p>在 myfile/css/my.css 的结尾加上</p>
+<p>在 myfile/css my 文件夹中新建 bform.css , 内容如下</p>
 <div class="content"><pre>
-.Pform{margin:40px auto 0;width:335px;}
+.FormTip{text-align:center;margin-top:40px;padding-bottom:35px}
+.Pform{margin:0 auto;width:335px;}
 .Bform select{font-size:16px;margin-left:-6px;}
 .Bform .Err,.Bform span{display:block;margin-top:5px;font-size:14px;color:#666;text-align:left;margin-left:38px}
 .Bform p label{margin-right:10px}
@@ -62,6 +63,7 @@ $(".Pform input:first").focus()
 from myfile import js,css
 %&gt;
 &lt;%def name="html_head()" filter="trim"&gt;
+    &lt;link href="${css.bform}" rel="stylesheet" type="text/css" /&gt;
     &lt;script src="${js.reg}"&gt;&lt;/script&gt;
 &lt;/%def&gt;
 
@@ -76,13 +78,13 @@ from myfile import js,css
         &lt;/p&gt;
 
         &lt;p&gt;
-            &lt;label&gt;名号&lt;/label&gt;&lt;input autocomplete="off" type="text" value="" class="text" name="name" id="name"&gt;
-            &lt;span&gt;中英文皆可,不要超过8个汉字。 &lt;/span&gt;
+            &lt;label&gt;密码&lt;/label&gt;&lt;input type="password" value="" class="text" name="password" id="password"&gt;
+            &lt;span&gt;最少6个字符,区分大小写。 &lt;/span&gt;
         &lt;/p&gt;
 
         &lt;p&gt;
-            &lt;label&gt;密码&lt;/label&gt;&lt;input type="password" value="" class="text" name="password" id="password"&gt;
-            &lt;span&gt;最少6个字符,区分大小写。 &lt;/span&gt;
+            &lt;label&gt;名号&lt;/label&gt;&lt;input autocomplete="off" type="text" value="" class="text" name="name" id="name"&gt;
+            &lt;span&gt;中英文皆可,不要超过8个汉字。 &lt;/span&gt;
         &lt;/p&gt;
 
         &lt;p align="center"&gt;&lt;button class="Bbtn" type="submit"&gt;注册&lt;/button&gt;&lt;/p&gt;
