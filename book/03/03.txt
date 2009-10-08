@@ -109,6 +109,38 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 }}}
 
+最后新建用户重设密码申请的表，用户登录session的表，用户详细资料的表。
+{{{
+CREATE TABLE `user_reset_password` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `ck` binary(6) NOT NULL,
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `time` (`time`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+CREATE TABLE `user_session` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `ck` binary(6) NOT NULL DEFAULT '\0\0\0\0\0\0',
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `time` (`time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+CREATE TABLE `user_profile` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `sex` char(1) CHARACTER SET ascii COLLATE ascii_bin DEFAULT NULL,
+  `birth_age` tinyint(3) unsigned DEFAULT NULL,
+  `is_single` tinyint(4) DEFAULT NULL,
+  `industry` tinyint(3) unsigned DEFAULT NULL,
+  `title` varchar(16) COLLATE utf8_bin DEFAULT NULL,
+  `city` smallint(5) unsigned DEFAULT NULL,
+  `hometown` smallint(5) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `industry` (`industry`),
+  KEY `city_hometown` (`city`,`hometown`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+}}}
 
 在数据库中创建上述表之后，修改 myconf/config.py ，配置数据库。
 
@@ -124,6 +156,7 @@ if not DATABASE_CONFIG:
             "tables": (
                 "*",
                 "user","user_apply","user_password","user_email",
+                "user_profile","user_session","user_reset_password",
             ),
         },
     }
@@ -151,10 +184,11 @@ SMTP_PASSWORD = "xxxxxx"
 #coding:utf-8
 from init_db import McModel, Model
 from mysite.util.security import get_ck
-from base64 import urlsafe_b64encode
-from sendmail import render_email
-from struct import pack
 from hashlib import sha256 as password_hash
+from base64 import urlsafe_b64encode,urlsafe_b64decode
+import binascii
+from sendmail import render_email
+from struct import pack,unpack
 
 class UserEmail(McModel):
     pass
@@ -162,11 +196,20 @@ class UserEmail(McModel):
 class UserPassword(Model):
     def verify(self, password):
         p = self.password
-        return p == hash_password(self.id, p)
+        return p == hash_password(self.id, password)
 
 class UserApply(Model):
-    def send_apply_email(self, email):
-        render_email("auth/send_apply_email", email, self.name, ck=ck)
+    def sendemail(self, email):
+        ck = urlsafe_b64encode(self.ck)
+        render_email("auth/user_apply", email, self.name, ck=ck)
+
+    def verify(self, ck):
+        return urlsafe_b64encode(self.ck) == ck
+
+class UserResetPassword(Model):
+    def sendemail(self, email,name):
+        ck = urlsafe_b64encode(self.ck)
+        render_email("auth/user_reset_password", email,name,id=self.id, ck=ck)
 
     def verify(self, ck):
         return urlsafe_b64encode(self.ck) == ck
@@ -174,8 +217,60 @@ class UserApply(Model):
 class User(McModel):
     pass
 
+class UserSession(McModel):
+    @classmethod
+    def login(cls,id):
+        user_session = cls.mc_get(id)
+        if user_session:
+            ck = user_session.ck
+            if ck == '\x00\x00\x00\x00\x00\x00':
+                ck = False
+            if not ck:
+                ck = get_ck()
+                user_session.ck = ck
+                user_session.save()
+        else:
+            ck = get_ck()
+            user_session = cls(id=id,ck=ck)
+            user_session.save()
+        key = "%s%s"%(pack("I",int(id)),ck)
+        return urlsafe_b64encode(key)[:14]
+
+    @classmethod
+    def verify(cls, session):
+        try:
+            cookie = urlsafe_b64decode(session+"==")
+        except binascii.Error:
+            return
+        id = unpack("I",cookie[:4])[0]
+        session = cls.mc_get(id)
+        if session:
+            ck = session.ck
+            if ck and ck!='\x00\x00\x00\x00\x00\x00' and ck == cookie[4:]:
+                return User.mc_get(id)
+    
+    @classmethod
+    def logout(cls,id):
+        self = cls.mc_get(id)
+        if self:
+            self.ck = ""
+            self.save()
+
+class UserProfile(McModel):
+    pass
+
 def hash_password(id, password):
-    return password_hash("%s%s"%(password, pack('L', id))).digest()
+    return password_hash("%s%s"%(password, pack('L', int(id)))).digest()
+
+def reset_password(id,password):
+    UserResetPassword(id=id).delete()
+    password = hash_password(id,password)
+    UserPassword.where(id=id).update(password=password)
+
+def reset_password_apply(id):
+    ck = get_ck()
+    user_reset_password = UserResetPassword.replace_into(id=id,ck=ck)
+    return user_reset_password
 
 def apply(email, password, name):
     id = UserEmail.replace_into(email=email).id
@@ -308,6 +403,17 @@ apply = UserApply(id=id, ck=get_ck())
 apply.name = name
 apply.save()
 }}}
+
+
+UserSession是用来标记用户是否登录，UserSession记录用户id和一段6字节随机字符串，id和随机字符串被用urlsafe_b64encode编码后放在用户浏览器端的cookie中。
+
+网站可以在用户的浏览器中保存一段小的文本，称之为cookie。
+
+每当用户浏览页面时，cookie的内容会随着http请求一起发送到服务器。因而可以用cookie来记录登录状态，跟踪用户的点击流。
+
+值得注意的是，cookie大小被浏览器严格限制（不超过4095个字节），所以cookie不适合用来存储大文本。并且cookie发送到网站服务器也要消耗带宽。因而，cookie越精简越好。
+
+最后需要牢记的是，从客户端发送过来的任何数据，都可能被别有用心的一小撮人篡改，所以cookie中的数据同样需要进行格式校验。
 
 接着往下看代码。
 
