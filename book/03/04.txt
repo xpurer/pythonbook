@@ -315,7 +315,7 @@ def _access():
 }}}
 
 
-同样，样我们需要修改一下jQuery的函数，以便用在Ajax的POST操作中自动加上xf ,编辑 myfile/js/my.js 。
+同样，样我们需要修改一下jQuery的函数，以便用在Ajax的POST操作中自动加上xf，编辑 myfile/js/my.js 。
 {{{
 cookie = {
 set:function(dict, days){
