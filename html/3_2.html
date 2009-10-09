@@ -150,7 +150,7 @@ SMTP_PASSWORD = "xxxxxx"
 <div class="content"><pre>
 #coding:utf-8
 from init_db import McModel, Model
-from mysite.util.security import get_ck
+from mysite.util.security import random_char
 from hashlib import sha256 as password_hash
 from base64 import urlsafe_b64encode,urlsafe_b64decode
 import binascii
@@ -193,11 +193,11 @@ class UserSession(McModel):
             if ck == '\x00\x00\x00\x00\x00\x00':
                 ck = False
             if not ck:
-                ck = get_ck()
+                ck = random_char()
                 user_session.ck = ck
                 user_session.save()
         else:
-            ck = get_ck()
+            ck = random_char()
             user_session = cls(id=id,ck=ck)
             user_session.save()
         key = "%s%s"%(pack("I",int(id)),ck)
@@ -235,7 +235,7 @@ def reset_password(id,password):
     UserPassword.where(id=id).update(password=password)
 
 def reset_password_apply(id):
-    ck = get_ck()
+    ck = random_char()
     user_reset_password = UserResetPassword.replace_into(id=id,ck=ck)
     return user_reset_password
 
@@ -247,7 +247,7 @@ def apply(email, password, name):
 
     apply = UserApply.get(id)
     if apply is None:
-        apply = UserApply(id=id, ck=get_ck())
+        apply = UserApply(id=id, ck=random_char())
     apply.name = name
     apply.save()
 
@@ -343,7 +343,7 @@ UserApply.get(email=email)
 </pre></div>
 <p>新建的行，在ORM,可以在初始化时传入参数赋值；也可以在对象创建后，通过类操作赋值，最后记得要保存。如</p>
 <div class="content"><pre>
-apply = UserApply(id=id, ck=get_ck())
+apply = UserApply(id=id, ck=random_char())
 apply.name = name
 apply.save()
 </pre></div>
@@ -453,6 +453,7 @@ if __name__ == '__main__':
 <div class="dirnav">
 <a href="3_1.html">上一节</a>
 <a href="index.html">返回目录</a>
+<a href="3_3.html">下一节</a>
 </div>
 
 </div>

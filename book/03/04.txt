@@ -1,4 +1,217 @@
 用户注册
 
+先修改 mysite/ctrl/auth.py , 完整代码见 http://code.google.com/p/mayoufour/source/browse/trunk/stdyun/mysite/ctrl/auth.py 。
 
-重定向的好处    
+{{{
+#coding:utf-8
+from mypy.route_render import route_render_func,route
+from mypy.dict_like import Jsdict, StripJsdict
+from mysite.model.auth import User, UserApply, UserProfile, UserPassword, UserSession,UserEmail,UserResetPassword
+from mysite.model import auth
+from mysite.util.valid import email_valid,name_valid,password_valid
+from mysite.util.text import WHITE_SPACE, email2link
+from cgi import escape
+
+def apply_checker(form):
+    email = form.email
+    name = form.name
+    password = form.password
+
+    error = Jsdict()
+
+    name_valid(error,name)
+    password_valid(error,password)
+
+    if email_valid(error,email):
+        existed = auth.is_existed(email)
+        if existed:
+            error.email = """该邮箱已注册，<a href="/auth/reset_password_apply/%s">点此</a>重设密码"""%escape(email)
+
+    if not error:
+        apply = auth.apply(email, password, name)
+        apply.sendemail(email)
+    
+    return error
+
+@route_render_func
+def apply(email=None):
+    if email:
+        if auth.is_applyed(email):
+            G.email_link = email2link(email)
+
+    if request.is_post:
+        form = StripJsdict(request.form)
+        G.error = error = apply_checker(form)
+        if not error:
+            return request.redirect("/auth/apply/%s"%form.email)
+   
+}}}
+
+这里可以看到，apply 函数用到了两个隐藏的变量 G 和 request。
+
+G的一个用来像模板传递参数的变量。通过向“G.”的赋值，然后就可以再模板中通过同样的“G.”操作获取该变量。
+
+request代表请求对象。 
+
+reqeust.is_post 代表请求的提交方式是否是 POST。
+
+request.form 是当请求方式为 POST 时提交的表单对象。form对象是Jsdict类的一个实例，它和Javascript中的字典很类似。既可以同点操作来获取属性，也可以通过 ['属性名'] 的方式来获取属性。StripJsdict 和 Jsdict 功用基本相同，但是 StripJsdict 会通过字符串的strip函数去除内容两端的空白字符串。
+
+用户提交申请后，通过apply_checker函数检查表单内容，同时将检查结果赋值给 G.error 。
+
+当用户注册申请提交成功时，返回request.redirect，重定向网页可以避免用户刷新时重复提交表单。    
+
+apply函数有一个参数，诸如 /auth/apply/zsp007@gmail.com 会依次映射为 模块名，函数名，参数。
+
+这样配合重定向就可以实现提醒用户申请注册成功。
+
+接下来，再修改 mysite/htm/auth 目录下 apply.htm ，也就是本章第二节写的那个页面。
+
+{{{
+<%inherit file="/htmbase/simple_base.htm" />
+<%!
+from myfile import js,css
+from mysite.util.valid import ErrorTip
+%>
+<%def name="html_head()" filter="trim">
+<link href="${css.bform}" rel="stylesheet" type="text/css" />
+<script src="${js.auth_apply}"></script>
+</%def>
+
+<%def name="html_body()" filter="trim">
+<%
+error_tip = ErrorTip(G.error)
+form = request.form
+%>
+%if G.email_link:
+    <div class="FormTip">
+        申请成功，激活邮件已发出...
+    </div>
+    <p align="center">请到 ${G.email_link|n} 查收激活邮件</p>
+%else:
+<form method="POST" class="HideErr Bform Pform" onsubmit="return submit_form()">
+    <div class="FormTip">
+        %if error:
+            <div style="color:#d30">填写有误，请检查...</div>
+        %else:
+            许多故事，从这里开始...
+        %endif
+    </div>
+    <p>
+        <label>邮箱</label><input autocomplete="off" type="text" value="${form.email}" class="text" name="email" id="email">
+        ${error_tip.email|n}
+        <span>输入Email邮箱，接收确认邮件以开始注册。 </span>
+    </p>
+
+
+    <p>
+        <label>密码</label><input type="password" value="${form.password}" class="text" name="password" id="password">
+        ${error_tip.password|n}
+        <span>最少6个字符，区分大小写。 </span>
+    </p>
+
+    <p>
+        <label>名号</label><input autocomplete="off" type="text" value="${form.name}" class="text" name="name" id="name">
+        ${error_tip.name|n}
+        <span>中英文皆可，不要超过8个汉字。 </span>
+    </p>
+
+    <p align="center"><button class="Bbtn" type="submit" id="submit">注册</button></p>
+    <p align="right" style="font-size:12px;color:#333">忘记密码了? 
+        <a href="/auth/reset_password_apply">点此</a>找回
+    </p>
+</form>
+%endif
+</%def>
+}}}
+
+代码改动不大，首先判断是注册成功还是申请注册，然后给出不同的页面。
+
+ErrorTip是一个用来提示错误的辅助函数，初始化时传入错误的描述对象（通常是一个Jsdict），然后通过点操作来显示对应错误（如果没有就不显示）。
+
+到此为止，申请注册基本完成。
+
+接下来还有 激活注册，找回密码 等等，写法大致类似，可以自己阅读代码，无需冗言。
+
+再来看看登录和退出，这里涉及了cookie的操作
+
+{{{
+from mypy import cookie
+from mysite.util.security import check_get_cf
+
+def set_login_cookie(id,forever=False):
+    if forever:
+        expires = 'Expires=Mon, 19-Jan-2036 14:09:52 GMT;'
+    else:
+        expires = ""
+    session = UserSession.login(id)
+    cookie.set("S",session,expires=expires)
+
+@route_render_func
+def login(path=''):
+    if request.is_post:
+        form = StripJsdict(request.form)
+        email = form.email
+        password = form.password
+        G.error = error = Jsdict()
+        cookie.set("E",email)
+
+        user_email = UserEmail.get(email = email)
+        if user_email:
+            id = user_email.id
+            user = User.mc_get(id)
+            if user is None:
+                error.email="邮箱已注册，但尚未激活"
+            else:
+                user_password = UserPassword.get(id=id)
+                if user_password is None:
+                    user.delete()
+                    error.email="该邮箱出现系统故障，请重新注册"
+                elif user_password.verify(password):
+                    forever = "forever" in form
+                    set_login_cookie(id,forever)
+                    return request.redirect("/%s"%path.replace("\\","/"))
+                else:
+                    error.password="密码有误，请检查"                    
+        else:
+            error.email="""该邮箱尚未注册，<a href="/auth/apply">点此</a>注册"""
+    else:
+        email = request.cookie.get("E")
+        if email:
+            email = email.value
+        else:
+            email = ''
+    G.email = email
+
+@check_get_cf
+@route
+def logout():
+    user = request.user
+    if user:
+        UserSession.logout(user.id)
+        cookie.delete("S")
+    return request.redirect("/")
+}}}
+
+登录通常分两种，一种是浏览器关了就退出登录，一种是“记住我”模式 -- 我称之为永久登录。
+
+这是通过cookie的expires，也就是超时时间来实现的。不设置超时时间，就是第一种模式，而将超时设置为很久很久以后，就是第二种模式。
+
+设置cookie通过import的cookie对象来进行。
+
+而cookie的读取，删除是通过request对象cookie属性来进行。
+
+在登录全过程涉及了两个cookie，其一是"E"，用来记录email地址，这样登录前，登录框的Email地址栏中会出现默认值；其二是"S"，用来记录用户session，然后凭此识别用户。
+
+logout的装饰器（decorator）是 @route，代表该url映射不需要模板。
+
+
+==========TODO write
+
+Cross-site request forgery:跨站请求伪造，也被称成为“one click attack”或者session riding，通常缩写为CSRF或者XSRF，是一种对网站的恶意利用。尽管听起来像跨站脚本（XSS），但它与XSS非常不同，并且攻击方式几乎相左。XSS利用站点内的信任用户，而CSRF则通过伪装来自受信任用户的请求来利用受信任的网站。与XSS攻击相比，CSRF攻击往往不大流行（因此对其进行防范的资源也相当稀少）和难以防范，所以被认为比XSS更具危险性。 
+
+Flash CSRF实战应用 破解QQ相册密码
+Discuz!的安全人员已经意识到csrf方面的漏洞了采用了formhash及判断Referer等来防止外部提交,如果看过<Bypass Preventing CSRF>[1]一文的朋友应该意识到我们可以通过flash来进行csrf攻击.
+
+
+拦截器 _access
