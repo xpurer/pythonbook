@@ -186,9 +186,45 @@ def logout():
 <p>设置cookie通过import的cookie对象来进行。</p>
 <p>而cookie的读取，删除是通过request对象cookie属性来进行。</p>
 <p>在登录全过程涉及了两个cookie，其一是"E"，用来记录email地址，这样登录前，登录框的Email地址栏中会出现默认值；其二是"S"，用来记录用户session，然后凭此识别用户。</p>
-<p>logout的有两个装饰器，其中（decorator）是 @route，代表该url映射不需要模板。route装饰器必须是最后一个装饰器，因为他会给函数添加隐藏的request，G变量。</p>
-<p>antixf，是用来防止XSRF（又称CRSF,cross-site request forgery 跨站请求伪造）攻击的。XSRF是一种黑客攻击网站的方式，通过欺骗用户的点击链接，或伪造POST请求来进行非法操作 -- 比如，盗取密码，散布蠕虫。事实上，一个恶意网站能让你在毫不知情的情况下点击任意链接，任意按钮或网站上的任意东西。</p>
-<p>常用的预防方式是加上一个效验值，让每个用户进行操作的链接都不相同。模板中的写法如下</p>
+<p>那如何在用户每次访问的时候获取用户呢？编辑 mysite/ctrl/__init__.py ，修改如下 。</p>
+<div class="content"><pre>
+import init_url
+from mypy import cookie
+from mypy.route_render import route
+from mysite.model.auth import UserSession
+from mysite.util.security import get_xf
+
+@route
+def _access():
+    session = request.cookie.get("S")
+    if session:
+        user = UserSession.verify(session)
+        if user is None:
+            cookie.delete("S")
+    else:
+        user = None
+
+    request.user = user
+</pre></div>
+<p>_access是一种拦截器，过滤层 -- 你可以想象为高速公路上的收费关卡，机场登机前的行李检查 。每次请求，都会去检查有没有这些_access，如果有，就执行它。</p>
+<p>和url路由一样，_access可以在不同的层次使用。ctrl/__init__.py中的_access位于最根层次，对所有的请求都生效。在这里，_access设置了request.user，于是便可以在页面的接下来的代码中凭此来判断、获取登陆用户。</p>
+<p>接下来看退出 -- /auth/logout 。</p>
+<p>logout的有两个装饰器（decorator），其中是 @route，代表该url映射不需要模板。route装饰器必须是最后一个装饰器，因为它会给函数添加隐藏的request，G变量。</p>
+<p>另一个装饰器 antixf，是用来防止XSRF（又称CRSF,cross-site request forgery 跨站请求伪造）攻击的。XSRF是一种黑客攻击网站的方式，通过欺骗用户的点击链接，或伪造POST请求来进行非法操作 -- 比如，盗取密码，散布蠕虫。事实上，一个恶意网站能让你在毫不知情的情况下点击任意链接，任意按钮或网站上的任意东西。</p>
+<p>常用的预防方式是加上一个效验值，让每个用户进行操作的链接都不相同，这里我们用session cookie的最后四位用作效验。</p>
+<p>先编写函数获取ck，如下</p>
+<div class="content"><pre>
+from mypy.render import get_request
+def get_xf():
+    request = get_request()
+    user = request.user
+    if request.user:
+        xf = request.cookie.get("S","")[-4:]
+    else:
+        xf = None
+    return xf
+</pre></div>
+<p>然后在模板中的写法如下</p>
 <div class="content"><pre>
 &lt;!%
 from mysite.util.security import get_xf
@@ -204,8 +240,47 @@ from mysite.util.security import get_xf
 <div class="content"><pre>
 &lt;input type="hidden" value="${get_xf()}" name="xf"&gt;
 </pre></div>
-<p>但是因为POST的操作在网页编写中非常频繁，每一个提交</p>
-<p>同样我们需要修改一下jQuery的函数，以便xf</p>
+<p>因为POST的操作在网页编写中非常频繁，手工的到处写这句话很是麻烦，而且一不小心就忘了。因此我们利用模板的namespace语法，定义了一个form，他会自动包含ck。不过，因为class是Python的关键词，因此只有用className来替代class，比如用户设置中修改个人信息的页面模板如下：</p>
+<div class="content"><pre>
+...
+&lt;%namespace file="/htmlib/htm.htm" name="htm"/&gt;
+...
+&lt;%htm:form className="HideErr Bform Pform" style="margin-top:20px"&gt;
+    %if request.is_post and not G.error:
+    &lt;div class="Ok FormTip"&gt;修改成功 !&lt;/div&gt;
+    %endif
+
+    &lt;p&gt;
+        &lt;label&gt;邮箱&lt;/label&gt;${G.email}
+    &lt;/p&gt;
+
+    &lt;p&gt;
+        &lt;label&gt;名号&lt;/label&gt;&lt;input name="name" id="name" value="${G.name}" type="text"&gt;${error_tip.name|n}
+    &lt;/p&gt;
+    &lt;p&gt;&lt;label&gt;密码&lt;/label&gt;&lt;a href="/setting/reset_password"&gt;修改&lt;/a&gt;&lt;/p&gt;
+    &lt;p align="center"&gt;&lt;button class="Bbtn" type="submit"&gt;提交改动&lt;/button&gt;&lt;/p&gt;
+&lt;/%htm:form&gt;
+...
+</pre></div>
+<p>再一次编辑 mysite/ctrl/__init__.py 的 _access 函数，对所有登陆用户的post进行 xf 的检查。</p>
+<div class="content"><pre>
+@route
+def _access():
+    session = request.cookie.get("S")
+    if session:
+        user = UserSession.verify(session)
+        if user is None:
+            cookie.delete("S")
+    else:
+        user = None
+
+    request.user = user
+
+    if request.is_post and user:
+        if request.form.xf != get_xf():
+            return request.redirect("/")
+</pre></div>
+<p>同样，样我们需要修改一下jQuery的函数，以便用在Ajax的POST操作中自动加上xf 。</p>
 <div class="content"><pre>
 cookie = {
 set:function(dict, days){
@@ -241,6 +316,7 @@ $.ajax = function(options){
     return $.__ajax(options)
 }
 </pre></div>
+<p>OK，到此为止，用户注册告一段落。</p>
 
 <div class="dirnav">
 <a href="3_2.html">上一节</a>
