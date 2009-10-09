@@ -172,7 +172,7 @@ def login(path=''):
             email = ''
     G.email = email
 
-@check_get_cf
+@antixf
 @route
 def logout():
     user = request.user
@@ -186,12 +186,61 @@ def logout():
 <p>设置cookie通过import的cookie对象来进行。</p>
 <p>而cookie的读取，删除是通过request对象cookie属性来进行。</p>
 <p>在登录全过程涉及了两个cookie，其一是"E"，用来记录email地址，这样登录前，登录框的Email地址栏中会出现默认值；其二是"S"，用来记录用户session，然后凭此识别用户。</p>
-<p>logout的装饰器（decorator）是 @route，代表该url映射不需要模板。</p>
-<p>==========TODO write</p>
-<p>Cross-site request forgery:跨站请求伪造，也被称成为“one click attack”或者session riding，通常缩写为CSRF或者XSRF，是一种对网站的恶意利用。尽管听起来像跨站脚本（XSS），但它与XSS非常不同，并且攻击方式几乎相左。XSS利用站点内的信任用户，而CSRF则通过伪装来自受信任用户的请求来利用受信任的网站。与XSS攻击相比，CSRF攻击往往不大流行（因此对其进行防范的资源也相当稀少）和难以防范，所以被认为比XSS更具危险性。</p>
-<p>Flash CSRF实战应用 破解QQ相册密码</p>
-<p>Discuz!的安全人员已经意识到csrf方面的漏洞了采用了formhash及判断Referer等来防止外部提交,如果看过&lt;Bypass Preventing CSRF&gt;[1]一文的朋友应该意识到我们可以通过flash来进行csrf攻击.</p>
-<p>拦截器 _access</p>
+<p>logout的有两个装饰器，其中（decorator）是 @route，代表该url映射不需要模板。route装饰器必须是最后一个装饰器，因为他会给函数添加隐藏的request，G变量。</p>
+<p>antixf，是用来防止XSRF（又称CRSF,cross-site request forgery 跨站请求伪造）攻击的。XSRF是一种黑客攻击网站的方式，通过欺骗用户的点击链接，或伪造POST请求来进行非法操作 -- 比如，盗取密码，散布蠕虫。事实上，一个恶意网站能让你在毫不知情的情况下点击任意链接，任意按钮或网站上的任意东西。</p>
+<p>常用的预防方式是加上一个效验值，让每个用户进行操作的链接都不相同。模板中的写法如下</p>
+<div class="content"><pre>
+&lt;!%
+from mysite.util.security import get_xf
+%&gt;
+&lt;a href="/auth/logout?xf=${get_xf()}"&gt;退出&lt;/a&gt;
+</pre></div>
+<p>将生成的类似如下的链接</p>
+<div class="content"><pre>
+&lt;a href="/auth/logout?xf=J4LU"&gt;退出&lt;/a&gt;
+</pre></div>
+<p>对于那些会产生写操作的链接，加上antixf是很有必要的。</p>
+<p>同样，对于登录用户的表单POST提交，也应该加上antixf效验。技术上，通过一个隐藏的input字段来实现，比如</p>
+<div class="content"><pre>
+&lt;input type="hidden" value="${get_xf()}" name="xf"&gt;
+</pre></div>
+<p>但是因为POST的操作在网页编写中非常频繁，每一个提交</p>
+<p>同样我们需要修改一下jQuery的函数，以便xf</p>
+<div class="content"><pre>
+cookie = {
+set:function(dict, days){
+    days = days || 30;
+    var date = new Date();
+    date.setTime(date.getTime()+(days*24*60*60*1000));
+    var expires = "; expires="+date.toGMTString();
+    for (var i in dict){
+        document.cookie = i+"="+dict[i]+expires+"; path=/";
+    }
+},
+get:function(name) {
+    var e = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i &lt; ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(e) == 0) {
+            return c.substring(e.length,c.length).replace(/\"/g,'');
+        }
+    }
+    return null;
+}
+}
+$.__ajax = $.ajax
+$.ajax = function(options){
+    if(options.type=="POST"){
+        var s = cookie.get('S')
+        if(s){
+            options.data=$.extend(options.data||{},{xf:s.slice(-4)});
+        }
+    }
+    return $.__ajax(options)
+}
+</pre></div>
 
 <div class="dirnav">
 <a href="3_2.html">上一节</a>
