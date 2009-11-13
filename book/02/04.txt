@@ -127,7 +127,7 @@ Google Code添加管理员 gcode_admin.jpg
 
 先安装软件，一路Next，安装完成后会提示你重启电脑，先选择No。
 
-然后按照汉化包，装好后再在点击右键，进入Tortoise Svn的setting页面。
+然后安装汉化包，装好后再在点击右键，进入Tortoise Svn的setting页面。
 
 点击右键 svn_setting.jpg
 

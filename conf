@@ -171,12 +171,12 @@ proxy_temp_path /home/zuroc/dev/ppmm/ztmp/nginx;
         
         
         location      ~  / {
-            valid_referers none blocked *.nttnhj.cn *.kanrss.com *.kanrss.info kanrss.com kanrss.info *.google.com *.baidu.com *.appspot.com kanrs.com kanrs.cn *.kanrs.com *.kanrs.cn;
-            if ($invalid_referer) {
-                return 412;
-            }
+            #valid_referers none blocked *.nttnhj.cn *.kanrss.com *.kanrss.info kanrss.com kanrss.info *.google.com *.baidu.com *.appspot.com kanrs.com kanrs.cn *.kanrs.com *.kanrs.cn;
+            #if ($invalid_referer) {
+            #    return 412;
+            #}
             root    /home/zuroc/dev/pybook/html;
-            expires max;
+            expires off;
             access_log off;
         }
     }
