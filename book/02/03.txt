@@ -48,7 +48,8 @@ Redhat，最为中国大学生熟悉。由Redhat公司维护，并提供收费�
 
 Suse，是德国著名的Linux发行版，在欧洲比较流行，由NOVELL公司提供支持，和Redhat一样走的是商业路线。
 
-Debian，可以说是最遵循GNU规范的Linux系统，包管理系统，就是最著名的apt-get，无比之强大。许多Debian的用户都开玩笑的说，Debian将他们养懒了，因为只要简单得敲一下”apt-get upgrade && apt-get update”，机器上所有的软件就会自动更新了…… 
+Debian，可以说是最遵循GNU规范的Linux系统，包管理系统，就是最著名的apt-get，无比之强大。许多Debian的用户都开玩笑的说，Debian将他们养懒了，因为只要简单得敲一下”apt-get
+update && apt-get upgrade”，机器上所有的软件就会自动更新了…… 
 
 Ubuntu，最流行的Linux发行版，改变了以往人们对于Linux敬而远之的做法。Ubuntu基于Debian开发，易用性好。如Windows般方便的安装，使用，使其非常适合Linux初学者。
 
