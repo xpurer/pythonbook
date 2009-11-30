@@ -1,16 +1,18 @@
-导入MSN联系人
+<!doctype html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="file/c.css" media="all"><title>导入MSN联系人</title></head><body>
+<a id="bar" href="index.html">返回目录</a>
+<div id="header">
+<h1>导入MSN联系人</h1>
+</div>
 
-Hotmail，MSN.com，Live.com，Live.cn账号都可以用来登录MSN(也就是Windows Live Message)，甚至用户可以用自己其他邮箱去注册MSN的账户。
-
-但是不同的产品对于联系人的页面都不一样，如此，通过抓取网页导入联系人就变得异常麻烦。
-
-不过，换一个思路，我们可以直接模拟MSN的客户端，来获取用户的联系人列表。
-
-Python是一个很好很强大的工具，自然少不了连接MSN的库。这里我们选用Alberto Bertogli的msnlib。
-
-到 http://blitiri.com.ar/p/msnlib/ ，下载安装msnlib。导入联系人的代码如下：
-
-{{{
+<div id="preamble">
+<p>Hotmail，MSN.com，Live.com，Live.cn账号都可以用来登录MSN(也就是Windows Live Message)，甚至用户可以用自己其他邮箱去注册MSN的账户。</p>
+<p>但是不同的产品对于联系人的页面都不一样，如此，通过抓取网页导入联系人就变得异常麻烦。</p>
+<p>不过，换一个思路，我们可以直接模拟MSN的客户端，来获取用户的联系人列表。</p>
+<p>Python是一个很好很强大的工具，自然少不了连接MSN的库。这里我们选用Alberto Bertogli的msnlib。</p>
+<p>到 <a target="_blank" href="http://blitiri.com.ar/p/msnlib/">http://blitiri.com.ar/p/msnlib/</a> ，下载安装msnlib。导入联系人的代码如下：</p>
+<div class="content"><pre>
 #coding:utf-8
 import socket, select, time, msnlib, msncb
 
@@ -51,9 +53,9 @@ def get_friend_list(email, password):
         if len(users) == len(merge_users):
             end_time = time.time()
             if len(users):
-                if end_time-begin_time >= 2:
+                if end_time-begin_time &gt;= 2:
                     break
-            elif end_time-begin_time >= 3:
+            elif end_time-begin_time &gt;= 3:
                 break
             time.sleep(0.05)
         else:
@@ -76,21 +78,16 @@ if __name__ == "__main__":
     else:
         for k, v in result.iteritems():
             print k, v.decode("utf-8", "ignore")
-}}}
-
-运行该脚本，输入用户名密码，输出内容如下
-
-{{{
+</pre></div>
+<p>运行该脚本，输入用户名密码，输出内容如下</p>
+<div class="content"><pre>
 youngvleo@gmail.com youngvleo
 tk@msn.cn tk
 ...
-}}}
-
-导入联系人往往是长达几十秒漫长的过程，为了不让它阻塞正常请求。我们将其纳入方便支持异步长连接的tornado框架下，作为一个远程调用的服务。
-
-和往常一样，还是用ajax+重定向来处理请求。
-
-{{{
+</pre></div>
+<p>导入联系人往往是长达几十秒漫长的过程，为了不让它阻塞正常请求。我们将其纳入方便支持异步长连接的tornado框架下，作为一个远程调用的服务。</p>
+<p>和往常一样，还是用ajax+重定向来处理请求。</p>
+<div class="content"><pre>
 #coding:utf-8
 import thread
 import tornado.web
@@ -130,7 +127,7 @@ class ImportMsnHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self,user_id,email,password):
         thread.start_new_thread(
-            _async_get_friend_list, 
+            _async_get_friend_list,
             (user_id,email, password, self.async_callback(self._on_get))
         )
 
@@ -138,6 +135,38 @@ class ImportMsnHandler(tornado.web.RequestHandler):
         self.write(r)
         self.finish()
 
-}}}
+</pre></div>
+
+<div class="dirnav">
+<a href="3_3.html">上一节</a>
+<a href="index.html">返回目录</a>
+</div>
+
+</div>
+
+<script type="text/javascript" src="file/c.js"></script>
+<div id="footer">
+  <p class="copyright">
+    Copyright 2009,
+    张沈鹏,
+	董诣,
+    陈寅,
+	<span class="amp">&amp;</span>
+    敬宓    
+  </p>
+</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-10347470-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+
+
+
 
 
