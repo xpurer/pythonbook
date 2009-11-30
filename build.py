@@ -144,8 +144,11 @@ for chapter in chapter_list:
                 for line in s:
                     line=line.rstrip()
                     line_strip = line.strip()
-
-                    if line.startswith("===") and line.endswith("==="):
+                    #print line
+                    if line.startswith("~~"):
+                        line = line.lstrip('~  ')
+                        buffer.append("""<p><a href="%s">%s</a></p>"""%(line,line))
+                    elif line.startswith("===") and line.endswith("==="):
                         buffer.append("<h3>%s</h3>"%line.strip(" ="))
                     elif line.startswith("==") and line.endswith("=="):
                         buffer.append("<h2>%s</h2>"%line.strip(" ="))
