@@ -1,4 +1,4 @@
-导入MSN联系人
+导入MSN联系人 -- 后台远程服务
 
 Hotmail，MSN.com，Live.com，Live.cn账号都可以用来登录MSN(也就是Windows Live Message)，甚至用户可以用自己其他邮箱去注册MSN的账户。
 
@@ -88,16 +88,16 @@ tk@msn.cn tk
 
 导入联系人往往是长达几十秒漫长的过程，为了不让它阻塞正常请求。我们将其纳入方便支持异步长连接的tornado框架下，作为一个远程调用的服务。
 
-和往常一样，还是用ajax+重定向来处理请求。
+和往常一样，还是用ajax向来调用rpc。
 
 {{{
 #coding:utf-8
 import thread
 import tornado.web
-from mysite.model.auth import User,UserEmail
+from mysite.model.auth import User, UserEmail
 from mysite.model.consts import USER_STATE_IMPORT
 from mysite.model.friend import is_friend
-
+from get_friend_list import get_friend_list
 def _async_get_friend_list(user_id, email, password, callback):
     result = get_friend_list(email, password)
     if result is None:
@@ -106,38 +106,131 @@ def _async_get_friend_list(user_id, email, password, callback):
         not_friend = []
         not_join = []
         User.begin()
-        for email,name in result.iteritems():
+        for email, name in result.iteritems():
+            email = email.strip()
             user = User.by_email(email)
             if user is None:
-                user_email = UserEmail(email=email)
-                user_email.save()
-                user = User(id=user_email.id,name=name,state=USER_STATE_IMPORT)
+                user_email = UserEmail.get(email=email)
+                if user_email:
+                    print "!!!", email, user_email.id
+                else:
+                    user_email = UserEmail(email=email)
+                    user_email.save()
+                user = User(id=user_email.id, name=name, state=USER_STATE_IMPORT)
                 user.save()
                 not_join.append(user.id)
             else:
-                if i.state == USER_STATE_IMPORT:
+                if user.state == USER_STATE_IMPORT:
                     not_join.append(user.id)
-                elif not is_friend(user_id):
+                elif not is_friend(user_id, user.id):
                     not_friend.append(user.id)
         User.commit()
-        r = "%s\n%s"%(
-            " ".join(map(str,not_friend)),
-            " ".join(map(str,not_join)),
+        r = "%s-%s"%(
+            "_".join(map(str, not_friend)),
+            "_".join(map(str, not_join)),
         )
     callback(r)
 
 class ImportMsnHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
-    def get(self,user_id,email,password):
+    def get(self, user_id, email, password):
         thread.start_new_thread(
-            _async_get_friend_list, 
-            (user_id,email, password, self.async_callback(self._on_get))
+            _async_get_friend_list,
+            (user_id, email, password, self.async_callback(self._on_get))
         )
 
     def _on_get(self, r):
         self.write(r)
         self.finish()
+}}}
+返回值 - 前的是已经注册，但是尚未成为好友的用户id，- 后的是尚未注册的用户id。
 
+tornado的server这样写
+{{{
+#!/usr/bin/env python
+#coding:utf-8
+from myconf import config
+config.DISABLE_LOCAL_CACHED = True
+config.THREAD_SAFE = True
+
+import logging
+import os.path
+import tornado.auth
+import tornado.escape
+import tornado.httpserver
+import tornado.ioloop
+import tornado.options
+import tornado.web
+from tornado.options import define, options
+
+define("host", default="0.0.0.0", help="run on the given port", type=int)
+define("port", default=15050, help="run on the given port", type=int)
+
+
+from myrpc.import_contact.import_msn import ImportMsnHandler 
+
+class Application(tornado.web.Application):
+    def __init__(self):
+        handlers = [
+            (r"/rpc/import/msn/([0-9]+)/([^/]+)/(.+)", ImportMsnHandler),
+        ]
+        settings = {
+            "google_consumer_key": GOOGLE_CONSUMER_KEY,
+            "google_consumer_secret":GOOGLE_CONSUMER_SECRET,
+            "login_url":"/auth/login",
+            "xsrf_cookies": False,
+            "debug": False
+        }
+        tornado.web.Application.__init__(self, handlers, **settings)
+
+def main(port=None):
+    tornado.options.parse_command_line()
+    http_server = tornado.httpserver.HTTPServer(Application())
+    port = port or options.port
+    http_server.listen(port)
+    print "port", port
+    tornado.ioloop.IOLoop.instance().start()
+
+if __name__ == "__main__":
+    import sys
+    if len(sys.argv) > 1 and sys.argv[1].isdigit():
+        port = int(sys.argv[1])
+    else:
+        port = 15050
+    main(port=port)
+}}}
+最后在nginx配置中加上url转发
+{{{
+upstream tornado {
+    server localhost:15050 weight=1;
+}
+server {
+    listen          80;
+    server_name     stdyun.com;
+    charset utf-8;
+    location / {
+        proxy_pass http://stdyun;
+        proxy_set_header X-Real-IP  $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
+    }
+    location ~ ^/rpc {
+        proxy_pass http://tornado;
+        proxy_set_header X-Real-IP  $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
+    }
+    ... ... ...
+}
 }}}
 
+OK，这样导入联系人的后台就算是写好了。
 
+访问这里试试吧，
+
+http://stdyun.com/rpc/import/msn/1/MSN账号名/密码
+
+比如我的MSN账号返回值如下
+{{{
+10000268-10003385_10001307_10003386_10003387
+}}}
