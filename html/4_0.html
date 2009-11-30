@@ -141,7 +141,9 @@ class ImportMsnHandler(tornado.web.RequestHandler):
         self.finish()
 </pre></div>
 <p>返回值 - 前的是已经注册，但是尚未成为好友的用户id，- 后的是尚未注册的用户id。</p>
-<p>tornado的server这样写</p>
+<p>好了，到此为止MSN联系人导入算是写完了。全部代码见下面这个网址。</p>
+<p><a target="_blank" href="http://mayoufour.googlecode.com/svn/trunk/stdyun/myrpc/import_contact/import_msn/">http://mayoufour.googlecode.com/svn/trunk/stdyun/myrpc/import_contact/import_msn/</a></p>
+<p>最后配置一下Tornado的server，文件见 <a target="_blank" href="http://mayoufour.googlecode.com/svn/trunk/stdyun/tornado_server.py">http://mayoufour.googlecode.com/svn/trunk/stdyun/tornado_server.py</a></p>
 <div class="content"><pre>
 #!/usr/bin/env python
 #coding:utf-8
@@ -219,7 +221,7 @@ server {
     ... ... ...
 }
 </pre></div>
-<p>OK，这样导入联系人的后台就算是写好了。</p>
+<p>OK，导入MSN联系人的后台就算是写好了。</p>
 <p>访问这里试试吧，</p>
 <p><a target="_blank" href="http://stdyun.com/rpc/import/msn/1/MSN">http://stdyun.com/rpc/import/msn/1/MSN</a>账号名/密码</p>
 <p>比如我的MSN账号返回值如下</p>

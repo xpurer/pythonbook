@@ -145,7 +145,12 @@ class ImportMsnHandler(tornado.web.RequestHandler):
 }}}
 返回值 - 前的是已经注册，但是尚未成为好友的用户id，- 后的是尚未注册的用户id。
 
-tornado的server这样写
+好了，到此为止MSN联系人导入算是写完了。全部代码见下面这个网址。
+
+http://mayoufour.googlecode.com/svn/trunk/stdyun/myrpc/import_contact/import_msn/
+
+最后配置一下Tornado的server，文件见 http://mayoufour.googlecode.com/svn/trunk/stdyun/tornado_server.py
+
 {{{
 #!/usr/bin/env python
 #coding:utf-8
@@ -224,7 +229,7 @@ server {
 }
 }}}
 
-OK，这样导入联系人的后台就算是写好了。
+OK，导入MSN联系人的后台就算是写好了。
 
 访问这里试试吧，
 
