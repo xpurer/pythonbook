@@ -1,0 +1,91 @@
+导入MSN联系人
+
+Hotmail，MSN.com，Live.com，Live.cn账号都可以用来登录MSN(也就是Windows Live Message)，甚至用户可以用自己其他邮箱去注册MSN的账户。
+
+但是不同的产品对于联系人的页面都不一样，如此，通过抓取网页导入联系人就变得异常麻烦。
+
+不过，换一个思路，我们可以直接模拟MSN的客户端，来获取用户的联系人列表。
+
+Python是一个很好很强大的工具，自然少不了连接MSN的库。这里我们选用Alberto Bertogli的msnlib。
+
+到 http://blitiri.com.ar/p/msnlib/ ，下载安装msnlib。导入联系人的代码如下：
+
+{{{
+#coding:utf-8
+import socket, select, time, msnlib, msncb
+
+def void(s): pass
+msnlib.debug = msncb.debug = void
+
+def get_friend_list(email,password):
+    m = msnlib.msnd()
+    m.cb = msncb.cb()
+
+    m.email = email.strip()
+    m.pwd = password.strip()
+    m.encoding = 'utf-8'
+    try:
+        #登录
+        m.login() 
+        m.sync()
+    except:
+        return False
+    #隐身
+    m.change_status('invisible')
+
+    begin_time = time.time()
+
+    users = set()
+    while True:
+        #读取联系人
+        fds = m.pollable()
+        infd = fds[0]
+        outfd = fds[1]
+
+        fds = select.select(infd, outfd, [], 0)
+
+        for i in fds[0] + fds[1]:
+            try:
+                m.read(i)
+            except ('SocketError', socket.error), err:
+                if i != m:
+                    m.close(i)
+        merge_users=users|set(m.users.keys())
+        if len(users) == len(merge_users):
+            end_time = time.time()
+            if len(users):
+                if end_time-begin_time >= 2:
+                    break
+            elif end_time-begin_time >= 3:
+                break
+            time.sleep(0.05)
+        else:
+            users = merge_users
+            begin_time = time.time()
+    result={}
+    
+    for i in users:
+        nick=m.users[i].nick
+        i_lower = i.lower()
+        if nick.lower() == i_lower:
+            nick = nick.split("@",1)[0]
+        result[i_lower]=nick
+        
+    return result
+
+if __name__ == "__main__":
+    result = get_friend_list(raw_input("email:"),raw_input("password:"))
+    if result is False:
+        print "email or password or network error , login failed"
+    else:
+        for k,v in result.iteritems():
+            print k,v.decode("utf-8","ignore")
+}}}
+
+运行该脚本，输入用户名密码，输出内容如下
+
+{{{
+youngvleo@gmail.com youngvleo
+tk@msn.cn tk
+...
+}}}
