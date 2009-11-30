@@ -180,8 +180,6 @@ class Application(tornado.web.Application):
             (r"/rpc/import/msn/([0-9]+)/([^/]+)/(.+)", ImportMsnHandler),
         ]
         settings = {
-            "google_consumer_key": GOOGLE_CONSUMER_KEY,
-            "google_consumer_secret":GOOGLE_CONSUMER_SECRET,
             "login_url":"/auth/login",
             "xsrf_cookies": False,
             "debug": False
