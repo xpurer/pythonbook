@@ -88,8 +88,19 @@ tk@msn.cn tk
 
 导入联系人往往是长达几十秒漫长的过程，为了不让它阻塞正常请求。我们将其纳入方便支持异步长连接的tornado框架下，作为一个远程调用的服务。
 
-和往常一样，还是用ajax向来调用rpc。
+和往常一样，还是用ajax向来调用rpc。先实现一个从cookie获取用户id的基类
 
+{{{
+import tornado.web
+from mysite.model.auth import UserSession 
+class BaseHandler(tornado.web.RequestHandler):
+    def get_user_id(self):
+        session = self.get_cookie("S")
+        user_id = UserSession.verify_user_id(session)
+        return user_id
+}}}
+
+然后开始写用户导入的模块
 {{{
 #coding:utf-8
 import thread
@@ -98,6 +109,7 @@ from mysite.model.auth import User, UserEmail
 from mysite.model.consts import USER_STATE_IMPORT
 from mysite.model.friend import is_friend
 from get_friend_list import get_friend_list
+from myrpc.base_handler import BaseHandler
 def _async_get_friend_list(user_id, email, password, callback):
     result = get_friend_list(email, password)
     if result is None:
@@ -131,18 +143,22 @@ def _async_get_friend_list(user_id, email, password, callback):
         )
     callback(r)
 
-class ImportMsnHandler(tornado.web.RequestHandler):
+class ImportMsnHandler(BaseHandler):
     @tornado.web.asynchronous
-    def get(self, user_id, email, password):
-        thread.start_new_thread(
-            _async_get_friend_list,
-            (user_id, email, password, self.async_callback(self._on_get))
-        )
+    def get(self, email, password):
+        user_id = self.get_user_id()
+        if user_id:
+            thread.start_new_thread(
+                _async_get_friend_list,
+                (user_id, email, password, self.async_callback(self._on_get))
+            )
+        else:
+            self.finish('N')
 
     def _on_get(self, r):
-        self.write(r)
-        self.finish()
+        self.finish(r)
 }}}
+
 返回值 - 前的是已经注册，但是尚未成为好友的用户id，- 后的是尚未注册的用户id。
 
 好了，到此为止MSN联系人导入算是写完了。全部代码见下面这个网址。
@@ -177,7 +193,7 @@ from myrpc.import_contact.import_msn import ImportMsnHandler
 class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
-            (r"/rpc/import/msn/([0-9]+)/([^/]+)/(.+)", ImportMsnHandler),
+            (r"/rpc/import/msn/([^/]+)/(.+)", ImportMsnHandler),
         ]
         settings = {
             "login_url":"/auth/login",
@@ -229,9 +245,9 @@ server {
 
 OK，导入MSN联系人的后台就算是写好了。
 
-访问这里试试吧，
+访问这里试试吧，不过要先登录哦：）
 
-http://stdyun.com/rpc/import/msn/1/MSN账号名/密码
+http://stdyun.com/rpc/import/msn/MSN账号名/密码
 
 比如我的MSN账号返回值如下
 {{{
