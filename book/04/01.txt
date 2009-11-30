@@ -1,4 +1,4 @@
-导入MSN联系人 -- 后台远程服务
+导入MSN联系人 - 后台远程服务
 
 Hotmail，MSN.com，Live.com，Live.cn账号都可以用来登录MSN(也就是Windows Live Message)，甚至用户可以用自己其他邮箱去注册MSN的账户。
 
