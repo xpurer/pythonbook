@@ -142,8 +142,8 @@ def _async_get_friend_list(user_id, email, password, callback):
             "_".join(map(str, not_friend)),
             "_".join(map(str, not_join)),
         )
-        #这样线程安全
-        tornado.ioloop.IOLoop.instance().add_callback(lambda: callback(r))
+    #这样线程安全
+    tornado.ioloop.IOLoop.instance().add_callback(lambda: callback(r))
 
 class ImportMsnHandler(BaseHandler):
     @tornado.web.asynchronous
