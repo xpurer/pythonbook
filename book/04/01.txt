@@ -110,6 +110,7 @@ from mysite.model.consts import USER_STATE_IMPORT
 from mysite.model.friend import is_friend
 from get_friend_list import get_friend_list
 from myrpc.base_handler import BaseHandler
+import tornado.ioloop
 def _async_get_friend_list(user_id, email, password, callback):
     result = get_friend_list(email, password)
     if result is None:
@@ -141,7 +142,8 @@ def _async_get_friend_list(user_id, email, password, callback):
             "_".join(map(str, not_friend)),
             "_".join(map(str, not_join)),
         )
-    callback(r)
+        #这样线程安全
+        tornado.ioloop.IOLoop.instance().add_callback(lambda: callback(r))
 
 class ImportMsnHandler(BaseHandler):
     @tornado.web.asynchronous
