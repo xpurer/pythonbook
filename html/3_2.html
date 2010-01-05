@@ -3,7 +3,7 @@
 <link rel="stylesheet" type="text/css" href="file/c.css" media="all"><title>数据库，ORM 与 单元测试</title></head><body>
 <a id="bar" href="index.html">返回目录</a>
 <div id="header">
-<h1>数据库，ORM 与 单元测试 </h1>
+<h1>数据库，ORM 与 单元测试 </h1>
 </div>
 
 <div id="preamble">
@@ -18,7 +18,7 @@
 <p>在设计表的时候，不要显式的声明数据库中的外键关系。数据库中使用外键关系会显著拖累数据库的性能，也制约了数据库表的可拆分性。同样那些触发器，存储过程，也不要使用。</p>
 <p>简单地说，只使用MySQL最简单最基本功能，来保证性能的高效，同时将逻辑代码与数据库分隔开，方便以后更换后端的存储方式 -- 比如还没发布但是很有前景的Drizzle （ <a target="_blank" href="https://launchpad.net/drizzle">https://launchpad.net/drizzle</a> ） 。</p>
 <p>需要作为where条件查询的字段，要加上索引。多个字段联合索引，比如 boy_id - grid_id , 当where条件中包含 boy_id 和 grid_id ，或只有 boy_id 时会使用该索引，当 where条件中只有 grid_id 时，不会使用该索引 。</p>
-<p>用explian语句能查看索引使用的细节，比如</p>
+<p>用explain语句能查看索引使用的细节，比如</p>
 <div class="content"><pre>
 explain select * from friends where grid_id = 987654;
 </pre></div>
