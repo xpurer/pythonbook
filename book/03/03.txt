@@ -338,7 +338,7 @@ memcached是一个高性能的基于内存的键值缓存，性能优异，是My
 
 但更重要的是，简单的键值方式存储可以非常方便的实现多机分布式（Facebook用了800台memcached）。这样可以大大降低MySQL的查询压力 -- 通常，MySQL数据库是网站最瓶颈的地方。
 
-我们将在以后的实战中慢慢介绍它。想要更深入的了解memcached可以看看这个手册 page:memcached.pdf 。
+我们将在以后的实战中慢慢介绍它。想要更深入的了解memcached可以看看这个手册 page:other/memcached.pdf 。
 
 windows下，我们只做开发，所以不用启动memcached和修改配置文件，mypy框架会默认使用一个假的（fake）memcached。
 
